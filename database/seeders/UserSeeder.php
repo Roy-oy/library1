@@ -10,7 +10,6 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Kepala Sekolah
         User::create([
             'name'     => 'Erydawaty S.PD',
             'username' => 'kepala_sekolah',
@@ -19,7 +18,6 @@ class UserSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        // Kepala Perpustakaan (Admin)
         User::create([
             'name'     => 'RAHMA RITONGA S.PD',
             'username' => 'rahma',
@@ -28,7 +26,6 @@ class UserSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        // Penjaga Perpustakaan
         User::create([
             'name'     => 'NURIN SYAFITRI S.PD',
             'username' => 'nurin',

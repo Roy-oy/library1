@@ -21,8 +21,12 @@ use App\Http\Controllers\Pperpus\DetailPeminjamanController;
 use App\Http\Controllers\Pperpus\ReportDendaController;
 use App\Http\Controllers\ReportAktivitasController;
 
+// ─── Homepage ─────────────────────────────────────────────────────────────────
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
 // ─── Auth ────────────────────────────────────────────────────────────────────
-Route::get('/',      [AuthController::class, 'showLogin'])->name('login');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

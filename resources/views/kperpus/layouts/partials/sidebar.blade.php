@@ -1,9 +1,8 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <div class="brand-logo"><i class="fas fa-book-open"></i></div>
+        <div class="brand-logo"><img src="{{ asset('images/perpus.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
         <div class="brand-text">
-            <div class="title">SIP Sekolah</div>
-            <div class="sub">Sistem Informasi Perpustakaan</div>
+            <div class="title">E-Library SMP Negeri 1 Percut Sei Tuan</div>
         </div>
     </div>
 
@@ -13,7 +12,7 @@
         <div class="nav-item">
             <a href="{{ route('kperpus.dashboard') }}"
                class="nav-link {{ request()->routeIs('kperpus.dashboard') ? 'active' : '' }}">
-                <i class="fas fa-chart-pie"></i> Dashboard
+                <i class="fas fa-home"></i> Dashboard
             </a>
         </div>
 
@@ -26,12 +25,12 @@
         </div>
         <div class="nav-item">
             <a href="{{ route('kperpus.kategori.index') }}" class="nav-link {{ request()->routeIs('kperpus.kategori.*') ? 'active' : '' }}">
-                <i class="fas fa-tags"></i> Kategori Buku
+                <i class="fas fa-bookmark"></i> Kategori Buku
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ route('kperpus.siswa.index') }}" class="nav-link {{ request()->routeIs('kperpus.siswa.*') ? 'active' : '' }}">
-                <i class="fas fa-users"></i> Data Siswa
+                <i class="fas fa-user-graduate"></i> Data Siswa
             </a>
         </div>
 
@@ -39,12 +38,12 @@
 
         <div class="nav-item">
             <a href="{{ route('kperpus.peminjaman.index') }}" class="nav-link {{ request()->routeIs('kperpus.peminjaman.*') ? 'active' : '' }}">
-                <i class="fas fa-hand-holding-heart"></i> Peminjaman
+                <i class="fas fa-clipboard-list"></i> Peminjaman
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ route('kperpus.pengembalian.index') }}" class="nav-link {{ request()->routeIs('kperpus.pengembalian.*') ? 'active' : '' }}">
-                <i class="fas fa-undo-alt"></i> Pengembalian
+                <i class="fas fa-clipboard-check"></i> Pengembalian
             </a>
         </div>
 
@@ -52,19 +51,19 @@
 
         <div class="nav-item">
             <a href="{{ route('kperpus.petugas.index') }}" class="nav-link {{ request()->routeIs('kperpus.petugas.*') ? 'active' : '' }}">
-                <i class="fas fa-users"></i> Data Petugas
+                <i class="fas fa-user-tie"></i> Data Petugas
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ route('kperpus.report.aktivitas.index') }}" class="nav-link {{ request()->routeIs('kperpus.report.aktivitas.*') ? 'active' : '' }}">
-                <i class="fas fa-file-invoice"></i> Laporan Aktivitas
+                <i class="fas fa-chart-bar"></i> Laporan Aktivitas
             </a>
         </div>
 
         <div class="nav-section-label">Akun</div>
         <div class="nav-item">
             <a href="{{ route('kperpus.profile.index') }}" class="nav-link {{ request()->routeIs('kperpus.profile.*') ? 'active' : '' }}">
-                <i class="fas fa-user-cog"></i> Profil Saya
+                <i class="fas fa-user-circle"></i> Profil Saya
             </a>
         </div>
     </nav>

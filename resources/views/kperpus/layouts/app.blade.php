@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') — Kepala Perpustakaan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,26 +13,26 @@
         :root {
             --sidebar-w:    260px;
             --header-h:     65px;
-            --primary:      #1a3c5e;
-            --primary-dark: #0d2740;
-            --accent:       #c8a96e;
-            --accent-light: #f5edd8;
-            --bg:           #f0f4f8;
+            --primary:      #4a90e2; /* Biru soft */
+            --primary-dark: #357abd;
+            --accent:       #f39c12;
+            --accent-light: #fdf2e9;
+            --bg:           #f4f7f9;
             --surface:      #ffffff;
             --text:         #2c3e50;
             --text-muted:   #7f8c8d;
-            --border:       #e2e8f0;
-            --success:      #27ae60;
-            --warning:      #f39c12;
+            --border:       #e4e9f0;
+            --success:      #2ecc71;
+            --warning:      #f1c40f;
             --danger:       #e74c3c;
-            --info:         #2980b9;
+            --info:         #5dade2; /* Biru terang yang soft */
             --sidebar-text: rgba(255,255,255,.82);
             --radius:       12px;
             --shadow:       0 4px 20px rgba(0,0,0,.07);
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Nunito', sans-serif;
             background: var(--bg);
             color: var(--text);
             display: flex;
@@ -42,62 +42,65 @@
         /* ── SIDEBAR ─────────────────────────────── */
         .sidebar {
             width: var(--sidebar-w);
-            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+            background: #ffffff;
             height: 100vh;
             position: fixed; top: 0; left: 0;
             display: flex; flex-direction: column;
             transition: transform .3s ease;
             z-index: 100;
+            border-right: 1px solid var(--border);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.02);
         }
         .sidebar-brand {
             padding: 1.4rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,.08);
+            border-bottom: 1px solid var(--border);
             display: flex; align-items: center; gap: .9rem;
         }
         .brand-logo {
             width: 40px; height: 40px;
-            background: rgba(200,169,110,.2);
-            border: 1.5px solid rgba(200,169,110,.4);
+            background: rgba(41, 128, 185, 0.1);
+            border: 1.5px solid rgba(41, 128, 185, 0.3);
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
         }
-        .brand-logo i { color: var(--accent); font-size: 1.1rem; }
+        .brand-logo i { color: var(--info); font-size: 1.1rem; }
         .brand-text { line-height: 1.2; }
-        .brand-text .title { font-size: .88rem; font-weight: 700; color: #fff; }
-        .brand-text .sub   { font-size: .72rem; color: rgba(255,255,255,.5); }
+        .brand-text .title { font-size: .88rem; font-weight: 700; color: var(--text); }
+        .brand-text .sub   { font-size: .72rem; color: var(--text-muted); }
 
         .sidebar-nav { flex: 1; padding: 1.2rem 0; overflow-y: auto; }
         .nav-section-label {
             font-size: .68rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 1.2px;
-            color: rgba(255,255,255,.35);
+            color: var(--text-muted);
             padding: 1rem 1.5rem .4rem;
         }
         .nav-item { display: block; }
         .nav-link {
             display: flex; align-items: center; gap: .8rem;
             padding: .72rem 1.5rem;
-            color: var(--sidebar-text);
+            color: var(--text);
             text-decoration: none;
             font-size: .88rem; font-weight: 500;
             border-radius: 0;
             transition: background .2s, color .2s;
             position: relative;
         }
-        .nav-link i { width: 18px; text-align: center; font-size: .9rem; opacity: .8; }
-        .nav-link:hover { background: rgba(255,255,255,.07); color: #fff; }
+        .nav-link i { width: 18px; text-align: center; font-size: .9rem; color: var(--text-muted); transition: color .2s; }
+        .nav-link:hover { background: rgba(41, 128, 185, 0.06); color: var(--info); }
+        .nav-link:hover i { color: var(--info); }
         .nav-link.active {
-            background: rgba(200,169,110,.15);
-            color: var(--accent);
-            font-weight: 600;
+            background: rgba(41, 128, 185, 0.1);
+            color: var(--info);
+            font-weight: 700;
         }
-        .nav-link.active i { opacity: 1; }
+        .nav-link.active i { color: var(--info); opacity: 1; }
         .nav-link.active::before {
             content: '';
             position: absolute; left: 0; top: 0; bottom: 0;
-            width: 3px;
-            background: var(--accent);
-            border-radius: 0 3px 3px 0;
+            width: 4px;
+            background: var(--info);
+            border-radius: 0 4px 4px 0;
         }
         .nav-badge {
             margin-left: auto;
@@ -110,24 +113,24 @@
 
         .sidebar-footer {
             padding: 1rem 1.5rem;
-            border-top: 1px solid rgba(255,255,255,.08);
+            border-top: 1px solid var(--border);
         }
         .user-card {
             display: flex; align-items: center; gap: .8rem;
             padding: .7rem;
-            background: rgba(255,255,255,.06);
+            background: var(--bg);
             border-radius: 10px;
         }
         .user-avatar {
             width: 36px; height: 36px;
-            background: var(--accent);
+            background: rgba(41, 128, 185, 0.15);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: .85rem; color: var(--primary-dark);
+            font-weight: 700; font-size: .85rem; color: var(--info);
             flex-shrink: 0;
         }
-        .user-info .name  { font-size: .82rem; font-weight: 600; color: #fff; }
-        .user-info .role  { font-size: .72rem; color: rgba(255,255,255,.45); }
+        .user-info .name  { font-size: .82rem; font-weight: 600; color: var(--text); }
+        .user-info .role  { font-size: .72rem; color: var(--text-muted); }
 
         /* ── MAIN ────────────────────────────────── */
         .main-wrapper {
@@ -192,9 +195,18 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 10px; }
 
+        /* ── OVERLAY FOR MOBILE ──────────────────── */
+        .sidebar-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,.4); z-index: 90;
+            opacity: 0; transition: opacity .3s ease;
+        }
+        .sidebar-overlay.show { display: block; opacity: 1; }
+
         @media (max-width: 900px) {
             .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: none; }
+            .sidebar.open { transform: translateX(0); }
             .main-wrapper { margin-left: 0; }
             .btn-menu { display: block; }
         }
@@ -204,6 +216,7 @@
 <body>
 
 @include('kperpus.layouts.partials.sidebar')
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <div class="main-wrapper">
     @include('kperpus.layouts.partials.header')
@@ -228,7 +241,15 @@
 
 <script>
 function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('open');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    sidebar.classList.toggle('open');
+    if (sidebar.classList.contains('open')) {
+        overlay.classList.add('show');
+    } else {
+        overlay.classList.remove('show');
+    }
 }
 </script>
 @stack('scripts')

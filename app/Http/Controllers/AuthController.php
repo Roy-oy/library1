@@ -34,13 +34,22 @@ class AuthController extends Controller
 
             if (!$user->is_active) {
                 Auth::logout();
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['success' => false, 'message' => 'Akun Anda tidak aktif. Hubungi administrator.'], 401);
+                }
                 return back()->withErrors(['username' => 'Akun Anda tidak aktif. Hubungi administrator.']);
             }
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => true, 'redirect' => route($user->getDashboardRoute())]);
+            }
             return redirect()->route($user->getDashboardRoute())
                 ->with('success', 'Selamat datang, ' . $user->name . '!');
         }
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => false, 'message' => 'Username atau password yang Anda masukkan salah.'], 401);
+        }
         return back()->withErrors([
             'username' => 'Username atau password yang Anda masukkan salah.',
         ])->withInput($request->only('username'));

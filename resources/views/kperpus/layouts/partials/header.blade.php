@@ -8,7 +8,7 @@
 
     <div class="header-right">
         <span class="header-date">
-            <i class="fas fa-calendar-alt" style="color:#c8a96e; margin-right:.3rem"></i>
+            <i class="fas fa-calendar-alt" style="color:#3498db; margin-right:.3rem"></i>
             {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
         </span>
 

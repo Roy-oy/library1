@@ -100,18 +100,15 @@
 
 <div class="page-header">
     <div>
-        <h1><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:.45rem"></i>Peminjaman</h1>
-        <p>Riwayat transaksi Pengembalian Buku Perpustakaan perpustakaan</p>
+        <h1><i class="fas fa-undo-alt" style="color:var(--primary);margin-right:.45rem"></i>Pengembalian Perpustakaan</h1>
+        <p>Proses pengembalian buku yang dipinjam dari perpustakaan umum</p>
     </div>
-    <a href="{{ route('pperpus.peminjaman.create') }}" class="btn-primary">
-        <i class="fas fa-plus"></i> Catat Peminjaman
-    </a>
 </div>
 
 <div class="card">
     <div class="card-toolbar">
-        <span class="total-label">Total: <strong>{{ $peminjamans->total() }} transaksi</strong></span>
-        <form action="{{ route('pperpus.peminjaman.index') }}" method="GET" class="search-box">
+        <span class="total-label">Total: <strong>{{ $peminjamans->total() }} transaksi</strong> aktif</span>
+        <form action="{{ route('pperpus.pengembalian.perpustakaan.index') }}" method="GET" class="search-box">
             <i class="fas fa-search"></i>
             <input type="text" name="q" placeholder="Cari NIS / Nama / Kode…" value="{{ request('q') }}">
         </form>
@@ -143,7 +140,7 @@
                     <td>
                         <span class="pill pill-info">
                             <i class="fas fa-book" style="font-size:.6rem"></i>
-                            {{ $pjm->Proses Kembalis->count() }} Buku
+                            {{ $pjm->details->count() }} Buku
                         </span>
                     </td>
                     <td>

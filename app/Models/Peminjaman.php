@@ -80,13 +80,6 @@ class Peminjaman extends Model
         return $this->details()->where('status_denda', 'belum_lunas')->exists();
     }
 
-    // GENERATOR KODE
-
-    /**
-     * Generate kode peminjaman otomatis.
-     * Format: PJM-YYYYMMDD-XXX
-     * Contoh: PJM-20260511-001
-     */
     public static function generateKode(): string
     {
         $tanggal = now()->format('Ymd');
@@ -103,15 +96,6 @@ class Peminjaman extends Model
         return $prefix . str_pad($urut, 3, '0', STR_PAD_LEFT);
     }
 
-    // SINKRONISASI STATUS PEMINJAMAN
-
-    /**
-     * Hitung ulang & simpan status_peminjaman berdasarkan status semua detail.
-     *
-     * - dipinjam     : masih ada buku yang belum kembali
-     * - dikembalikan : semua buku kembali, tapi masih ada denda belum lunas
-     * - selesai      : semua buku kembali + semua denda lunas
-     */
     public function syncStatus(): void
     {
         $this->load('details');
@@ -129,10 +113,6 @@ class Peminjaman extends Model
 
         $this->save();
     }
-
-    // ─────────────────────────────────────────────
-    // SCOPE QUERY
-    // ─────────────────────────────────────────────
 
     public function scopeAktif($query)
     {

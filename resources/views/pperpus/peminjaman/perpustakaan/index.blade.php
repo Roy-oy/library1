@@ -150,9 +150,13 @@
                         @if($pjm->status_peminjaman === 'dipinjam')
                             <span class="pill pill-warning">Sedang Dipinjam</span>
                         @elseif($pjm->status_peminjaman === 'dikembalikan')
-                            <span class="pill pill-info">Dikembalikan (Denda)</span>
+                            <span class="pill pill-danger">Denda (Belum Lunas)</span>
                         @else
-                            <span class="pill pill-success">Selesai</span>
+                            @if($pjm->total_denda > 0)
+                                <span class="pill pill-success">Denda (Lunas)</span>
+                            @else
+                                <span class="pill pill-success">Selesai</span>
+                            @endif
                         @endif
                     </td>
                     <td>

@@ -83,6 +83,7 @@ class PeminjamanController extends Controller
         $request->validate([
             'id_siswa'           => ['required', 'exists:siswa,id_siswa'],
             'tanggal_pinjam'     => ['required', 'date'],
+            'tanggal_kembali'    => ['required', 'date', 'after_or_equal:tanggal_pinjam'],
             'keterangan'         => ['nullable', 'string', 'max:500'],
             'buku'               => ['required', 'array', 'min:1'],
             'buku.*.id_buku'     => ['required', 'distinct', 'exists:buku,id_buku'],
@@ -108,8 +109,7 @@ class PeminjamanController extends Controller
                     throw new \Exception("Stok buku \"{$buku->judul_buku}\" sudah habis.");
                 }
 
-                $jatuhTempo = \Carbon\Carbon::parse($request->tanggal_pinjam)
-                    ->addDays(DetailPeminjaman::MASA_PINJAM_PERPUS);
+                $jatuhTempo = \Carbon\Carbon::parse($request->tanggal_kembali)->startOfDay();
                 $dendaHarian = DetailPeminjaman::DENDA_HARIAN_PERPUS;
 
                 DetailPeminjaman::create([
@@ -189,7 +189,8 @@ class PeminjamanController extends Controller
         }
 
         $peminjamans = $query->paginate(15)->withQueryString();
-        return view('pperpus.peminjaman.bos.index', compact('peminjamans'));
+        $kelasList = Siswa::where('status', 'aktif')->select('kelas')->distinct()->pluck('kelas')->toArray();
+        return view('pperpus.peminjaman.bos.index', compact('peminjamans', 'kelasList'));
     }
 
     public function createBos()
@@ -401,24 +402,75 @@ class PeminjamanController extends Controller
             ->with('success', 'Semua denda berhasil dilunaskan.');
     }
 
+    public function lunasSemuaDendaBos(Peminjaman $peminjaman)
+    {
+        DB::transaction(function () use ($peminjaman) {
+            $peminjaman->details()
+                ->where('status_denda', 'belum_lunas')
+                ->each(function ($detail) {
+                    $detail->status_denda = 'lunas';
+                    if ($detail->status_detail === 'terlambat') {
+                        $detail->status_detail = 'dikembalikan';
+                    }
+                    $detail->save();
+                });
+            $peminjaman->syncStatus();
+        });
+        return redirect()
+            ->route('pperpus.peminjaman.bos.show', $peminjaman->id_peminjaman)
+            ->with('success', 'Semua denda BOS berhasil dilunaskan.');
+    }
+
     // =========================================================================
     // PENGEMBALIAN BUKU BOS (Akhir Tahun Ajaran)
     // =========================================================================
 
     public function formAkhirTahunBos()
     {
-        $data = DetailPeminjaman::bukuBos()
+        $rawData = DetailPeminjaman::bukuBos()
             ->dipinjam()
             ->with(['peminjaman.siswa', 'buku'])
-            ->get()
-            ->groupBy(fn($d) => $d->peminjaman->siswa->kelas);
+            ->get();
+            
+        $structuredData = [];
+        foreach ($rawData as $detail) {
+            if (!$detail->peminjaman || !$detail->peminjaman->siswa) continue;
+            
+            $kelas = $detail->peminjaman->siswa->kelas;
+            $idSiswa = $detail->peminjaman->siswa->id_siswa;
+            $namaSiswa = $detail->peminjaman->siswa->nama_siswa;
+            $nis = $detail->peminjaman->siswa->nis;
+
+            if (!isset($structuredData[$kelas])) {
+                $structuredData[$kelas] = [];
+            }
+            if (!isset($structuredData[$kelas][$idSiswa])) {
+                $structuredData[$kelas][$idSiswa] = [
+                    'id_siswa' => $idSiswa,
+                    'nama_siswa' => $namaSiswa,
+                    'nis' => $nis,
+                    'buku' => []
+                ];
+            }
+            
+            $structuredData[$kelas][$idSiswa]['buku'][] = [
+                'id_detail' => $detail->id_detail,
+                'judul_buku' => $detail->buku->judul_buku,
+                'kode_buku' => $detail->buku->kode_buku,
+            ];
+        }
+
+        foreach ($structuredData as $kelas => &$siswas) {
+            usort($siswas, fn($a, $b) => strcmp($a['nama_siswa'], $b['nama_siswa']));
+            $siswas = array_values($siswas);
+        }
 
         $kelasList = Siswa::where('status', 'aktif')->select('kelas')->distinct()->pluck('kelas')->toArray();
         if (empty($kelasList)) {
             $kelasList = ['VII-A', 'VII-B', 'VIII-A', 'VIII-B', 'IX-A', 'IX-B'];
         }
 
-        return view('pperpus.pengembalian.bos.index', compact('data', 'kelasList'));
+        return view('pperpus.pengembalian.bos.index', compact('structuredData', 'kelasList'));
     }
 
     public function prosesAkhirTahunBos(Request $request)

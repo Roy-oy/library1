@@ -93,6 +93,25 @@
     .pill-warning { background: #fef9ec; color: #b45309; }
     .pill-success { background: #eafaf1; color: var(--success); }
     .pill-info    { background: #ebf5fb; color: var(--info); }
+    
+    .filter-bar {
+        display: flex; align-items: center; gap: .8rem; margin-bottom: 1.5rem;
+        padding: 1rem; background: var(--surface); border-radius: 12px;
+        border: 1px solid var(--border); overflow-x: auto;
+    }
+    .filter-btn {
+        padding: .5rem 1.2rem; border-radius: 10px; border: 1.5px solid var(--border);
+        background: #fff; color: var(--text-muted); font-size: .85rem; font-weight: 700;
+        cursor: pointer; transition: all .2s; white-space: nowrap; text-decoration: none;
+    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    
+    .kelas-header {
+        background: #f8fafc; padding: .8rem 1.4rem; font-weight: 800;
+        color: var(--primary); font-size: 1rem; border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; gap: .5rem;
+    }
 </style>
 @endpush
 
@@ -100,12 +119,22 @@
 
 <div class="page-header">
     <div>
-        <h1><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:.45rem"></i>Peminjaman</h1>
-        <p>Riwayat transaksi Peminjaman Buku BOS perpustakaan</p>
+        <h1><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:.45rem"></i>Peminjaman BOS</h1>
+        <p>Riwayat transaksi Peminjaman Buku BOS</p>
     </div>
     <a href="{{ route('pperpus.peminjaman.bos.create') }}" class="btn-primary">
-        <i class="fas fa-plus"></i> Catat Peminjaman
+        <i class="fas fa-plus"></i> Catat Peminjaman BOS
     </a>
+</div>
+
+<div class="filter-bar">
+    <span style="font-size: .8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-right: .5rem;">Filter Kelas:</span>
+    <a href="{{ route('pperpus.peminjaman.bos.index') }}" class="filter-btn {{ !request('kelas') ? 'active' : '' }}">Semua Kelas</a>
+    @if(isset($kelasList))
+        @foreach($kelasList as $kelas)
+            <a href="{{ route('pperpus.peminjaman.bos.index', ['kelas' => $kelas]) }}" class="filter-btn {{ request('kelas') == $kelas ? 'active' : '' }}">{{ $kelas }}</a>
+        @endforeach
+    @endif
 </div>
 
 <div class="card">
@@ -123,7 +152,7 @@
                 <tr>
                     <th>#</th>
                     <th>Kode</th>
-                    <th>Peminjam</th>
+                    <th>Siswa</th>
                     <th>Tgl Pinjam</th>
                     <th>Jml. Buku</th>
                     <th>Status</th>
@@ -131,41 +160,60 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($peminjamans as $index => $pjm)
-                <tr>
-                    <td>{{ $peminjamans->firstItem() + $index }}</td>
-                    <td><span class="code-badge">{{ $pjm->kode_peminjaman }}</span></td>
-                    <td>
-                        <div style="font-weight:700">{{ $pjm->siswa->nama_siswa }}</div>
-                        <div style="font-size:.75rem;color:var(--text-muted)">NIS: {{ $pjm->siswa->nis }} — {{ $pjm->siswa->kelas }}</div>
-                    </td>
-                    <td>{{ $pjm->tanggal_pinjam->format('d/m/Y') }}</td>
-                    <td>
-                        <span class="pill pill-info">
-                            <i class="fas fa-book" style="font-size:.6rem"></i>
-                            {{ $pjm->details->count() }} Buku
-                        </span>
-                    </td>
-                    <td>
-                        @if($pjm->status_peminjaman === 'dipinjam')
-                            <span class="pill pill-warning">Sedang Dipinjam</span>
-                        @elseif($pjm->status_peminjaman === 'dikembalikan')
-                            <span class="pill pill-info">Dikembalikan (Denda)</span>
-                        @else
-                            <span class="pill pill-success">Selesai</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('pperpus.peminjaman.bos.show', $pjm->id_peminjaman) }}" class="btn-primary" style="padding:.3rem .7rem; font-size:.75rem">
-                            <i class="fas fa-eye"></i> Detail
-                        </a>
-                    </td>
-                </tr>
+                @php 
+                    // Group data by class locally for display
+                    $groupedData = $peminjamans->groupBy(function($item) {
+                        return $item->siswa->kelas;
+                    });
+                    $counter = $peminjamans->firstItem() ?? 1;
+                @endphp
+                
+                @forelse($groupedData as $kelas => $items)
+                    <tr>
+                        <td colspan="7" class="kelas-header">
+                            <i class="fas fa-users"></i> Kelas {{ $kelas }}
+                        </td>
+                    </tr>
+                    @foreach($items as $pjm)
+                    <tr>
+                        <td>{{ $counter++ }}</td>
+                        <td><span class="code-badge">{{ $pjm->kode_peminjaman }}</span></td>
+                        <td>
+                            <div style="font-weight:700">{{ $pjm->siswa->nama_siswa }}</div>
+                            <div style="font-size:.75rem;color:var(--text-muted)">NIS: {{ $pjm->siswa->nis }}</div>
+                        </td>
+                        <td>{{ $pjm->tanggal_pinjam->format('d/m/Y') }}</td>
+                        <td>
+                            <span class="pill pill-info">
+                                <i class="fas fa-book" style="font-size:.6rem"></i>
+                                {{ $pjm->details->count() }} Buku
+                            </span>
+                        </td>
+                        <td>
+                            @if($pjm->status_peminjaman === 'dipinjam')
+                                <span class="pill pill-warning">Sedang Dipinjam</span>
+                            @elseif($pjm->status_peminjaman === 'dikembalikan')
+                                <span class="pill pill-danger">Denda (Belum Lunas)</span>
+                            @else
+                                @if($pjm->total_denda > 0)
+                                    <span class="pill pill-success">Denda (Lunas)</span>
+                                @else
+                                    <span class="pill pill-success">Selesai</span>
+                                @endif
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('pperpus.peminjaman.bos.show', $pjm->id_peminjaman) }}" class="btn-primary" style="padding:.3rem .7rem; font-size:.75rem">
+                                <i class="fas fa-eye"></i> Detail
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
                 @empty
                 <tr>
                     <td colspan="7" style="text-align:center; padding:3rem; color:var(--text-muted)">
                         <i class="fas fa-inbox" style="font-size:2rem; opacity:.2; display:block; margin-bottom:.5rem"></i>
-                        Belum ada data peminjaman.
+                        Belum ada data peminjaman BOS.
                     </td>
                 </tr>
                 @endforelse

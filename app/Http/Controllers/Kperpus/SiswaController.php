@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::latest()->paginate(15);
-        return view('kperpus.siswa.index', compact('siswa'));
+        $kelas = $request->query('kelas');
+        $query = Siswa::latest();
+        
+        if ($kelas) {
+            $query->where('kelas', $kelas);
+        }
+        
+        $siswa = $query->paginate(15)->withQueryString();
+        return view('kperpus.siswa.index', compact('siswa', 'kelas'));
     }
 
     public function create()

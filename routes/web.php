@@ -121,6 +121,7 @@ Route::prefix('penjaga-perpustakaan')
         // Pengembalian Massal Buku BOS (Akhir Tahun Ajaran)
         Route::get('pengembalian/bos',              [PeminjamanController::class, 'formAkhirTahunBos'])->name('pengembalian.bos.index');
         Route::post('pengembalian/bos',             [PeminjamanController::class, 'prosesAkhirTahunBos'])->name('pengembalian.bos.proses');
+        Route::post('peminjaman/bos/{peminjaman}/lunas-semua', [PeminjamanController::class, 'lunasSemuaDendaBos'])->name('peminjaman.bos.lunasSemuaDenda');
 
         // Detail Peminjaman (Operasi per-item)
         Route::post('peminjaman/{peminjaman}/detail/{detail}/perpanjang', [DetailPeminjamanController::class, 'perpanjang'])->name('peminjaman.detail.perpanjang');

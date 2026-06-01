@@ -39,19 +39,18 @@ class DetailPeminjamanController extends Controller
         }
 
         $request->validate([
-            'tambah_hari' => ['required', 'integer', 'min:1', 'max:14'],
+            'tanggal_perpanjangan' => ['required', 'date', 'after_or_equal:today'],
         ]);
 
         $detail->update([
-            'tanggal_jatuh_tempo' => $detail->tanggal_jatuh_tempo
-                ->addDays($request->tambah_hari),
+            'tanggal_jatuh_tempo' => \Carbon\Carbon::parse($request->tanggal_perpanjangan)->startOfDay(),
         ]);
 
         $routePrefix = $detail->sumber_buku === 'bos' ? 'bos' : 'perpustakaan';
 
         return redirect()
             ->route("pperpus.peminjaman.{$routePrefix}.show", $peminjaman->id_peminjaman)
-            ->with('success', "Masa pinjam diperpanjang {$request->tambah_hari} hari.");
+            ->with('success', "Masa pinjam berhasil diperpanjang hingga " . \Carbon\Carbon::parse($request->tanggal_perpanjangan)->format('d/m/Y') . ".");
     }
 
     // ═══════════════════════════════════════════════════════════

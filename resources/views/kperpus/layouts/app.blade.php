@@ -12,7 +12,7 @@
 
         :root {
             --sidebar-w:    260px;
-            --header-h:     65px;
+            --header-h:     75px;
             --primary:      #4a90e2; /* Biru soft */
             --primary-dark: #357abd;
             --accent:       #f39c12;
@@ -142,14 +142,15 @@
         /* ── HEADER ──────────────────────────────── */
         .header {
             height: var(--header-h);
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(228, 233, 240, 0.7);
             display: flex; align-items: center;
-            padding: 0 1.8rem;
+            padding: 0 2rem;
             position: sticky; top: 0;
             z-index: 50;
             gap: 1rem;
-            box-shadow: 0 1px 0 var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
         }
         .header-left { display: flex; align-items: center; gap: .8rem; }
         .btn-menu {
@@ -158,23 +159,39 @@
             display: none;
         }
         .page-title {
-            font-size: 1.05rem; font-weight: 700; color: var(--text);
+            font-size: 1.25rem; font-weight: 800; color: var(--text);
+            letter-spacing: -0.5px;
         }
-        .header-right { margin-left: auto; display: flex; align-items: center; gap: .8rem; }
-        .header-date { font-size: .82rem; color: var(--text-muted); }
+        .header-right { margin-left: auto; display: flex; align-items: center; gap: 1.2rem; }
+        .header-date {
+            font-size: .85rem;
+            color: #475569;
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
         .btn-logout {
             display: flex; align-items: center; gap: .5rem;
-            padding: .5rem 1rem;
+            padding: .5rem 1.2rem;
             background: #fdf0ef;
             border: 1px solid #f5c6c2;
             color: var(--danger);
-            border-radius: 8px;
-            font-family: inherit; font-size: .83rem; font-weight: 600;
+            border-radius: 30px;
+            font-family: inherit; font-size: .83rem; font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            transition: background .2s;
+            transition: all 0.2s ease;
         }
-        .btn-logout:hover { background: #fde8e7; }
+        .btn-logout:hover { 
+            background: #fde8e7; 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.1);
+        }
 
         /* ── CONTENT ─────────────────────────────── */
         .content { padding: 1.8rem; flex: 1; }

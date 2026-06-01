@@ -36,13 +36,8 @@ class DetailPeminjaman extends Model
         'jumlah_denda'        => 'integer',
     ];
 
-    // ─────────────────────────────────────────────
-    // KONSTANTA
-    // ─────────────────────────────────────────────
-
     const DENDA_HARIAN_PERPUS = 1000; // Rp1.000/hari
     const DENDA_HARIAN_BOS    = 0;    // tidak ada denda keterlambatan
-    const MASA_PINJAM_PERPUS  = 7;    // hari
 
     // ─────────────────────────────────────────────
     // RELASI

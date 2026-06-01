@@ -48,12 +48,11 @@
     .form-control:disabled { background: #f1f5f9; cursor: not-allowed; opacity: .7; }
 
     .btn-submit {
-        padding: 1rem 2.5rem; background: var(--success); color: #fff;
-        border: none; border-radius: 12px; font-weight: 800; cursor: pointer;
-        transition: all .2s; display: inline-flex; align-items: center; gap: .7rem;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        padding: .7rem 1.4rem; background: var(--primary); color: #fff;
+        border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+        transition: all .2s; display: inline-flex; align-items: center; gap: .5rem;
     }
-    .btn-submit:hover { background: #059669; transform: translateY(-1px); box-shadow: 0 6px 15px rgba(16, 185, 129, 0.25); }
+    .btn-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
     .book-title { font-weight: 800; color: var(--text); margin-bottom: .2rem; }
     .book-meta { font-size: .75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
@@ -99,7 +98,7 @@
                     <tr>
                         <td style="text-align:center">
                             <div class="checkbox-container">
-                                <input type="checkbox" name="detail[{{ $index }}][id_detail]" value="{{ $detail->id_detail }}" checked class="checkbox-custom">
+                                <input type="checkbox" name="detail[{{ $index }}][id_detail]" value="{{ $detail->id_detail }}" checked class="checkbox-custom book-checkbox" data-idx="{{ $index }}" onchange="toggleRow(this, {{ $index }})">
                             </div>
                         </td>
                         <td>
@@ -117,7 +116,7 @@
                             @endif
                         </td>
                         <td>
-                            <select name="detail[{{ $index }}][kondisi]" class="form-control" onchange="toggleDenda(this, {{ $index }})">
+                            <select name="detail[{{ $index }}][kondisi]" id="kondisi-{{ $index }}" class="form-control" onchange="toggleDenda(this, {{ $index }})">
                                 <option value="baik">Kondisi Baik (Normal)</option>
                                 <option value="rusak">Buku Rusak</option>
                                 <option value="hilang">Buku Hilang</option>
@@ -127,24 +126,19 @@
                             <input type="number" name="detail[{{ $index }}][denda_ganti]" id="denda-{{ $index }}" class="form-control" placeholder="0" disabled>
                         </td>
                         <td>
-                            <input type="text" name="detail[{{ $index }}][keterangan]" class="form-control" placeholder="Tulis catatan jika ada...">
-                            <input type="hidden" name="detail[{{ $index }}][tanggal_kembali]" value="{{ date('Y-m-d') }}">
+                            <input type="text" name="detail[{{ $index }}][keterangan]" id="keterangan-{{ $index }}" class="form-control" placeholder="Tulis catatan jika ada...">
+                            <input type="hidden" name="detail[{{ $index }}][tanggal_kembali]" id="tanggal-{{ $index }}" value="{{ date('Y-m-d') }}">
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <div style="display:flex; justify-content:flex-end; gap:1rem; align-items:center">
-        <div style="text-align:right; font-size:.85rem; color:var(--text-muted)">
-            <div style="font-weight:800; color:var(--text)">Konfirmasi Akhir</div>
-            <div>Klik tombol di samping untuk memproses data.</div>
+        <div style="background: #f8fafc; padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; align-items: center;">
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Simpan Pengembalian
+            </button>
         </div>
-        <button type="submit" class="btn-submit">
-            <i class="fas fa-check-double"></i> Simpan Pengembalian
-        </button>
     </div>
 </form>
 
@@ -152,11 +146,40 @@
 
 @push('scripts')
 <script>
+    function toggleRow(checkbox, index) {
+        const kondisi = document.getElementById('kondisi-' + index);
+        const denda = document.getElementById('denda-' + index);
+        const keterangan = document.getElementById('keterangan-' + index);
+        const tanggal = document.getElementById('tanggal-' + index);
+
+        const isChecked = checkbox.checked;
+        kondisi.disabled = !isChecked;
+        keterangan.disabled = !isChecked;
+        tanggal.disabled = !isChecked;
+
+        if (!isChecked) {
+            denda.disabled = true;
+        } else {
+            // Only update denda if it should be shown
+            if (kondisi.value === 'rusak' || kondisi.value === 'hilang') {
+                denda.disabled = false;
+                denda.required = true;
+            } else {
+                denda.disabled = true;
+                denda.required = false;
+            }
+        }
+    }
+
     function toggleDenda(select, index) {
         const input = document.getElementById('denda-' + index);
         const checkbox = document.querySelector(`input[name="detail[${index}][id_detail]"]`);
         
         checkbox.checked = true; // Auto-select if modified
+        // Do not call toggleRow here to avoid infinite loop. Just enable other fields manually if needed, or since checkbox is checked, it's fine.
+        document.getElementById('kondisi-' + index).disabled = false;
+        document.getElementById('keterangan-' + index).disabled = false;
+        document.getElementById('tanggal-' + index).disabled = false;
 
         if (select.value === 'rusak' || select.value === 'hilang') {
             input.disabled = false;
@@ -168,5 +191,13 @@
             input.value = '';
         }
     }
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const checked = document.querySelectorAll('.book-checkbox:checked');
+        if (checked.length === 0) {
+            e.preventDefault();
+            alert('Silakan pilih minimal satu buku yang akan dikembalikan.');
+        }
+    });
 </script>
 @endpush

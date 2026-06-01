@@ -15,6 +15,8 @@ class DashboardController extends Controller
         // Data statistik untuk kepala perpustakaan (manajemen penuh)
         $stats = [
             'total_buku'        => \App\Models\Buku::count(),
+            'buku_bos'          => \App\Models\Buku::bos()->count(),
+            'buku_perpustakaan' => \App\Models\Buku::perpus()->count(),
             'total_siswa'       => \App\Models\Siswa::count(),
             'peminjaman_aktif'  => \App\Models\Peminjaman::where('status_peminjaman', 'dipinjam')->count(),
             'terlambat'         => \App\Models\DetailPeminjaman::where('status_detail', 'terlambat')->count(),
@@ -52,22 +54,6 @@ class DashboardController extends Controller
         $stats['denda_lunas']       = DetailPeminjaman::where('status_denda', 'lunas')->sum('jumlah_denda');
         $stats['total_denda_grand'] = DetailPeminjaman::whereIn('status_denda', ['lunas', 'belum_lunas'])->sum('jumlah_denda');
 
-        // ── Top 5 Buku Terpopuler ─────────────────────────────
-        $topBooks = DetailPeminjaman::selectRaw('id_buku, count(id_detail) as total')
-            ->groupBy('id_buku')
-            ->orderByDesc('total')
-            ->take(5)
-            ->with('buku')
-            ->get();
-
-        // ── Top 5 Siswa Peminjam ──────────────────────────────
-        $topStudents = \App\Models\Peminjaman::selectRaw('id_siswa, count(id_peminjaman) as total')
-            ->groupBy('id_siswa')
-            ->orderByDesc('total')
-            ->take(5)
-            ->with('siswa')
-            ->get();
-
-        return view('kperpus.dashboard', compact('stats', 'borrowingsLast7Days', 'topBooks', 'topStudents'));
+        return view('kperpus.dashboard', compact('stats', 'borrowingsLast7Days'));
     }
 }

@@ -65,13 +65,24 @@
     .buku-item .judul { font-weight: 700; font-size: .82rem; margin-bottom: .2rem; }
     .buku-item .meta  { font-size: .75rem; color: var(--text-muted); }
     
-    .selected-list { margin-top: 1rem; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); padding: .5rem;}
+    .selected-list { 
+        margin-top: 1rem; background: var(--surface); border-radius: 12px; 
+        border: 2px dashed var(--border); padding: 1rem;
+        display: flex; flex-direction: column; gap: .5rem;
+    }
     .selected-book {
         display: flex; align-items: center; justify-content: space-between;
-        padding: .5rem; border-bottom: 1px solid var(--border); font-size: .82rem;
+        padding: .8rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0;
+        border-radius: 8px; font-size: .85rem; font-weight: 700; color: var(--primary-dark);
     }
-    .selected-book:last-child { border-bottom: none; }
-    .selected-book .remove { color: var(--danger); cursor: pointer; }
+    .selected-book .remove { color: var(--danger); cursor: pointer; padding: .2rem; transition: transform .2s; }
+    .selected-book .remove:hover { transform: scale(1.1); }
+    
+    .empty-books {
+        text-align: center; color: var(--text-muted); font-size: .85rem; 
+        padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; align-items: center;
+    }
+    .empty-books i { font-size: 2rem; color: var(--border); }
 
     .btn-submit {
         width: 100%; padding: .8rem; background: var(--primary); color: #fff;
@@ -84,6 +95,7 @@
 
 @section('content')
 
+<div style="max-width: 850px; margin: 0 auto;">
 <div class="page-header">
     <a href="{{ route('pperpus.peminjaman.perpustakaan.index') }}"><i class="fas fa-arrow-left"></i></a>
     <h1>Catat Peminjaman Buku Perpustakaan</h1>
@@ -103,44 +115,44 @@
         <div class="card-body">
             
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group" style="flex: 0.8">
                     <label>Kode Peminjaman</label>
-                    <input type="text" class="form-control" value="{{ $kodePeminjaman }}" disabled style="background:#f1f5f9; font-weight:700">
+                    <input type="text" class="form-control" value="{{ $kodePeminjaman }}" disabled style="background:#f8fafc; font-weight:800; color:var(--primary); border: 1px dashed var(--primary)">
                 </div>
                 <div class="form-group">
-                    <label>Tanggal Pinjam <span style="color:red">*</span></label>
+                    <label>Tanggal Pinjam <span style="color:var(--danger)">*</span></label>
                     <input type="date" name="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Batas Waktu / Tanggal Kembali <span style="color:var(--danger)">*</span></label>
+                    <input type="date" name="tanggal_kembali" class="form-control" value="{{ \Carbon\Carbon::now()->addDays(7)->format('Y-m-d') }}" required>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label>Pilih Kelas <span style="color:red">*</span></label>
-                    <select id="select-kelas" class="form-control" required>
+                <div class="form-group" style="flex: 0.8">
+                    <label>Pilih Kelas <span style="color:var(--danger)">*</span></label>
+                    <select id="select-kelas" class="form-control" required style="background: #fff;">
                         <option value="">— Pilih Kelas —</option>
                         <option value="VII">VII</option>
                         <option value="VIII">VIII</option>
                         <option value="IX">IX</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Nama Siswa <span style="color:red">*</span></label>
-                    <input type="text" list="siswa-list" id="input-siswa" class="form-control" placeholder="Ketik nama siswa..." required autocomplete="off" disabled>
-                    <datalist id="siswa-list">
-                        {{-- JS will populate based on selected class --}}
-                    </datalist>
-                    <small id="siswa-warning" style="color:var(--danger); display:none; margin-top:4px;">Nama siswa tidak ditemukan. Pilih dari daftar yang tersedia.</small>
+                <div class="form-group" style="flex: 2">
+                    <label>Nama Siswa <span style="color:var(--danger)">*</span></label>
+                    <select id="select-siswa" class="form-control" required disabled>
+                        <option value="">— Pilih Kelas Terlebih Dahulu —</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>NIS</label>
-                    <input type="text" id="input-nis" class="form-control" disabled style="background:#f1f5f9;">
+            <div class="form-row" style="margin-top: -0.5rem; margin-bottom: 1rem;">
+                <div class="form-group" style="flex: 1">
+                    <input type="text" id="input-nis" class="form-control" placeholder="NIS" disabled style="background:#f8fafc; font-size:.8rem;">
                 </div>
-                <div class="form-group">
-                    <label>Kelas Terpilih</label>
-                    <input type="text" id="input-kelas" class="form-control" disabled style="background:#f1f5f9;">
+                <div class="form-group" style="flex: 1">
+                    <input type="text" id="input-kelas" class="form-control" placeholder="Kelas" disabled style="background:#f8fafc; font-size:.8rem;">
                 </div>
             </div>
 
@@ -151,9 +163,12 @@
 
             <hr style="border:0; border-top:1px solid var(--border); margin:1.5rem 0">
             
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                <label style="margin:0; font-size:.8rem; font-weight:700;">Pilih Koleksi Buku Perpustakaan <span style="color:red">*</span></label>
-                <span style="font-size:.8rem; font-weight:700; color:var(--text-muted)">Dipilih: <span id="book-count" style="color:var(--primary)">0</span> Buku</span>
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem;">
+                <div>
+                    <label style="margin:0; font-size:.9rem; font-weight:800; color:var(--text)">Pilih Koleksi Buku Perpustakaan <span style="color:var(--danger)">*</span></label>
+                    <div style="font-size:.75rem; color:var(--text-muted); margin-top:.2rem">Klik pada buku yang ingin dipinjam.</div>
+                </div>
+                <span style="font-size:.85rem; font-weight:800; color:var(--primary); background:#eef4fc; padding:.4rem .8rem; border-radius:20px;">Terpilih: <span id="book-count">0</span> Buku</span>
             </div>
 
             <div id="section-perpus">
@@ -180,7 +195,10 @@
             </div>
 
             <div id="selected-books-list" class="selected-list">
-                <div style="text-align:center; color:var(--text-muted); font-size:.8rem; padding:1rem">Belum ada buku dipilih.</div>
+                <div class="empty-books">
+                    <i class="fas fa-book-open"></i>
+                    <span>Belum ada buku dipilih.<br>Silakan pilih buku dari daftar di atas.</span>
+                </div>
             </div>
 
             {{-- Hidden inputs for books --}}
@@ -193,76 +211,60 @@
         </div>
     </div>
 </form>
+</div>
 
 @endsection
 
 @push('scripts')
 <script>
     const selectKelas = document.getElementById('select-kelas');
-    const inputSiswa = document.getElementById('input-siswa');
-    const datalist = document.getElementById('siswa-list');
+    const selectSiswa = document.getElementById('select-siswa');
     
     const hiddenIdSiswa = document.getElementById('hidden-id-siswa');
     const inputNis = document.getElementById('input-nis');
     const inputKelas = document.getElementById('input-kelas');
-    const siswaWarning = document.getElementById('siswa-warning');
 
-    let currentOptions = [];
     const allSiswas = @json($siswas);
 
     selectKelas.addEventListener('change', function() {
         const kelas = this.value;
         
-        inputSiswa.value = '';
+        selectSiswa.innerHTML = '<option value="">— Pilih Siswa —</option>';
         hiddenIdSiswa.value = '';
         inputNis.value = '';
         inputKelas.value = '';
-        siswaWarning.style.display = 'none';
 
         if (!kelas) {
-            inputSiswa.disabled = true;
-            datalist.innerHTML = '';
-            currentOptions = [];
+            selectSiswa.disabled = true;
+            selectSiswa.innerHTML = '<option value="">— Pilih Kelas Terlebih Dahulu —</option>';
             return;
         }
 
-        inputSiswa.disabled = false;
-        inputSiswa.placeholder = `Ketik nama siswa dari kelas ${kelas}...`;
+        selectSiswa.disabled = false;
         
         const filteredSiswas = allSiswas.filter(s => {
             const baseClass = s.kelas.split(/[- .]/)[0];
             return baseClass === kelas;
         });
         
-        datalist.innerHTML = '';
-        currentOptions = [];
         filteredSiswas.forEach(s => {
             const opt = document.createElement('option');
-            opt.value = s.nama_siswa;
-            opt.dataset.id = s.id_siswa;
+            opt.value = s.id_siswa;
             opt.dataset.nis = s.nis;
             opt.dataset.kelas = s.kelas;
-            opt.textContent = `[${s.nis}] ${s.kelas}`;
-            datalist.appendChild(opt);
-            currentOptions.push(opt);
+            opt.textContent = `${s.nama_siswa} (NIS: ${s.nis})`;
+            selectSiswa.appendChild(opt);
         });
     });
 
-    inputSiswa.addEventListener('input', function() {
-        const val = this.value;
-        const selectedOption = currentOptions.find(opt => opt.value === val);
-
-        if (selectedOption) {
-            siswaWarning.style.display = 'none';
-            hiddenIdSiswa.value = selectedOption.dataset.id;
+    selectSiswa.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        
+        if (this.value) {
+            hiddenIdSiswa.value = this.value;
             inputNis.value = selectedOption.dataset.nis;
             inputKelas.value = selectedOption.dataset.kelas;
         } else {
-            if (val.length > 0) {
-                siswaWarning.style.display = 'block';
-            } else {
-                siswaWarning.style.display = 'none';
-            }
             hiddenIdSiswa.value = '';
             inputNis.value = '';
             inputKelas.value = '';
@@ -299,9 +301,17 @@
         count.textContent = selectedBooks.size;
 
         if (selectedBooks.size === 0) {
-            list.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:.8rem; padding:1rem">Belum ada buku dipilih.</div>';
+            list.innerHTML = `
+                <div class="empty-books">
+                    <i class="fas fa-book-open"></i>
+                    <span>Belum ada buku dipilih.<br>Silakan pilih buku dari daftar di atas.</span>
+                </div>
+            `;
+            list.style.borderStyle = 'dashed';
             return;
         }
+
+        list.style.borderStyle = 'solid';
 
         let i = 0;
         selectedBooks.forEach((judul, id) => {

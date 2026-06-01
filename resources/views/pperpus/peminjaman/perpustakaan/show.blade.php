@@ -7,7 +7,7 @@
 <style>
     .page-header {
         display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+        margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
     }
     .page-header .back-btn {
         display: inline-flex; align-items: center; justify-content: center;
@@ -19,19 +19,10 @@
     .page-header .back-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateX(-3px); }
     .page-header h1 { font-size: 1.5rem; font-weight: 800; color: var(--text); }
     
-    .detail-grid {
-        display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; align-items: start;
-    }
-    @media (max-width: 1100px) { .detail-grid { grid-template-columns: 1fr; } }
-
-    .detail-sidebar {
-        display: flex; flex-direction: column; gap: 1.5rem;
-    }
-
     .card {
         background: var(--surface); border-radius: 16px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        overflow: hidden; border: 1px solid var(--border);
+        overflow: hidden; border: 1px solid var(--border); margin-bottom: 1.5rem;
     }
     .card-header {
         padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
@@ -41,14 +32,14 @@
     .card-header h2 { font-size: 1rem; font-weight: 800; display: flex; align-items: center; gap: .7rem; color: var(--text); }
     .card-body { padding: 1.5rem; }
 
-    .info-list { list-style: none; padding: 0; margin: 0; }
-    .info-item {
-        display: flex; flex-direction: column; gap: .2rem; padding: .8rem 0;
-        border-bottom: 1px solid #f8fafc;
+    .summary-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
     }
-    .info-item:last-child { border-bottom: none; }
-    .info-label { font-size: .75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
-    .info-value { font-size: .95rem; font-weight: 800; color: var(--text); }
+    .summary-item {
+        display: flex; flex-direction: column; gap: .3rem;
+    }
+    .summary-label { font-size: .75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+    .summary-value { font-size: 1rem; font-weight: 800; color: var(--text); }
 
     .pill {
         display: inline-flex; align-items: center; gap: .35rem;
@@ -62,15 +53,15 @@
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
     thead th {
-        background: #f8fafc; font-size: .72rem; font-weight: 700;
+        background: #f8fafc; font-size: .75rem; font-weight: 700;
         text-transform: uppercase; letter-spacing: .8px; color: var(--text-muted);
-        padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
-        text-align: left;
+        padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); text-align: left;
     }
     tbody td {
         padding: 1rem 1.2rem; font-size: .9rem;
         border-bottom: 1px solid #f1f5f9; vertical-align: middle;
     }
+    tbody tr:last-child td { border-bottom: none; }
 
     .btn-action {
         padding: .5rem 1rem; border-radius: 8px; font-size: .8rem; font-weight: 700;
@@ -108,7 +99,6 @@
     }
     .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(20, 90, 50, 0.08); }
 
-    /* Print Header - Hidden by default */
     .print-only { display: none; }
 
     /* PRINT STYLES */
@@ -135,7 +125,6 @@
         .print-title h1 { font-size: 1.4rem; margin: 0; font-weight: 800; text-transform: uppercase; }
         .print-title p { font-size: .8rem; margin: .2rem 0; }
 
-        .detail-grid { display: block !important; }
         .card { box-shadow: none !important; border: 1px solid #000 !important; margin-bottom: 1.5rem !important; border-radius: 0 !important; }
         .card-header { background: #eee !important; border-bottom: 1px solid #000 !important; -webkit-print-color-adjust: exact; }
         .card-header h2 { font-size: 1rem !important; color: #000 !important; }
@@ -192,174 +181,149 @@
     </div>
 </div>
 
-<div class="detail-grid">
-    {{-- Left: Transaction Summary --}}
-    <div class="detail-sidebar">
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-user-circle"></i> Data Peminjam</h2>
-                @php
-                    $pjmStatus = match($peminjaman->status_peminjaman) {
-                        'dipinjam'     => ['Sedang Dipinjam', 'pill-warning'],
-                        'dikembalikan' => ['Belum Lunas', 'pill-danger'],
-                        'selesai'      => ['Selesai', 'pill-success'],
-                        default        => [$peminjaman->status_peminjaman, 'pill-info']
-                    };
-                @endphp
-                <span class="pill {{ $pjmStatus[1] }}">{{ $pjmStatus[0] }}</span>
-            </div>
-            <div class="card-body">
-                <ul class="info-list">
-                    <li class="info-item">
-                        <span class="info-label">Nama Siswa</span>
-                        <span class="info-value">{{ $peminjaman->siswa->nama_siswa }}</span>
-                    </li>
-                    <li class="info-item">
-                        <span class="info-label">NIS / Kelas</span>
-                        <span class="info-value">{{ $peminjaman->siswa->nis }} • {{ $peminjaman->siswa->kelas }}</span>
-                    </li>
-                    <li class="info-item">
-                        <span class="info-label">Total Denda</span>
-                        <span class="info-value" style="color:var(--danger)">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</span>
-                    </li>
-                    <li class="info-item">
-                        <span class="info-label">Catatan</span>
-                        <div style="font-size: .88rem; line-height: 1.5; color: var(--text); margin-top: .2rem">
-                            {{ $peminjaman->keterangan ?? '—' }}
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        @if($peminjaman->total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
-        <div class="card" style="border: 1px solid #f5c6c2; background: #fffaf9">
-            <div class="card-body" style="text-align:center; padding: 1.8rem">
-                <div style="width:50px; height:50px; background:#fdf0ef; color:var(--danger); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:1.5rem">
-                    <i class="fas fa-hand-holding-usd"></i>
-                </div>
-                <h3 style="font-size:1rem; font-weight:800; margin-bottom:.5rem">Tunggakan Denda</h3>
-                <p style="font-size:.82rem; color:var(--text-muted); margin-bottom:1.5rem">Siswa masih memiliki tunggakan sebesar <strong style="color:var(--danger)">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</strong></p>
-                <form action="{{ route('pperpus.pengembalian.perpustakaan.lunasSemuaDenda', $peminjaman->id_peminjaman) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-success" style="width:100%; padding:.85rem; border-radius:12px; font-weight:800">
-                        Lunaskan Sekarang
-                    </button>
-                </form>
-            </div>
-        </div>
-        @endif
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-user-circle"></i> Informasi Peminjam</h2>
+        @php
+            $pjmStatus = match($peminjaman->status_peminjaman) {
+                'dipinjam'     => ['Sedang Dipinjam', 'pill-warning'],
+                'dikembalikan' => ['Selesai', 'pill-success'],
+                'selesai'      => ['Selesai', 'pill-success'],
+                default        => [$peminjaman->status_peminjaman, 'pill-info']
+            };
+        @endphp
+        <span class="pill {{ $pjmStatus[1] }}">{{ $pjmStatus[0] }}</span>
     </div>
-
-    {{-- Right: Books List --}}
-    <div class="main-content">
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-book-open"></i> Koleksi Buku Dipinjam</h2>
-                <div style="font-size: .85rem; font-weight: 700; color: var(--text-muted)">{{ $peminjaman->details->count() }} Item</div>
+    <div class="card-body">
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">NIS</span>
+                <span class="summary-value">{{ $peminjaman->siswa->nis }}</span>
             </div>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Informasi Buku</th>
-                            <th>Jatuh Tempo</th>
-                            <th>Tgl Kembali</th>
-                            <th>Denda</th>
-                            <th>Status</th>
-                            <th style="text-align:right">Opsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($peminjaman->details as $detail)
-                        <tr>
-                            <td>
-                                <div style="font-weight:800; color: var(--text)">{{ $detail->buku->judul_buku }}</div>
-                                <div style="display:flex; align-items:center; gap:.5rem; margin-top:.2rem">
-                                    <span style="font-size:.7rem; background:#f1f5f9; padding:.1rem .4rem; border-radius:4px; font-weight:700; color:var(--text-muted)">{{ strtoupper($detail->sumber_buku) }}</span>
-                                    <span style="font-size:.75rem; color:var(--primary); font-weight:700">{{ $detail->buku->kode_buku }}</span>
-                                </div>
-                                @if($detail->keterangan)
-                                    <div style="font-size: .75rem; color: var(--text-muted); margin-top: .4rem; padding-top: .4rem; border-top: 1px dashed #eee; font-style: italic">
-                                        <i class="fas fa-comment-alt" style="font-size: .65rem"></i> {{ $detail->keterangan }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td>
-                                @if($detail->tanggal_jatuh_tempo)
-                                    <div style="font-weight:700">{{ $detail->tanggal_jatuh_tempo->format('d/m/Y') }}</div>
-                                    @if($detail->status_detail === 'terlambat' && !$detail->tanggal_kembali)
-                                        <div style="font-size:.7rem; color:var(--danger); font-weight:800; margin-top:.1rem"><i class="fas fa-exclamation-circle"></i> TERLAMBAT {{ $detail->hari_terlambat_realtime }} HARI</div>
-                                    @endif
-                                @else
-                                    <span style="color:var(--text-muted)">—</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if($detail->tanggal_kembali)
-                                    <div style="font-weight:700">{{ $detail->tanggal_kembali->format('d/m/Y') }}</div>
-                                @else
-                                    <span style="font-size:.8rem; color:var(--text-muted); font-style:italic">Belum Kembali</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if($detail->jumlah_denda > 0)
-                                    <div style="color:var(--danger); font-weight:800">Rp {{ number_format($detail->jumlah_denda, 0, ',', '.') }}</div>
-                                    <div style="font-size:.68rem; font-weight:800; text-transform:uppercase; margin-top:.1rem; color:{{ $detail->status_denda === 'lunas' ? 'var(--success)' : 'var(--warning)' }}">
-                                        {{ str_replace('_',' ',$detail->status_denda) }}
-                                    </div>
-                                @else
-                                    <span style="color:var(--text-muted)">—</span>
-                                @endif
-                            </td>
-                            <td>
-                                @php
-                                    $sClass = match($detail->status_detail) {
-                                        'dipinjam'     => 'pill-warning',
-                                        'terlambat'    => 'pill-danger',
-                                        'dikembalikan' => 'pill-success',
-                                        'hilang', 'rusak' => 'pill-danger',
-                                        default        => 'pill-info'
-                                    };
-                                @endphp
-                                <span class="pill {{ $sClass }}">{{ $detail->label_status }}</span>
-                            </td>
-                            <td style="text-align:right; white-space:nowrap">
-                                <div style="display:flex; justify-content:flex-end; gap:.4rem">
-                                    @if(in_array($detail->status_detail, ['dipinjam', 'terlambat']))
-                                        <button class="btn-action btn-success" onclick="openReturnModal('{{ $detail->id_detail }}', '{{ addslashes($detail->buku->judul_buku) }}')">
-                                            <i class="fas fa-undo"></i> Kembali
-                                        </button>
-                                    @endif
-
-                                    @if($detail->status_denda === 'belum_lunas')
-                                        <form action="{{ route('pperpus.pengembalian.perpustakaan.lunasDenda', [$peminjaman->id_peminjaman, $detail->id_detail]) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn-action" style="color:var(--success); border-color:var(--success)">
-                                                <i class="fas fa-check"></i> Lunas
-                                            </button>
-                                        </form>
-                                    @endif
-
-                                    <div style="display:flex; gap:.3rem">
-                                        @if($detail->sumber_buku === 'buku perpus' && $detail->status_detail === 'dipinjam')
-                                            <form action="{{ route('pperpus.peminjaman.detail.perpanjang', [$peminjaman->id_peminjaman, $detail->id_detail]) }}" method="POST" style="display:inline">
-                                                @csrf
-                                                <input type="hidden" name="tambah_hari" value="7">
-                                                <button type="submit" class="btn-action" title="Perpanjang" onclick="return confirm('Perpanjang 7 hari?')">
-                                                    <i class="fas fa-history"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="summary-item">
+                <span class="summary-label">Nama Siswa</span>
+                <span class="summary-value">{{ $peminjaman->siswa->nama_siswa }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Kelas</span>
+                <span class="summary-value">{{ $peminjaman->siswa->kelas }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Total Denda Tunggakan</span>
+                <span class="summary-value" style="color:var(--danger)">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</span>
+            </div>
+            <div class="summary-item" style="grid-column: 1 / -1;">
+                <span class="summary-label">Keterangan / Catatan</span>
+                <span class="summary-value" style="font-weight: 500;">{{ $peminjaman->keterangan ?? 'Tidak ada catatan.' }}</span>
             </div>
         </div>
+    </div>
+</div>
+
+@if($peminjaman->total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
+<div class="card" style="border: 1px solid #f5c6c2; background: #fffaf9">
+    <div class="card-body" style="text-align:center; padding: 1.8rem">
+        <div style="width:50px; height:50px; background:#fdf0ef; color:var(--danger); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:1.5rem">
+            <i class="fas fa-hand-holding-usd"></i>
+        </div>
+        <h3 style="font-size:1rem; font-weight:800; margin-bottom:.5rem">Tunggakan Denda Perpustakaan</h3>
+        <p style="font-size:.82rem; color:var(--text-muted); margin-bottom:1.5rem">Siswa masih memiliki tunggakan sebesar <strong style="color:var(--danger)">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</strong></p>
+        <form action="{{ route('pperpus.pengembalian.perpustakaan.lunasSemuaDenda', $peminjaman->id_peminjaman) }}" method="POST" onsubmit="return confirm('Lunaskan semua denda untuk peminjaman Perpustakaan ini?')">
+            @csrf
+            <button type="submit" class="btn-success" style="padding:.85rem 2rem; border-radius:12px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-check-circle"></i> Lunaskan Sekarang
+            </button>
+        </form>
+    </div>
+</div>
+@endif
+
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-book-open"></i> Koleksi Buku Dipinjam</h2>
+        <div style="font-size: .85rem; font-weight: 700; color: var(--text-muted)">{{ $peminjaman->details->count() }} Buku</div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Informasi Buku</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Tgl Kembali</th>
+                    <th>Denda</th>
+                    <th>Status</th>
+                    <th style="text-align:right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($peminjaman->details as $detail)
+                <tr>
+                    <td>
+                        <div style="font-weight:800; color: var(--text)">{{ $detail->buku->judul_buku }}</div>
+                        <div style="display:flex; align-items:center; gap:.5rem; margin-top:.3rem">
+                            <span style="font-size:.7rem; background:#f1f5f9; padding:.1rem .4rem; border-radius:4px; font-weight:700; color:var(--text-muted)">{{ strtoupper($detail->buku->kategoriBuku->nama_kategori ?? 'BUKU PERPUS') }}</span>
+                            <span style="font-size:.75rem; color:var(--primary); font-weight:700">{{ $detail->buku->kode_buku }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        @if($detail->tanggal_jatuh_tempo)
+                            <div style="font-weight:700">{{ $detail->tanggal_jatuh_tempo->format('d/m/Y') }}</div>
+                            @if($detail->status_detail === 'terlambat' && !$detail->tanggal_kembali)
+                                <div style="font-size:.7rem; color:var(--danger); font-weight:800; margin-top:.2rem"><i class="fas fa-exclamation-circle"></i> TERLAMBAT {{ $detail->hari_terlambat_realtime }} HARI</div>
+                            @endif
+                        @else
+                            <span style="color:var(--text-muted)">—</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if($detail->tanggal_kembali)
+                            <div style="font-weight:700">{{ $detail->tanggal_kembali->format('d/m/Y') }}</div>
+                        @else
+                            <span style="font-size:.8rem; color:var(--text-muted); font-style:italic">Belum Kembali</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if($detail->jumlah_denda > 0)
+                            <div style="color:var(--danger); font-weight:800">Rp {{ number_format($detail->jumlah_denda, 0, ',', '.') }}</div>
+                            <div style="font-size:.68rem; font-weight:800; text-transform:uppercase; margin-top:.1rem; color:{{ $detail->status_denda === 'lunas' ? 'var(--success)' : 'var(--warning)' }}">
+                                {{ str_replace('_',' ',$detail->status_denda) }}
+                            </div>
+                        @else
+                            <span style="color:var(--text-muted)">—</span>
+                        @endif
+                    </td>
+                    <td>
+                        @php
+                            $sClass = match($detail->status_detail) {
+                                'dipinjam'     => 'pill-warning',
+                                'terlambat'    => 'pill-danger',
+                                'dikembalikan' => 'pill-success',
+                                'hilang', 'rusak' => 'pill-danger',
+                                default        => 'pill-info'
+                            };
+                        @endphp
+                        <span class="pill {{ $sClass }}">{{ $detail->label_status }}</span>
+                    </td>
+                    <td style="text-align:right;">
+                        @if($detail->sumber_buku === 'buku perpus' && in_array($detail->status_detail, ['dipinjam', 'terlambat']))
+                            @php
+                                $diff = \Carbon\Carbon::now()->startOfDay()->diffInDays($detail->tanggal_jatuh_tempo ? $detail->tanggal_jatuh_tempo->startOfDay() : \Carbon\Carbon::now()->startOfDay(), false);
+                            @endphp
+                            @if($diff <= 1)
+                            <button type="button" class="btn-action" style="color:var(--info); border-color:var(--info); padding:.4rem .8rem" title="Perpanjang Masa Pinjam" onclick="openPerpanjangModal('{{ $detail->id_detail }}', '{{ addslashes($detail->buku->judul_buku) }}', '{{ $detail->tanggal_jatuh_tempo ? $detail->tanggal_jatuh_tempo->format('Y-m-d') : date('Y-m-d') }}')">
+                                <i class="fas fa-calendar-plus"></i> Perpanjang
+                            </button>
+                            @else
+                            <span style="font-size: .75rem; color: var(--text-muted); font-style: italic;">Hanya opsi perpanjang</span>
+                            @endif
+                        @else
+                            <span style="color:var(--text-muted); font-size:.8rem">—</span>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -376,46 +340,26 @@
     </div>
 </div>
 
-{{-- Modal Pengembalian --}}
-<div class="modal" id="modal-kembali">
+{{-- Modal Perpanjangan --}}
+<div class="modal" id="modal-perpanjang">
     <div class="modal-content">
         <div class="modal-header">
-            <h3><i class="fas fa-book-reader" style="color:var(--primary); margin-right:.5rem"></i> Proses Kembali</h3>
-            <i class="fas fa-times" style="cursor:pointer; color:var(--text-muted)" onclick="closeModal()"></i>
+            <h3><i class="fas fa-calendar-plus" style="color:var(--info); margin-right:.5rem"></i> Perpanjang Pinjaman</h3>
+            <i class="fas fa-times" style="cursor:pointer; color:var(--text-muted)" onclick="closePerpanjangModal()"></i>
         </div>
-        <form id="form-kembali" method="POST">
+        <form id="form-perpanjang" method="POST">
             @csrf
-            @method('PATCH')
             <div class="modal-body">
-                <div id="modal-book-title" style="font-size:1.1rem; font-weight:800; color:var(--primary); margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px dashed var(--border)"></div>
+                <div id="modal-perpanjang-title" style="font-size:1.1rem; font-weight:800; color:var(--info); margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px dashed var(--border)"></div>
                 
                 <div class="form-group">
-                    <label>Tanggal Kembali</label>
-                    <input type="date" name="tanggal_pengembalian" class="form-control" value="{{ date('Y-m-d') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Kondisi Buku</label>
-                    <select name="status_buku" class="form-control" required onchange="toggleDendaField(this.value)">
-                        <option value="kembali">Kondisi Baik</option>
-                        <option value="rusak">Rusak / Sobek</option>
-                        <option value="hilang">Hilang</option>
-                    </select>
-                </div>
-
-                <div id="denda-ganti-group" class="form-group" style="display:none">
-                    <label>Denda Ganti (Rp)</label>
-                    <input type="number" name="denda_ganti" class="form-control" placeholder="Nominal ganti rugi...">
-                </div>
-
-                <div class="form-group">
-                    <label>Catatan Petugas</label>
-                    <textarea name="keterangan" class="form-control" rows="2" placeholder="Catatan tambahan..."></textarea>
+                    <label>Batas Waktu Baru (Tanggal Kembali)</label>
+                    <input type="date" name="tanggal_perpanjangan" id="input-tanggal-perpanjangan" class="form-control" required>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-action" style="padding:.7rem 1.5rem" onclick="closeModal()">Batal</button>
-                <button type="submit" class="btn-success" style="padding:.7rem 2rem; border-radius:12px; font-weight:800">Simpan Data</button>
+                <button type="button" class="btn-action" style="padding:.7rem 1.5rem" onclick="closePerpanjangModal()">Batal</button>
+                <button type="submit" class="btn-success" style="padding:.7rem 2rem; border-radius:12px; font-weight:800; background:var(--info)">Simpan Perpanjangan</button>
             </div>
         </form>
     </div>
@@ -425,27 +369,39 @@
 
 @push('scripts')
 <script>
-    function openReturnModal(id, judul) {
-        const modal = document.getElementById('modal-kembali');
-        const form = document.getElementById('form-kembali');
-        const title = document.getElementById('modal-book-title');
+    function openPerpanjangModal(idDetail, judul, currentTempo) {
+        const modal = document.getElementById('modal-perpanjang');
+        const form = document.getElementById('form-perpanjang');
+        const title = document.getElementById('modal-perpanjang-title');
+        const inputDate = document.getElementById('input-tanggal-perpanjangan');
         
         title.textContent = judul;
-        form.action = `/penjaga-perpustakaan/peminjaman/kembalikan/${id}`;
+        
+        let baseUrl = "{{ route('pperpus.peminjaman.detail.perpanjang', ['__pjm__', '__dtl__']) }}";
+        baseUrl = baseUrl.replace('__pjm__', '{{ $peminjaman->id_peminjaman }}').replace('__dtl__', idDetail);
+        form.action = baseUrl;
+        
+        // set min date to current tempo + 1 day
+        let minDate = new Date(currentTempo);
+        minDate.setDate(minDate.getDate() + 1);
+        inputDate.min = minDate.toISOString().split('T')[0];
+        
+        // default value to current tempo + 7 days
+        let defaultDate = new Date(currentTempo);
+        defaultDate.setDate(defaultDate.getDate() + 7);
+        inputDate.value = defaultDate.toISOString().split('T')[0];
+        
         modal.classList.add('show');
     }
 
-    function closeModal() {
-        document.getElementById('modal-kembali').classList.remove('show');
-    }
-
-    function toggleDendaField(val) {
-        const group = document.getElementById('denda-ganti-group');
-        group.style.display = (val === 'rusak' || val === 'hilang') ? 'block' : 'none';
+    function closePerpanjangModal() {
+        document.getElementById('modal-perpanjang').classList.remove('show');
     }
 
     window.onclick = function(e) {
-        if (e.target.classList.contains('modal')) closeModal();
+        if (e.target.classList.contains('modal')) {
+            closePerpanjangModal();
+        }
     }
 </script>
 @endpush

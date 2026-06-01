@@ -13,19 +13,29 @@ class BukuController extends Controller
     public function index(Request $request)
     {
         $type = $request->query('type', 'perpus');
+        $kategori_filter = $request->query('kategori');
+        $kelas_filter = $request->query('kelas');
+
         $query = Buku::with('kategoriBuku')->latest();
 
         if ($type === 'bos') {
             $query->where('sumber_buku', 'bos');
+            if ($kelas_filter) {
+                $query->where('kelas', $kelas_filter);
+            }
             $pageTitle = 'Data Buku BOS';
         } else {
             $query->where('sumber_buku', 'buku perpus');
+            if ($kategori_filter) {
+                $query->where('id_kategori', $kategori_filter);
+            }
             $pageTitle = 'Data Buku Perpus';
         }
 
         $buku = $query->paginate(10)->withQueryString();
+        $kategori_list = KategoriBuku::all();
         
-        return view('kperpus.buku.index', compact('buku', 'type', 'pageTitle'));
+        return view('kperpus.buku.index', compact('buku', 'type', 'pageTitle', 'kategori_list', 'kategori_filter', 'kelas_filter'));
     }
 
     public function create(Request $request)

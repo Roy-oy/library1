@@ -1,6 +1,4 @@
-<footer style="padding: 1rem 1.8rem; border-top: 1px solid var(--border); background: var(--surface); text-align: center;">
-    <p style="font-size:.78rem; color: var(--text-muted);">
-        &copy; {{ date('Y') }} Sistem Informasi Perpustakaan &mdash; Panel Penjaga Perpustakaan
-        &nbsp;|&nbsp; Dibuat dengan <i class="fas fa-heart" style="color:#e74c3c; font-size:.7rem;"></i>
-    </p>
+<footer style="padding: 1.2rem 1.8rem; border-top: 1px solid rgba(41, 128, 185, 0.1); background: #ffffff; text-align: center;">
+    <p style="font-size:.8rem; color: #64748b; font-weight: 500;">
+        &copy; {{ date('Y') }} Sistem Informasi Perpustakaan</p>
 </footer>

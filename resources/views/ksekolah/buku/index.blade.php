@@ -5,129 +5,157 @@
 
 @push('styles')
 <style>
-    .page-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 1.5rem; flex-wrap: wrap; gap: .8rem;
+    .search-wrapper {
+        background: var(--surface);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        border: 1px solid var(--border);
     }
-    .page-header h1 { font-size: 1.25rem; font-weight: 800; color: var(--text); }
-    .page-header p { font-size: .84rem; color: var(--text-muted); margin-top: .2rem; }
+    .search-grid {
+        display: grid;
+        grid-template-columns: 1fr 200px 120px;
+        gap: 1rem;
+    }
+    @media (max-width: 900px) {
+        .search-grid { grid-template-columns: 1fr; }
+    }
+    .form-group label {
+        display: block; font-size: .75rem; font-weight: 700; color: var(--text-muted);
+        text-transform: uppercase; margin-bottom: .5rem; letter-spacing: .5px;
+    }
+    .form-input {
+        width: 100%; padding: .75rem 1rem; border: 1.5px solid var(--border);
+        border-radius: 12px; font-family: inherit; font-size: .9rem; transition: all .2s;
+    }
+    .form-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(32, 201, 151, 0.08); }
 
-    .card {
-        background: var(--surface); border-radius: var(--radius);
-        box-shadow: var(--shadow); overflow: hidden;
+    .btn-search {
+        background: var(--primary); color: #fff; border: none; border-radius: 12px;
+        font-weight: 700; cursor: pointer; transition: all .2s;
+        display: flex; align-items: center; justify-content: center; gap: .5rem;
     }
+    .btn-search:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    .book-card {
+        background: var(--surface); border-radius: 20px; overflow: hidden;
+        border: 1px solid var(--border); transition: all .3s ease;
+        display: flex; flex-direction: column;
+    }
+    .book-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); border-color: var(--primary); }
     
-    .card-toolbar {
-        padding: 1rem 1.4rem; border-bottom: 1px solid var(--border);
-        display: flex; align-items: center; justify-content: space-between;
-        background: #f8fafc; flex-wrap: wrap; gap: 1rem;
+    .book-cover {
+        height: 180px; background: #f8fafc; display: flex; align-items: center; justify-content: center;
+        position: relative; overflow: hidden;
     }
+    .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .book-cover .no-img { font-size: 3rem; color: #cbd5e1; }
+    
+    .book-badge {
+        position: absolute; top: 1rem; right: 1rem;
+        padding: .3rem .7rem; border-radius: 20px; font-size: .7rem; font-weight: 800;
+        text-transform: uppercase; backdrop-filter: blur(4px);
+    }
+    .badge-bos { background: rgba(20, 90, 50, 0.9); color: #fff; }
+    .badge-perpus { background: rgba(41, 128, 185, 0.9); color: #fff; }
 
-    .search-box {
-        display: flex; align-items: center; gap: .5rem;
-        background: #fff; border: 1px solid var(--border);
-        border-radius: 8px; padding: .45rem .9rem;
+    .book-info { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
+    .book-cat { font-size: .72rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: .4rem; }
+    .book-title { font-size: 1rem; font-weight: 800; color: var(--text); line-height: 1.4; margin-bottom: .5rem; }
+    .book-author { font-size: .85rem; color: var(--text-muted); margin-bottom: 1rem; }
+    
+    .book-footer {
+        padding: 1rem 1.2rem; background: #fcfdfe; border-top: 1px solid var(--border);
+        display: flex; justify-content: space-between; align-items: center;
     }
-    .search-box input { border: none; outline: none; font-size: .85rem; width: 220px; }
-
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-        background: #f8fafc;
-        font-size: .73rem; font-weight: 700; text-transform: uppercase;
-        padding: .85rem 1.1rem; border-bottom: 1px solid var(--border);
-        color: var(--text-muted); text-align: left;
-    }
-    tbody td {
-        padding: .85rem 1.1rem; font-size: .88rem;
-        border-bottom: 1px solid #f0f4f8; color: var(--text);
-    }
-
-    .book-title { font-weight: 700; color: var(--text); }
-    .book-meta { font-size: .75rem; color: var(--text-muted); margin-top: .2rem; }
-
-    .badge-sumber {
-        font-size: .68rem; font-weight: 800; padding: .2rem .5rem; border-radius: 4px;
-        text-transform: uppercase;
-    }
-    .sumber-perpus { background: #eef2ff; color: #4338ca; }
-    .sumber-bos    { background: #fff7ed; color: #c2410c; }
+    .stok-info { display: flex; flex-direction: column; }
+    .stok-label { font-size: .65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    .stok-value { font-size: .95rem; font-weight: 800; color: var(--text); }
+    .stok-low { color: var(--danger); }
 </style>
 @endpush
 
 @section('content')
 
-<div class="page-header">
-    <div>
-        <h1><i class="fas fa-book" style="color:var(--primary);margin-right:.45rem"></i>Koleksi Buku</h1>
-        <p>Pantauan seluruh judul buku yang tersedia di perpustakaan</p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-toolbar">
-        <form action="{{ route('ksekolah.buku.index') }}" method="GET" class="d-flex gap-2">
-            <div class="search-box">
-                <i class="fas fa-search" style="color: var(--text-muted)"></i>
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari Judul, Kode, atau Penulis...">
-            </div>
-            <select name="sumber" class="form-select" style="border-radius: 8px; border-color: var(--border); font-size: .85rem;" onchange="this.form.submit()">
+<div class="search-wrapper">
+    <form action="{{ route('ksekolah.buku.index') }}" method="GET" class="search-grid">
+        <div class="form-group">
+            <label>Cari Judul / Pengarang / Kode</label>
+            <input type="text" name="q" class="form-input" placeholder="Masukkan kata kunci..." value="{{ request('q') }}">
+        </div>
+        <div class="form-group">
+            <label>Sumber Buku</label>
+            <select name="sumber" class="form-input">
                 <option value="">Semua Sumber</option>
                 <option value="buku perpus" {{ request('sumber') == 'buku perpus' ? 'selected' : '' }}>Buku Perpus</option>
                 <option value="bos" {{ request('sumber') == 'bos' ? 'selected' : '' }}>Buku BOS</option>
             </select>
-        </form>
-        <div style="font-size: .82rem; color: var(--text-muted)">
-            Menampilkan <strong>{{ $books->total() }}</strong> Judul Buku
         </div>
+        <div class="form-group" style="display: flex; align-items: flex-end;">
+            <button type="submit" class="btn-search" style="width: 100%; height: 42px;">
+                <i class="fas fa-search"></i> Cari
+            </button>
+        </div>
+    </form>
+</div>
+
+<div style="font-size: .85rem; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>Menampilkan <strong>{{ $books->total() }}</strong> Judul Buku</div>
+    <a href="{{ route('ksekolah.buku.index') }}" style="color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: .4rem;">
+        <i class="fas fa-sync-alt"></i> Reset Pencarian
+    </a>
+</div>
+
+@if($books->isEmpty())
+    <div style="text-align: center; padding: 5rem 2rem; background: #fff; border-radius: 20px; border: 1px solid var(--border);">
+        <div style="font-size: 4rem; color: #e2e8f0; margin-bottom: 1.5rem;"><i class="fas fa-book-open"></i></div>
+        <h3 style="font-weight: 800; color: var(--text);">Buku Tidak Ditemukan</h3>
+        <p style="color: var(--text-muted); margin-top: .5rem;">Coba gunakan kata kunci lain atau filter yang berbeda.</p>
+    </div>
+@else
+    <div class="books-grid">
+        @foreach($books as $b)
+        <div class="book-card">
+            <div class="book-cover">
+                @if($b->gambar)
+                    <img src="{{ asset('storage/'.$b->gambar) }}" alt="{{ $b->judul_buku }}">
+                @else
+                    <div class="no-img"><i class="fas fa-book"></i></div>
+                @endif
+                <span class="book-badge {{ $b->sumber_buku == 'bos' ? 'badge-bos' : 'badge-perpus' }}">
+                    {{ $b->sumber_buku == 'bos' ? 'BOS' : 'PERPUS' }}
+                </span>
+            </div>
+            <div class="book-info">
+                <div class="book-cat">{{ $b->kategori->nama_kategori ?? '-' }}</div>
+                <div class="book-title">{{ $b->judul_buku }}</div>
+                <div class="book-author">oleh {{ $b->penulis ?? '-' }}</div>
+                <div style="margin-top: auto; font-family: monospace; font-size: .75rem; color: var(--primary); font-weight: 700;">
+                    {{ $b->kode_buku }}
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="stok-info">
+                    <span class="stok-label">Tersedia</span>
+                    <span class="stok-value {{ $b->stok <= 2 ? 'stok-low' : '' }}">{{ $b->stok }} Eks.</span>
+                </div>
+                <div style="font-size: .8rem; font-weight: 700; color: var(--text-muted);">
+                    {{ $b->tahun_terbit ?? '-' }}
+                </div>
+            </div>
+        </div>
+        @endforeach
     </div>
 
-    <div class="table-wrap">
-        <table>
-            <thead>
-                <tr>
-                    <th>Kode</th>
-                    <th>Judul & Informasi</th>
-                    <th>Kategori</th>
-                    <th>Stok</th>
-                    <th>Sumber</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($books as $book)
-                <tr>
-                    <td><code style="background: #f1f5f9; padding: .2rem .4rem; border-radius: 4px; color: var(--primary); font-weight: 700;">{{ $book->kode_buku }}</code></td>
-                    <td>
-                        <div class="book-title">{{ $book->judul_buku }}</div>
-                        <div class="book-meta">Penulis: {{ $book->penulis ?? '-' }} | Penerbit: {{ $book->penerbit ?? '-' }}</div>
-                    </td>
-                    <td>{{ $book->kategori->nama_kategori ?? '-' }}</td>
-                    <td>
-                        <div style="font-weight: 700">{{ $book->stok }}</div>
-                        <div style="font-size: .75rem; color: var(--text-muted)">Eksemplar</div>
-                    </td>
-                    <td>
-                        @if($book->sumber_buku === 'buku perpus')
-                            <span class="badge-sumber sumber-perpus">Perpus</span>
-                        @else
-                            <span class="badge-sumber sumber-bos">BOS</span>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted)">Tidak ada koleksi buku ditemukan.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    @if($books->hasPages())
-    <div style="padding: 1rem 1.4rem; border-top: 1px solid var(--border)">
+    <div style="margin-top: 2rem;">
         {{ $books->links() }}
     </div>
-    @endif
-</div>
+@endif
 
 @endsection

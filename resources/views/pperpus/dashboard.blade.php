@@ -22,9 +22,9 @@
         background: #ffffff;
         border-radius: 16px;
         padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(41, 128, 185, 0.05);
+        box-shadow: 0 4px 20px rgba(155, 89, 182, 0.05);
         display: flex; align-items: center; gap: 1.2rem;
-        border: 1px solid rgba(41, 128, 185, 0.08);
+        border: 1px solid rgba(155, 89, 182, 0.08);
         transition: all .3s ease;
         position: relative;
         overflow: hidden;
@@ -34,17 +34,17 @@
         position: absolute; top: 0; left: 0; width: 100%; height: 4px;
         opacity: 0; transition: opacity .3s ease;
     }
-    .stat-card.blue::before   { background: linear-gradient(90deg, #0284c7, #3b82f6); }
-    .stat-card.teal::before   { background: linear-gradient(90deg, #0d9488, #10b981); }
-    .stat-card.red::before    { background: linear-gradient(90deg, #dc2626, #ef4444); }
-    .stat-card.orange::before { background: linear-gradient(90deg, #ea580c, #f97316); }
-    .stat-card.green::before  { background: linear-gradient(90deg, #15803d, #22c55e); }
-    .stat-card.lime::before   { background: linear-gradient(90deg, #65a30d, #84cc16); }
+    .stat-card.blue::before   { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+    .stat-card.teal::before   { background: linear-gradient(90deg, #2ecc71, #27ae60); }
+    .stat-card.red::before    { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+    .stat-card.orange::before { background: linear-gradient(90deg, #f39c12, #e67e22); }
+    .stat-card.green::before  { background: linear-gradient(90deg, #2ecc71, #27ae60); }
+    .stat-card.lime::before   { background: linear-gradient(90deg, #f39c12, #e67e22); }
 
     .stat-card:hover { 
         transform: translateY(-5px); 
-        box-shadow: 0 12px 30px rgba(41, 128, 185, 0.12); 
-        border-color: rgba(41, 128, 185, 0.2); 
+        box-shadow: 0 12px 30px rgba(155, 89, 182, 0.12); 
+        border-color: rgba(155, 89, 182, 0.2); 
     }
     .stat-card:hover::before { opacity: 1; }
 
@@ -53,12 +53,12 @@
         display: flex; align-items: center; justify-content: center;
         font-size: 1.5rem; flex-shrink: 0;
     }
-    .stat-card.blue   .stat-icon { background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0284c7; }
-    .stat-card.teal   .stat-icon { background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: #0d9488; }
-    .stat-card.red    .stat-icon { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #dc2626; }
-    .stat-card.orange .stat-icon { background: linear-gradient(135deg, #ffedd5, #fed7aa); color: #ea580c; }
-    .stat-card.green  .stat-icon { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #15803d; }
-    .stat-card.lime   .stat-icon { background: linear-gradient(135deg, #ecfccb, #d9f99d); color: #65a30d; }
+    .stat-card.blue   .stat-icon { background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(142, 68, 173, 0.15)); color: #9b59b6; }
+    .stat-card.teal   .stat-icon { background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.15)); color: #2ecc71; }
+    .stat-card.red    .stat-icon { background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(192, 57, 43, 0.15)); color: #e74c3c; }
+    .stat-card.orange .stat-icon { background: linear-gradient(135deg, rgba(243, 156, 18, 0.15), rgba(230, 126, 34, 0.15)); color: #f39c12; }
+    .stat-card.green  .stat-icon { background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.15)); color: #2ecc71; }
+    .stat-card.lime   .stat-icon { background: linear-gradient(135deg, rgba(243, 156, 18, 0.15), rgba(230, 126, 34, 0.15)); color: #f39c12; }
 
     .stat-body { width: 100%; }
     .stat-body .value { font-size: 1.8rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: .3rem;}
@@ -84,9 +84,9 @@
     }
     .panel-header h3 { font-size: .92rem; font-weight: 700; color: var(--text); }
     .badge { font-size: .72rem; font-weight: 700; padding: .25rem .65rem; border-radius: 20px; }
-    .badge-green  { background: #eafaf1; color: var(--success); }
-    .badge-orange { background: #fef9ec; color: var(--warning); }
-    .badge-red    { background: #fdf0ef; color: var(--danger); }
+    .badge-green  { background: rgba(46, 204, 113, 0.1); color: var(--success); }
+    .badge-orange { background: rgba(243, 156, 18, 0.1); color: var(--warning); }
+    .badge-red    { background: rgba(231, 76, 60, 0.1); color: var(--danger); }
 
     .data-table { width: 100%; border-collapse: collapse; }
     .data-table th {
@@ -115,16 +115,16 @@
     }
 
     .pill { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .7rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
-    .pill-success { background: #eafaf1; color: var(--success); }
-    .pill-danger  { background: #fdf0ef; color: var(--danger); }
-    .pill-warning { background: #fef9ec; color: var(--warning); }
-    .pill-info    { background: #ebf5fb; color: var(--info); }
+    .pill-success { background: rgba(46, 204, 113, 0.1); color: var(--success); }
+    .pill-danger  { background: rgba(231, 76, 60, 0.1); color: var(--danger); }
+    .pill-warning { background: rgba(243, 156, 18, 0.1); color: var(--warning); }
+    .pill-info    { background: rgba(155, 89, 182, 0.1); color: var(--info); }
 
     .empty-state { padding: 3rem 2rem; text-align: center; color: var(--text-muted); font-size: .88rem; }
     .empty-state i { font-size: 2.2rem; display: block; margin-bottom: .8rem; opacity: .4; }
 
     .welcome-banner {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
         border-radius: 16px;
         padding: 2rem;
         color: #ffffff;
@@ -132,7 +132,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 10px 25px rgba(30, 60, 114, 0.15);
+        box-shadow: 0 10px 25px rgba(155, 89, 182, 0.25);
         position: relative;
         overflow: hidden;
     }
@@ -165,12 +165,12 @@
         border: 1px solid var(--border);
     }
     .fine-sub-card.lunas {
-        background: #eafaf1;
-        border-color: #a9dfbf;
+        background: rgba(46, 204, 113, 0.1);
+        border-color: rgba(46, 204, 113, 0.3);
     }
     .fine-sub-card.belum-lunas {
-        background: #fdf0ef;
-        border-color: #f5c6c2;
+        background: rgba(231, 76, 60, 0.1);
+        border-color: rgba(231, 76, 60, 0.3);
     }
     .fine-sub-card .sub-label {
         font-size: 0.75rem;
@@ -200,6 +200,12 @@
         height: 100%; background: var(--success);
         border-radius: 4px; transition: width 0.5s ease-in-out;
     }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+    }
 </style>
 @endpush
 
@@ -213,9 +219,20 @@
         <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Halo, {{ auth()->user()->name ?? 'Penjaga Perpustakaan' }}! 👋</h2>
         <p style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; max-width: 600px; line-height: 1.5;">Selamat bertugas &mdash; {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
-    <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1rem 1.5rem; text-align: center; backdrop-filter: blur(10px); z-index: 1; flex-shrink: 0;">
-        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 700; margin-bottom: 0.3rem;">Hak Akses</div>
-        <div style="font-size: 1.05rem; font-weight: 800; color: #f1c40f;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Administrator' }}</div>
+    <div style="display: flex; gap: 1rem; z-index: 1;">
+        @if($stats['buku_terlambat'] > 0)
+        <a href="#denda-section" style="background: var(--danger); color: white; border-radius: 12px; padding: 0.8rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; text-decoration: none; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); animation: pulse 2s infinite;">
+            <div style="font-size: 1.5rem;"><i class="fas fa-bell"></i></div>
+            <div>
+                <div style="font-weight: 800; font-size: 1rem; line-height: 1.2;">{{ $stats['buku_terlambat'] }} Buku Terlambat!</div>
+                <div style="font-size: 0.7rem; opacity: 0.9;">Perlu ditindaklanjuti.</div>
+            </div>
+        </a>
+        @endif
+        <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1rem 1.5rem; text-align: center; backdrop-filter: blur(10px); flex-shrink: 0;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 700; margin-bottom: 0.3rem;">Hak Akses</div>
+            <div style="font-size: 1.05rem; font-weight: 800; color: #f1c40f;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Administrator' }}</div>
+        </div>
     </div>
 </div>
 
@@ -326,7 +343,7 @@
     </div>
 </div>
 
-<div class="panel" style="margin-bottom: 1.8rem;">
+<div class="panel" style="margin-bottom: 1.8rem;" id="denda-section">
     <div class="panel-header">
         <h3><i class="fas fa-coins" style="color:var(--primary);margin-right:.45rem"></i>Daftar Denda Peminjaman (Lunas & Belum Lunas)</h3>
         <span class="badge badge-green">Total: {{ $fines->total() }} Denda</span>

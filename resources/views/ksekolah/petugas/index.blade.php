@@ -75,7 +75,6 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>
                         <div class="user-info">
-                            <div class="user-avatar">{{ substr($officer->name, 0, 1) }}</div>
                             <div style="font-weight: 700">{{ $officer->name }}</div>
                         </div>
                     </td>

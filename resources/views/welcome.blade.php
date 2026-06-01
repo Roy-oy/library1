@@ -24,7 +24,7 @@
     <header class="relative z-10 w-full px-8 md:px-12 py-8 flex justify-between items-center">
         <!-- Kiri: Logo & Judul -->
         <div class="flex items-center gap-4">
-            <img src="{{ asset('images/perpus.png') }}" alt="Logo" class="w-12 h-12 object-contain">
+            <img src="{{ asset('images/logos.png') }}" alt="Logo" class="w-12 h-12 object-contain">
             <h1 class="text-white font-semibold text-lg md:text-xl tracking-widest uppercase">
                 E-Library SMPN 1 Percut Sei Tuan
             </h1>

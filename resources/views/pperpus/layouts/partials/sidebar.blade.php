@@ -1,9 +1,8 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <div class="brand-logo"><img src="{{ asset('images/perpus.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
+        <div class="brand-logo"><img src="{{ asset('images/logos.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
         <div class="brand-text">
-            <div class="title">SIP Sekolah</div>
-            <div class="sub">Panel Penjaga Perpustakaan</div>
+            <div class="title">E-Library SMP Negeri 1 Percut Sei Tuan</div>
         </div>
     </div>
 

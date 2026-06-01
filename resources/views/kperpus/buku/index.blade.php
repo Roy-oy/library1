@@ -27,6 +27,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-top: 2rem;
         margin-bottom: 2rem;
         flex-wrap: wrap;
         gap: 1rem;
@@ -172,29 +173,34 @@
     /* ── Table Styling ── */
     .table-wrap {
         overflow-x: auto;
+        padding: 0;
     }
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
     }
     thead th {
-        background: #f8fafc;
+        background: #f1f5f9;
         font-size: 0.75rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        color: var(--text-muted);
-        padding: 1rem 1.5rem;
-        border-bottom: 1.5px solid var(--border);
+        color: #475569;
+        padding: 0.85rem 1rem;
+        border-bottom: 2px solid var(--border);
         white-space: nowrap;
         text-align: left;
     }
     tbody td {
-        padding: 1rem 1.5rem;
-        font-size: 0.9rem;
-        border-bottom: 1px solid #f1f5f9;
+        padding: 0.85rem 1rem;
+        font-size: 0.88rem;
+        border-bottom: 1px solid var(--border);
         color: var(--text);
         vertical-align: middle;
+    }
+    tbody tr:nth-child(even) td {
+        background: #f8fafc;
     }
     tbody tr:last-child td {
         border-bottom: none;
@@ -203,7 +209,7 @@
         transition: background var(--transition-speed) ease;
     }
     tbody tr:hover td {
-        background: var(--theme-primary-light);
+        background: var(--theme-primary-light) !important;
     }
 
     /* ── Book Cover ── */
@@ -380,7 +386,7 @@
         font-weight: 600;
     }
 
-    /* ── Delete Modal ── */
+    /* ── Modals ── */
     .modal-overlay {
         display: none;
         position: fixed;
@@ -476,6 +482,202 @@
         background: #dc2626;
     }
 
+    /* ── Form Modals (Create & Edit) ── */
+    .form-modal-box {
+        background: var(--surface);
+        border-radius: var(--card-radius);
+        padding: 0;
+        width: 90%;
+        max-width: 800px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+        transform: scale(0.9);
+        transition: transform var(--transition-speed) ease;
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .modal-overlay.show .form-modal-box {
+        transform: scale(1);
+    }
+    .form-modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fafbfc;
+    }
+    .form-modal-header h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--text);
+        margin: 0;
+    }
+    .form-modal-close {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: color var(--transition-speed) ease;
+    }
+    .form-modal-close:hover {
+        color: var(--theme-danger);
+    }
+    .form-modal-body {
+        padding: 1.5rem;
+        overflow-y: auto;
+    }
+    .form-modal-footer {
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--border);
+        background: #fafbfc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+    .form-grid .full {
+        grid-column: 1 / -1;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+    .form-group label {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .form-group label i {
+        color: var(--primary);
+        font-size: 0.85rem;
+    }
+    .form-group label .req {
+        color: var(--theme-danger);
+    }
+    .form-control-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .form-control-wrap i.input-icon {
+        position: absolute;
+        left: 1rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: var(--text);
+        background: #fff;
+        transition: all var(--transition-speed) ease;
+        outline: none;
+    }
+    .form-control-wrap i.input-icon + .form-control {
+        padding-left: 2.5rem;
+    }
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3.5px rgba(74, 144, 226, 0.15);
+    }
+
+    /* ── Radio Styling ── */
+    .radio-group {
+        display: flex;
+        gap: 1.25rem;
+        margin-top: 0.25rem;
+    }
+    .radio-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text);
+        cursor: pointer;
+        background: #f8fafc;
+        padding: 0.75rem 1.2rem;
+        border-radius: 10px;
+        border: 1.5px solid var(--border);
+        flex: 1;
+        transition: all var(--transition-speed) ease;
+    }
+    .radio-label:hover {
+        background: var(--theme-primary-light);
+        border-color: var(--primary);
+    }
+    .radio-label input[type="radio"] {
+        accent-color: var(--primary);
+        width: 17px;
+        height: 17px;
+    }
+    .radio-label.checked {
+        background: var(--theme-primary-light);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .section-divider {
+        grid-column: 1 / -1;
+        border: none;
+        border-top: 1.5px dashed var(--border);
+        margin: 0.5rem 0;
+    }
+    .section-title {
+        grid-column: 1 / -1;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .section-title::after {
+        content: '';
+        flex: 1;
+        height: 1.5px;
+        background: var(--border);
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -493,6 +695,18 @@
             width: 100%;
         }
     }
+    @media (max-width: 640px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+        .form-grid .full {
+            grid-column: 1;
+        }
+        .radio-group {
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+    }
 </style>
 @endpush
 
@@ -501,19 +715,12 @@
 {{-- Page Header --}}
 <div class="page-header">
     <div class="page-header-title">
-        <h1>
-            @if($type === 'bos')
-                <i class="fas fa-graduation-cap" style="color:var(--primary)"></i>
-            @else
-                <i class="fas fa-book" style="color:var(--primary)"></i>
-            @endif
-            {{ $pageTitle }}
-        </h1>
+        <h1><i class="fas {{ $type === 'bos' ? 'fa-graduation-cap' : 'fa-book' }}" style="color:var(--primary)"></i> {{ $pageTitle }}</h1>
         <p>Kelola koleksi {{ strtolower($pageTitle) }} perpustakaan sekolah</p>
     </div>
-    <a href="{{ route('kperpus.buku.create', ['sumber_buku' => $type === 'bos' ? 'bos' : 'buku perpus']) }}" class="btn-primary" id="btn-tambah-buku">
+    <button type="button" class="btn-primary" id="btn-tambah-buku" onclick="openCreateModal()">
         <i class="fas fa-plus"></i> Tambah Buku Baru
-    </a>
+    </button>
 </div>
 
 {{-- Tab Navigation --}}
@@ -582,8 +789,8 @@
             <tbody>
                 @forelse ($buku as $index => $item)
                 <tr>
-                    <td>{{ $buku->firstItem() + $index }}</td>
-                    <td>
+                    <td style="text-align: center;">{{ $buku->firstItem() + $index }}</td>
+                    <td style="text-align: center;">
                         <div class="book-cover-container">
                             @if($item->gambar)
                                 <img src="{{ Storage::url($item->gambar) }}"
@@ -596,22 +803,35 @@
                             @endif
                         </div>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <code style="font-size:0.8rem; background: var(--theme-primary-light); color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 700; border: 1px solid rgba(37, 99, 235, 0.1);">{{ $item->kode_buku }}</code>
                     </td>
                     <td style="font-weight: 700; max-width: 240px; line-height: 1.4;">{{ $item->judul_buku }}</td>
                     <td style="font-weight: 600; color: #475569;">{{ $item->pengarang }}</td>
-                    <td><span style="font-weight: 700; color: #475569;">{{ $item->tahun_terbit }}</span></td>
-                    <td style="color: #64748b;">{{ $item->isbn ?? '—' }}</td>
-                    <td>
+                    <td style="text-align: center;"><span style="font-weight: 700; color: #475569;">{{ $item->tahun_terbit }}</span></td>
+                    <td style="color: #64748b; text-align: center;">{{ $item->isbn ?? '—' }}</td>
+                    <td style="text-align: center;">
                         <span class="pill {{ $item->stok > 0 ? 'pill-success' : 'pill-warning' }}">
                             {{ $item->stok }} eks
                         </span>
                     </td>
                     @if($type !== 'bos')
-                        <td style="font-weight: 600; color: var(--primary);">{{ $item->kategoriBuku?->nama_kategori ?? '—' }}</td>
-                    @else
+                        @php
+                            $catColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4'];
+                            $catColor = $item->id_kategori ? $catColors[$item->id_kategori % count($catColors)] : '#64748b';
+                        @endphp
                         <td>
+                            @if($item->kategoriBuku)
+                                <span style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.9rem; border-radius: 30px; font-size: 0.8rem; font-weight: 700; color: {{ $catColor }}; background: {{ $catColor }}1a; border: 1px solid {{ $catColor }}40;">
+                                    <i class="fas fa-tag" style="font-size: 0.7rem;"></i>
+                                    {{ $item->kategoriBuku->nama_kategori }}
+                                </span>
+                            @else
+                                <span style="color:var(--text-muted)">—</span>
+                            @endif
+                        </td>
+                    @else
+                        <td style="text-align: center;">
                             @if($item->kelas)
                                 <span class="kelas-badge">Kls {{ $item->kelas }}</span>
                             @else
@@ -619,7 +839,7 @@
                             @endif
                         </td>
                     @endif
-                    <td>
+                    <td style="text-align: center;">
                         @if($item->status_buku === 'tersedia')
                             <span class="pill pill-success"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> Tersedia</span>
                         @else
@@ -628,10 +848,21 @@
                     </td>
                     <td>
                         <div class="actions" style="justify-content: center;">
-                            <a href="{{ route('kperpus.buku.edit', $item->id_buku) }}"
-                               class="btn-icon btn-edit" title="Edit Buku">
+                            <button type="button" class="btn-icon btn-edit" title="Edit Buku"
+                                onclick="openEditModal({{ json_encode([
+                                    'id' => $item->id_buku,
+                                    'kode' => $item->kode_buku,
+                                    'isbn' => $item->isbn,
+                                    'judul' => $item->judul_buku,
+                                    'pengarang' => $item->pengarang,
+                                    'tahun' => $item->tahun_terbit,
+                                    'sumber' => $item->sumber_buku,
+                                    'kategori' => $item->id_kategori,
+                                    'kelas' => $item->kelas,
+                                    'stok' => $item->stok,
+                                ]) }})">
                                 <i class="fas fa-pen"></i>
-                            </a>
+                            </button>
                             <button type="button" class="btn-icon btn-del" title="Hapus Buku"
                                 onclick="confirmDelete('{{ route('kperpus.buku.destroy', $item->id_buku) }}', '{{ addslashes($item->judul_buku) }}')">
                                 <i class="fas fa-trash"></i>
@@ -684,6 +915,237 @@
 
 @endsection
 
+{{-- Create Modal --}}
+<div class="modal-overlay" id="create-modal">
+    <div class="form-modal-box" style="max-width: 900px;">
+        <div class="form-modal-header">
+            <h3><i class="fas fa-plus" style="color:var(--primary)"></i> Tambah Buku Baru</h3>
+            <button class="form-modal-close" onclick="closeCreateModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form action="{{ route('kperpus.buku.store') }}" method="POST" enctype="multipart/form-data" id="form-buku">
+            @csrf
+            <div class="form-modal-body">
+                <div class="form-grid">
+                    {{-- ── Identitas Buku ─────────────────── --}}
+                    <div class="section-title">Identitas Buku</div>
+                    <div class="form-group">
+                        <label for="create_kode_buku">Kode Buku <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-barcode input-icon"></i>
+                            <input type="text" id="create_kode_buku" name="kode_buku" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_isbn">ISBN</label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-fingerprint input-icon"></i>
+                            <input type="text" id="create_isbn" name="isbn" class="form-control" placeholder="Maksimal 13 karakter" maxlength="13">
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="create_judul_buku">Judul Buku <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-heading input-icon"></i>
+                            <input type="text" id="create_judul_buku" name="judul_buku" class="form-control" placeholder="Masukkan judul lengkap buku" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_pengarang">Nama Pengarang <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-edit input-icon"></i>
+                            <input type="text" id="create_pengarang" name="pengarang" class="form-control" placeholder="Nama pengarang / penulis" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_tahun_terbit">Tahun Terbit <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                            <input type="number" id="create_tahun_terbit" name="tahun_terbit" class="form-control" placeholder="Contoh: 2024" min="1900" max="{{ date('Y') }}" required>
+                        </div>
+                    </div>
+
+                    {{-- ── Sumber & Klasifikasi ─────────────────── --}}
+                    <hr class="section-divider">
+                    <div class="section-title">Sumber & Klasifikasi</div>
+                    <div class="form-group full">
+                        <label>Sumber Anggaran Buku <span class="req">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label" id="create-radio-label-bos">
+                                <input type="radio" name="sumber_buku" value="bos" required>
+                                Buku BOS (Operasional Sekolah)
+                            </label>
+                            <label class="radio-label checked" id="create-radio-label-perpus">
+                                <input type="radio" name="sumber_buku" value="buku perpus" checked required>
+                                Buku Perpus (Koleksi Umum)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="create-kategori-group">
+                        <label for="create_id_kategori">Kategori Buku <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-bookmark input-icon"></i>
+                            <select id="create_id_kategori" name="id_kategori" class="form-control">
+                                <option value="">— Pilih Kategori —</option>
+                                @foreach($kategori_list as $kat)
+                                    <option value="{{ $kat->id_kategori }}">{{ $kat->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="create-kelas-group" style="display: none;">
+                        <label for="create_kelas">Kelas Peruntukan <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-layer-group input-icon"></i>
+                            <select id="create_kelas" name="kelas" class="form-control">
+                                <option value="">— Pilih Kelas —</option>
+                                <option value="VII">Kelas VII</option>
+                                <option value="VIII">Kelas VIII</option>
+                                <option value="IX">Kelas IX</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_stok">Stok Awal <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-boxes input-icon"></i>
+                            <input type="number" id="create_stok" name="stok" class="form-control" value="1" min="1" required>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="section-title">Cover Buku</div>
+                    <div class="form-group full">
+                        <label for="create_gambar">Upload Cover Buku</label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-image input-icon" style="top: 1.1rem;"></i>
+                            <input type="file" id="create_gambar" name="gambar" accept="image/jpg,image/jpeg,image/png" class="form-control" style="padding-top: 0.6rem; padding-bottom: 0.6rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeCreateModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan Buku</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- Edit Modal --}}
+<div class="modal-overlay" id="edit-modal">
+    <div class="form-modal-box" style="max-width: 900px;">
+        <div class="form-modal-header">
+            <h3><i class="fas fa-pen" style="color:var(--primary)"></i> Edit Buku</h3>
+            <button class="form-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="edit-form" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-modal-body">
+                <div class="form-grid">
+                    <div class="section-title">Identitas Buku</div>
+                    <div class="form-group">
+                        <label for="edit_kode_buku">Kode Buku <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-barcode input-icon"></i>
+                            <input type="text" id="edit_kode_buku" name="kode_buku" class="form-control" required readonly style="background: #f1f5f9;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_isbn">ISBN</label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-fingerprint input-icon"></i>
+                            <input type="text" id="edit_isbn" name="isbn" class="form-control" placeholder="Maksimal 13 karakter" maxlength="13">
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="edit_judul_buku">Judul Buku <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-heading input-icon"></i>
+                            <input type="text" id="edit_judul_buku" name="judul_buku" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_pengarang">Nama Pengarang <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-edit input-icon"></i>
+                            <input type="text" id="edit_pengarang" name="pengarang" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_tahun_terbit">Tahun Terbit <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                            <input type="number" id="edit_tahun_terbit" name="tahun_terbit" class="form-control" min="1900" required>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="section-title">Sumber & Klasifikasi</div>
+                    <div class="form-group full">
+                        <label>Sumber Anggaran Buku <span class="req">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label" id="edit-radio-label-bos">
+                                <input type="radio" name="sumber_buku" value="bos" required>
+                                Buku BOS (Operasional Sekolah)
+                            </label>
+                            <label class="radio-label" id="edit-radio-label-perpus">
+                                <input type="radio" name="sumber_buku" value="buku perpus" required>
+                                Buku Perpus (Koleksi Umum)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="edit-kategori-group">
+                        <label for="edit_id_kategori">Kategori Buku <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-bookmark input-icon"></i>
+                            <select id="edit_id_kategori" name="id_kategori" class="form-control">
+                                <option value="">— Pilih Kategori —</option>
+                                @foreach($kategori_list as $kat)
+                                    <option value="{{ $kat->id_kategori }}">{{ $kat->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="edit-kelas-group">
+                        <label for="edit_kelas">Kelas Peruntukan <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-layer-group input-icon"></i>
+                            <select id="edit_kelas" name="kelas" class="form-control">
+                                <option value="">— Pilih Kelas —</option>
+                                <option value="VII">Kelas VII</option>
+                                <option value="VIII">Kelas VIII</option>
+                                <option value="IX">Kelas IX</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_stok">Stok <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-boxes input-icon"></i>
+                            <input type="number" id="edit_stok" name="stok" class="form-control" min="0" required>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="section-title">Cover Buku</div>
+                    <div class="form-group full">
+                        <label for="edit_gambar">Upload Cover Baru (Opsional)</label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-image input-icon" style="top: 1.1rem;"></i>
+                            <input type="file" id="edit_gambar" name="gambar" accept="image/jpg,image/jpeg,image/png" class="form-control" style="padding-top: 0.6rem; padding-bottom: 0.6rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Perbarui Buku</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     // ── Live search client-side ──
@@ -696,7 +1158,15 @@
         });
     });
 
-    // ── Delete modal ──
+    // ── Modals Logic ──
+    function closeAllModals() {
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; }, 200);
+        });
+    }
+
+    // Delete Modal
     function confirmDelete(url, judul) {
         document.getElementById('delete-form').action = url;
         document.getElementById('delete-modal-msg').innerHTML =
@@ -704,22 +1174,122 @@
         
         const modal = document.getElementById('delete-modal');
         modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
+        setTimeout(() => { modal.classList.add('show'); }, 10);
     }
-    
     function closeDeleteModal() {
         const modal = document.getElementById('delete-modal');
         modal.classList.remove('show');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 200);
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
     
-    // Close on backdrop click
-    document.getElementById('delete-modal').addEventListener('click', function (e) {
-        if (e.target === this) closeDeleteModal();
+    // Create Modal
+    function openCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.classList.add('show'); }, 10);
+        updateCreateKodeBuku();
+    }
+    function closeCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+
+    // Edit Modal
+    function openEditModal(data) {
+        document.getElementById('edit-form').action = "{{ url('kepala-perpustakaan/buku') }}/" + data.id;
+        document.getElementById('edit_kode_buku').value = data.kode;
+        document.getElementById('edit_isbn').value = data.isbn || '';
+        document.getElementById('edit_judul_buku').value = data.judul;
+        document.getElementById('edit_pengarang').value = data.pengarang;
+        document.getElementById('edit_tahun_terbit').value = data.tahun;
+        document.getElementById('edit_stok').value = data.stok;
+
+        const radios = document.querySelectorAll('input[name="sumber_buku"][form="edit-form"], #edit-modal input[name="sumber_buku"]');
+        radios.forEach(r => {
+            if (r.value === data.sumber) r.checked = true;
+        });
+        document.getElementById('edit_id_kategori').value = data.kategori || '';
+        document.getElementById('edit_kelas').value = data.kelas || '';
+        toggleEditFields();
+
+        const modal = document.getElementById('edit-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.classList.add('show'); }, 10);
+    }
+    function closeEditModal() {
+        const modal = document.getElementById('edit-modal');
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', function (e) {
+            if (e.target === this) closeAllModals();
+        });
     });
+
+    // ── Create Modal Dynamic Logic ──
+    const createRadioBos = document.querySelector('#create-modal input[name="sumber_buku"][value="bos"]');
+    const createRadioPerpus = document.querySelector('#create-modal input[name="sumber_buku"][value="buku perpus"]');
+    const createLabelBos = document.getElementById('create-radio-label-bos');
+    const createLabelPerpus = document.getElementById('create-radio-label-perpus');
+    const createKelasGroup = document.getElementById('create-kelas-group');
+    const createKatGroup = document.getElementById('create-kategori-group');
+
+    function toggleCreateFields() {
+        if (createRadioBos.checked) {
+            createKelasGroup.style.display = 'flex';
+            createKatGroup.style.display = 'none';
+            document.getElementById('create_id_kategori').value = '';
+            createLabelBos.classList.add('checked');
+            createLabelPerpus.classList.remove('checked');
+        } else {
+            createKelasGroup.style.display = 'none';
+            createKatGroup.style.display = 'flex';
+            document.getElementById('create_kelas').value = '';
+            createLabelPerpus.classList.add('checked');
+            createLabelBos.classList.remove('checked');
+        }
+    }
+    function updateCreateKodeBuku() {
+        const checkedRadio = document.querySelector('#create-modal input[name="sumber_buku"]:checked');
+        if (!checkedRadio) return;
+        const sumber = checkedRadio.value;
+        fetch(`{{ route('kperpus.buku.generate-kode') }}?sumber=${encodeURIComponent(sumber)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.code) document.getElementById('create_kode_buku').value = data.code;
+            });
+    }
+    createRadioBos.addEventListener('change', () => { toggleCreateFields(); updateCreateKodeBuku(); });
+    createRadioPerpus.addEventListener('change', () => { toggleCreateFields(); updateCreateKodeBuku(); });
+
+    // ── Edit Modal Dynamic Logic ──
+    const editRadioBos = document.querySelector('#edit-modal input[name="sumber_buku"][value="bos"]');
+    const editRadioPerpus = document.querySelector('#edit-modal input[name="sumber_buku"][value="buku perpus"]');
+    const editLabelBos = document.getElementById('edit-radio-label-bos');
+    const editLabelPerpus = document.getElementById('edit-radio-label-perpus');
+    const editKelasGroup = document.getElementById('edit-kelas-group');
+    const editKatGroup = document.getElementById('edit-kategori-group');
+
+    function toggleEditFields() {
+        if (editRadioBos.checked) {
+            editKelasGroup.style.display = 'flex';
+            editKatGroup.style.display = 'none';
+            document.getElementById('edit_id_kategori').value = '';
+            editLabelBos.classList.add('checked');
+            editLabelPerpus.classList.remove('checked');
+        } else {
+            editKelasGroup.style.display = 'none';
+            editKatGroup.style.display = 'flex';
+            document.getElementById('edit_kelas').value = '';
+            editLabelPerpus.classList.add('checked');
+            editLabelBos.classList.remove('checked');
+        }
+    }
+    editRadioBos.addEventListener('change', toggleEditFields);
+    editRadioPerpus.addEventListener('change', toggleEditFields);
+
 </script>
 @endpush

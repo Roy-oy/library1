@@ -48,22 +48,30 @@
     .accordion-item.open .accordion-body { display: block; }
 
     .buku-grid {
-        display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .8rem;
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;
     }
     .buku-item {
-        border: 1.5px solid var(--border); border-radius: 10px; padding: .8rem;
-        cursor: pointer; transition: all .2s; position: relative;
+        border: 1.5px solid var(--border); border-radius: 12px; padding: 1rem;
+        cursor: pointer; transition: all .3s ease; position: relative;
+        background: #fff; display: flex; flex-direction: column; gap: 0.3rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
-    .buku-item:hover { border-color: var(--primary); background: #f4f8fd; }
-    .buku-item.selected { border-color: var(--primary); background: #eef4fc; box-shadow: 0 0 0 2px var(--primary); }
+    .buku-item:hover { border-color: var(--primary); background: #fdfefe; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-3px); }
+    .buku-item.selected { border-color: var(--primary); background: rgba(155, 89, 182, 0.04); box-shadow: 0 0 0 2px var(--primary); transform: translateY(-3px); }
     
     .buku-item .check-mark {
-        position: absolute; top: .5rem; right: .5rem; color: var(--primary); display: none;
+        position: absolute; top: 1rem; right: 1rem; color: var(--primary); display: none; font-size: 1.1rem;
     }
     .buku-item.selected .check-mark { display: block; }
 
-    .buku-item .judul { font-weight: 700; font-size: .82rem; margin-bottom: .2rem; }
-    .buku-item .meta  { font-size: .75rem; color: var(--text-muted); }
+    .buku-item .judul { font-weight: 800; font-size: .9rem; margin-bottom: 0; color: var(--text); padding-right: 1.5rem; line-height: 1.4; }
+    .buku-item .meta  { font-size: .78rem; color: var(--text-muted); display: flex; align-items: center; gap: .4rem; }
+    .stok-badge {
+        display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+        font-size: 0.7rem; font-weight: 700; margin-top: 0.4rem; width: max-content;
+    }
+    .stok-tersedia { background: #eafaf1; color: var(--success); border: 1px solid #a9dfbf; }
+    .stok-habis { background: #fdf0ef; color: var(--danger); border: 1px solid #f5c6c2; }
     
     .selected-list { 
         margin-top: 1rem; background: var(--surface); border-radius: 12px; 
@@ -72,17 +80,11 @@
     }
     .selected-book {
         display: flex; align-items: center; justify-content: space-between;
-        padding: .8rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0;
+        padding: .8rem 1rem; background: rgba(155, 89, 182, 0.08); border: 1px solid rgba(155, 89, 182, 0.2);
         border-radius: 8px; font-size: .85rem; font-weight: 700; color: var(--primary-dark);
     }
     .selected-book .remove { color: var(--danger); cursor: pointer; padding: .2rem; transition: transform .2s; }
     .selected-book .remove:hover { transform: scale(1.1); }
-    
-    .empty-books {
-        text-align: center; color: var(--text-muted); font-size: .85rem; 
-        padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; align-items: center;
-    }
-    .empty-books i { font-size: 2rem; color: var(--border); }
 
     .btn-submit {
         width: 100%; padding: .8rem; background: var(--primary); color: #fff;
@@ -184,8 +186,10 @@
                             <div class="buku-item" data-id="{{ $b->id_buku }}" data-judul="{{ $b->judul_buku }}">
                                 <i class="fas fa-check-circle check-mark"></i>
                                 <div class="judul">{{ $b->judul_buku }}</div>
-                                <div class="meta">{{ $b->pengarang ?? 'Tanpa Pengarang' }}</div>
-                                <div class="meta" style="color:{{ $b->stok > 0 ? 'inherit' : 'red' }}">Stok: {{ $b->stok }}</div>
+                                <div class="meta"><i class="fas fa-user-edit"></i> {{ $b->pengarang ?? 'Tanpa Pengarang' }}, {{ $b->tahun_terbit ?? '-' }}</div>
+                                <div class="stok-badge {{ $b->stok > 0 ? 'stok-tersedia' : 'stok-habis' }}">
+                                    <i class="fas fa-layer-group"></i> Stok: {{ $b->stok }}
+                                </div>
                             </div>
                             @endforeach
                         </div>
@@ -195,8 +199,8 @@
             </div>
 
             <div id="selected-books-list" class="selected-list">
-                <div class="empty-books">
-                    <i class="fas fa-book-open"></i>
+                <div class="empty-books" style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: .85rem; display: flex; flex-direction: column; gap: .5rem; align-items: center;">
+                    <i class="fas fa-book-open" style="font-size: 2rem; color: var(--border);"></i>
                     <span>Belum ada buku dipilih.<br>Silakan pilih buku dari daftar di atas.</span>
                 </div>
             </div>
@@ -302,8 +306,8 @@
 
         if (selectedBooks.size === 0) {
             list.innerHTML = `
-                <div class="empty-books">
-                    <i class="fas fa-book-open"></i>
+                <div class="empty-books" style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: .85rem; display: flex; flex-direction: column; gap: .5rem; align-items: center;">
+                    <i class="fas fa-book-open" style="font-size: 2rem; color: var(--border);"></i>
                     <span>Belum ada buku dipilih.<br>Silakan pilih buku dari daftar di atas.</span>
                 </div>
             `;

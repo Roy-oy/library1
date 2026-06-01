@@ -20,7 +20,7 @@
     <div class="w-full max-w-sm bg-white p-8 md:p-10 rounded-xl shadow-2xl relative z-10">
         
         <div class="flex justify-center mb-8">
-            <img src="{{ asset('images/perpus.png') }}" alt="Logo" class="w-14 h-14 object-contain">
+            <img src="{{ asset('images/logos.png') }}" alt="Logo" class="w-14 h-14 object-contain">
         </div>
         
         <div class="text-center mb-8">

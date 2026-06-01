@@ -13,8 +13,8 @@
         :root {
             --sidebar-w:    260px;
             --header-h:     75px;
-            --primary:      #4a90e2; /* Biru soft */
-            --primary-dark: #357abd;
+            --primary:      #20c997; /* Teal soft */
+            --primary-dark: #1aa179;
             --accent:       #f39c12;
             --accent-light: #fdf2e9;
             --bg:           #f4f7f9;
@@ -25,7 +25,7 @@
             --success:      #2ecc71;
             --warning:      #f1c40f;
             --danger:       #e74c3c;
-            --info:         #5dade2; /* Biru terang yang soft */
+            --info:         #20c997; /* Teal terang yang soft */
             --sidebar-text: rgba(255,255,255,.82);
             --radius:       12px;
             --shadow:       0 4px 20px rgba(0,0,0,.07);
@@ -58,8 +58,8 @@
         }
         .brand-logo {
             width: 40px; height: 40px;
-            background: rgba(41, 128, 185, 0.1);
-            border: 1.5px solid rgba(41, 128, 185, 0.3);
+            background: rgba(32, 201, 151, 0.1);
+            border: 1.5px solid rgba(32, 201, 151, 0.3);
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
         }
@@ -87,10 +87,10 @@
             position: relative;
         }
         .nav-link i { width: 18px; text-align: center; font-size: .9rem; color: var(--text-muted); transition: color .2s; }
-        .nav-link:hover { background: rgba(41, 128, 185, 0.06); color: var(--info); }
+        .nav-link:hover { background: rgba(32, 201, 151, 0.06); color: var(--info); }
         .nav-link:hover i { color: var(--info); }
         .nav-link.active {
-            background: rgba(41, 128, 185, 0.1);
+            background: rgba(32, 201, 151, 0.1);
             color: var(--info);
             font-weight: 700;
         }
@@ -123,7 +123,7 @@
         }
         .user-avatar {
             width: 36px; height: 36px;
-            background: rgba(41, 128, 185, 0.15);
+            background: rgba(32, 201, 151, 0.15);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-weight: 700; font-size: .85rem; color: var(--info);
@@ -206,6 +206,13 @@
         }
         .alert-success { background: #eafaf1; color: var(--success); border: 1px solid #a9dfbf; }
         .alert-danger  { background: #fdf0ef; color: var(--danger);  border: 1px solid #f5c6c2; }
+
+        /* ── Pagination ──────────────────────────── */
+        .pagination { display: flex; padding-left: 0; list-style: none; justify-content: center; margin-top: 1.5rem; gap: 0.3rem; }
+        .page-item .page-link { position: relative; display: block; color: var(--text); text-decoration: none; background-color: #fff; border: 1px solid var(--border); transition: all .2s; border-radius: 8px; padding: 0.5rem 0.8rem; font-size: 0.85rem; font-weight: 600; }
+        .page-item.active .page-link { z-index: 3; color: #fff; background-color: var(--primary); border-color: var(--primary); box-shadow: 0 4px 10px rgba(32, 201, 151, 0.2); }
+        .page-item.disabled .page-link { color: var(--text-muted); pointer-events: none; background-color: #f8fafc; border-color: var(--border); }
+        .page-link:hover { z-index: 2; color: var(--primary); background-color: #f1f5f9; border-color: var(--border); }
 
         /* ── Scrollbar ───────────────────────────── */
         ::-webkit-scrollbar { width: 5px; }

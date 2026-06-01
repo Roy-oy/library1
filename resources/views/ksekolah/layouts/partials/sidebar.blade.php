@@ -1,9 +1,8 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <div class="brand-logo"><i class="fas fa-school"></i></div>
+        <div class="brand-logo"><img src="{{ asset('images/logos.png') }}" alt="Logo Sekolah" style="width: 50px; height: 50px;"></div>
         <div class="brand-text">
-            <div class="title">SIP Sekolah</div>
-            <div class="sub">Panel Kepala Sekolah</div>
+            <div class="title">SIP SMP Negeri 1 Percut Sei Tuan</div>
         </div>
     </div>
 
@@ -12,7 +11,7 @@
         <div class="nav-item">
             <a href="{{ route('ksekolah.dashboard') }}"
                class="nav-link {{ request()->routeIs('ksekolah.dashboard') ? 'active' : '' }}">
-                <i class="fas fa-chart-line"></i> Dashboard
+                <i class="fas fa-home"></i> Dashboard
             </a>
         </div>
 
@@ -20,14 +19,14 @@
         <div class="nav-item">
             <a href="{{ route('ksekolah.report.aktivitas.index') }}" 
                class="nav-link {{ request()->routeIs('ksekolah.report.aktivitas.*') ? 'active' : '' }}">
-                <i class="fas fa-history"></i> Laporan Aktivitas
+                <i class="fas fa-chart-bar"></i> Laporan Aktivitas
             </a>
         </div>
 
         <div class="nav-section-label">Pantauan</div>
         <div class="nav-item">
             <a href="{{ route('ksekolah.petugas.index') }}" class="nav-link {{ request()->routeIs('ksekolah.petugas.*') ? 'active' : '' }}">
-                <i class="fas fa-users-cog"></i> Data Petugas
+                <i class="fas fa-user-tie"></i> Data Petugas
             </a>
         </div>
         <div class="nav-item">
@@ -39,7 +38,7 @@
         <div class="nav-section-label">Akun</div>
         <div class="nav-item">
             <a href="{{ route('ksekolah.profile.index') }}" class="nav-link {{ request()->routeIs('ksekolah.profile.*') ? 'active' : '' }}">
-                <i class="fas fa-user-cog"></i> Profil Saya
+                <i class="fas fa-user-circle"></i> Profil Saya
             </a>
         </div>
     </nav>

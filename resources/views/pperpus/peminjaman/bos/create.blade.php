@@ -45,23 +45,20 @@
     .btn-submit:hover { background: var(--primary-dark); }
 
     /* Books Selection UI */
-    .buku-grid {
-        display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .8rem;
+    .stok-badge {
+        display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+        font-size: 0.7rem; font-weight: 700; width: max-content;
     }
-    .buku-item {
-        border: 1.5px solid var(--border); border-radius: 10px; padding: .8rem;
-        transition: all .2s; position: relative; background: #fff;
-        display: flex; align-items: flex-start; gap: 10px;
-    }
-    .buku-item:hover { border-color: var(--primary); background: #f4f8fd; }
+    .stok-tersedia { background: #eafaf1; color: var(--success); border: 1px solid #a9dfbf; }
+    .stok-habis { background: #fdf0ef; color: var(--danger); border: 1px solid #f5c6c2; }
     
-    .buku-checkbox {
-        width: 18px; height: 18px; margin-top: 3px; cursor: pointer;
+    #buku-container table tbody tr:hover { background: #fdfefe; }
+    #buku-container table tbody tr:has(input:checked) { background: rgba(155, 89, 182, 0.06); }
+    
+    .stok-badge {
+        display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+        font-size: 0.7rem; font-weight: 700; margin-top: 0.4rem; width: max-content;
     }
-    .buku-info { flex: 1; }
-    .buku-item .judul { font-weight: 700; font-size: .85rem; margin-bottom: .2rem; color: var(--text); }
-    .buku-item .meta  { font-size: .75rem; color: var(--text-muted); }
-
     .empty-books {
         text-align: center; color: var(--text-muted); font-size: .85rem; 
         padding: 2.5rem 1.5rem; background: var(--surface); border-radius: 12px; 
@@ -137,9 +134,12 @@
 
             <hr style="border:0; border-top:1px solid var(--border); margin:1.5rem 0">
             
-            <div style="display:flex; flex-direction:column; margin-bottom:1rem;">
-                <label style="margin:0; font-size:.9rem; font-weight:800; color:var(--text)">Pilih Koleksi Buku BOS <span style="color:var(--danger)">*</span></label>
-                <div style="font-size:.75rem; color:var(--text-muted); margin-top:.2rem">Centang buku-buku paket yang ingin dipinjamkan.</div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem;">
+                <div>
+                    <label style="margin:0; font-size:.9rem; font-weight:800; color:var(--text)">Pilih Koleksi Buku BOS <span style="color:var(--danger)">*</span></label>
+                    <div style="font-size:.75rem; color:var(--text-muted); margin-top:.2rem">Centang buku-buku paket yang ingin dipinjamkan.</div>
+                </div>
+                <span style="font-size:.85rem; font-weight:800; color:var(--primary); background:#eef4fc; padding:.4rem .8rem; border-radius:20px;">Terpilih: <span id="book-count">0</span> Buku</span>
             </div>
             <div id="buku-container">
                 <div class="empty-books">
@@ -239,28 +239,82 @@
                     </div>
                 `;
             } else {
-                let html = '<div class="buku-grid">';
+                let html = `
+                <div class="table-responsive" style="border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: .88rem;">
+                        <thead style="background: #f8fafc; border-bottom: 1.5px solid var(--border);">
+                            <tr>
+                                <th style="padding: 1rem; width: 60px; text-align: center;">
+                                    <input type="checkbox" id="check-all-bos" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                                </th>
+                                <th style="padding: 1rem; font-weight: 800; color: var(--text-muted); font-size: .75rem; text-transform: uppercase;">Judul Buku</th>
+                                <th style="padding: 1rem; font-weight: 800; color: var(--text-muted); font-size: .75rem; text-transform: uppercase;">Pengarang & Tahun</th>
+                                <th style="padding: 1rem; font-weight: 800; color: var(--text-muted); font-size: .75rem; text-transform: uppercase;">Stok</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buku-tbody">
+                `;
                 bukus.forEach(b => {
                     html += `
-                        <label class="buku-item">
-                            <input type="checkbox" name="buku_bos[]" value="${b.id_buku}" class="buku-checkbox">
-                            <div class="buku-info">
-                                <div class="judul">${b.judul_buku}</div>
-                                <div class="meta">${b.pengarang || 'Tanpa Pengarang'}</div>
-                                <div class="meta" style="color:${b.stok > 0 ? 'inherit' : 'red'}">Stok: ${b.stok}</div>
-                            </div>
-                        </label>
+                        <tr style="border-bottom: 1px solid var(--border); transition: background .2s;">
+                            <td style="padding: 1rem; text-align: center;">
+                                <input type="checkbox" name="buku_bos[]" value="${b.id_buku}" class="buku-checkbox" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                            </td>
+                            <td style="padding: 1rem; font-weight: 700; color: var(--text);">${b.judul_buku}</td>
+                            <td style="padding: 1rem; color: var(--text-muted); font-size: .8rem;">
+                                <i class="fas fa-user-edit"></i> ${b.pengarang || 'Tanpa Pengarang'}, ${b.tahun_terbit || '-'}
+                            </td>
+                            <td style="padding: 1rem;">
+                                <div class="stok-badge ${b.stok > 0 ? 'stok-tersedia' : 'stok-habis'}" style="margin:0;">
+                                    <i class="fas fa-layer-group"></i> Stok: ${b.stok}
+                                </div>
+                            </td>
+                        </tr>
                     `;
                 });
-                html += '</div>';
+                html += `
+                        </tbody>
+                    </table>
+                </div>
+                `;
                 bukuContainer.innerHTML = html;
+                
+                const checkAll = document.getElementById('check-all-bos');
+                const checkboxes = document.querySelectorAll('.buku-checkbox');
+                if (checkAll) {
+                    checkAll.addEventListener('change', function() {
+                        checkboxes.forEach(cb => cb.checked = this.checked);
+                        updateSelectedBosBooks();
+                    });
+                }
             }
+            updateSelectedBosBooks();
 
         } catch (e) {
             console.error('Error fetching buku:', e);
             bukuContainer.innerHTML = '<div style="color:red; text-align:center;">Terjadi kesalahan saat memuat buku.</div>';
+            updateSelectedBosBooks();
         }
     }
+
+    const bookCount = document.getElementById('book-count');
+
+    function updateSelectedBosBooks() {
+        const checkedBoxes = document.querySelectorAll('input[name="buku_bos[]"]:checked');
+        if (bookCount) bookCount.textContent = checkedBoxes.length;
+        
+        const allBoxes = document.querySelectorAll('input[name="buku_bos[]"]');
+        const checkAll = document.getElementById('check-all-bos');
+        if (checkAll && allBoxes.length > 0) {
+            checkAll.checked = (checkedBoxes.length === allBoxes.length);
+        }
+    }
+
+    bukuContainer.addEventListener('change', function(e) {
+        if(e.target && e.target.classList.contains('buku-checkbox')) {
+            updateSelectedBosBooks();
+        }
+    });
 
     document.getElementById('form-peminjaman').addEventListener('submit', function(e) {
         if (!hiddenIdSiswa.value) {

@@ -102,29 +102,34 @@
     /* ── Table Styling ── */
     .table-wrap {
         overflow-x: auto;
+        padding: 0;
     }
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
     }
     thead th {
-        background: #f8fafc;
+        background: #f1f5f9;
         font-size: 0.75rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        color: var(--text-muted);
-        padding: 1rem 1.5rem;
-        border-bottom: 1.5px solid var(--border);
+        color: #475569;
+        padding: 0.85rem 1rem;
+        border-bottom: 2px solid var(--border);
         white-space: nowrap;
         text-align: left;
     }
     tbody td {
-        padding: 1rem 1.5rem;
-        font-size: 0.9rem;
-        border-bottom: 1px solid #f1f5f9;
+        padding: 0.85rem 1rem;
+        font-size: 0.88rem;
+        border-bottom: 1px solid var(--border);
         color: var(--text);
         vertical-align: middle;
+    }
+    tbody tr:nth-child(even) td {
+        background: #f8fafc;
     }
     tbody tr:last-child td {
         border-bottom: none;
@@ -133,7 +138,7 @@
         transition: background var(--transition-speed) ease;
     }
     tbody tr:hover td {
-        background: var(--theme-primary-light);
+        background: var(--theme-primary-light) !important;
     }
 
     /* ── Category Badge ── */
@@ -144,11 +149,8 @@
         padding: 0.4rem 1rem;
         border-radius: 30px;
         font-size: 0.85rem;
-        font-weight: 700;
+        font-weight: 800;
         text-transform: capitalize;
-        background: var(--theme-primary-light);
-        color: var(--primary);
-        border: 1px solid rgba(37, 99, 235, 0.15);
     }
     .cat-badge i {
         font-size: 0.75rem;
@@ -338,6 +340,135 @@
         background: #dc2626;
     }
 
+    /* ── Form Modals (Create & Edit) ── */
+    .form-modal-box {
+        background: var(--surface);
+        border-radius: var(--card-radius);
+        padding: 0;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+        transform: scale(0.9);
+        transition: transform var(--transition-speed) ease;
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .modal-overlay.show .form-modal-box {
+        transform: scale(1);
+    }
+    .form-modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fafbfc;
+    }
+    .form-modal-header h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--text);
+        margin: 0;
+    }
+    .form-modal-close {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: color var(--transition-speed) ease;
+    }
+    .form-modal-close:hover {
+        color: var(--theme-danger);
+    }
+    .form-modal-body {
+        padding: 1.5rem;
+        overflow-y: auto;
+    }
+    .form-modal-footer {
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--border);
+        background: #fafbfc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        margin-bottom: 1rem;
+    }
+    .form-group label {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .form-group label i {
+        color: var(--primary);
+        font-size: 0.85rem;
+    }
+    .form-group label .req {
+        color: var(--theme-danger);
+    }
+    .form-control-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .form-control-wrap i.input-icon {
+        position: absolute;
+        left: 1rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: var(--text);
+        background: #fff;
+        transition: all var(--transition-speed) ease;
+        outline: none;
+    }
+    .form-control-wrap i.input-icon + .form-control {
+        padding-left: 2.5rem;
+    }
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3.5px rgba(74, 144, 226, 0.15);
+    }
+    
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -363,9 +494,9 @@
         <h1><i class="fas fa-tags" style="color:var(--primary)"></i> Kategori Buku</h1>
         <p>Kelola kategori klasifikasi untuk koleksi buku perpustakaan</p>
     </div>
-    <a href="{{ route('kperpus.kategori.create') }}" class="btn-primary" id="btn-tambah-kategori">
+    <button type="button" class="btn-primary" id="btn-tambah-kategori" onclick="openCreateModal()">
         <i class="fas fa-plus"></i> Tambah Kategori
-    </a>
+    </button>
 </div>
 
 {{-- Table Card --}}
@@ -378,42 +509,49 @@
         <table id="kategori-table">
             <thead>
                 <tr>
-                    <th style="width: 60px;">#</th>
+                    <th style="width: 60px; text-align: center;">#</th>
                     <th>Nama Kategori</th>
-                    <th style="width: 200px;">Jumlah Buku Terkait</th>
-                    <th style="width: 180px;">Tanggal Dibuat</th>
+                    <th style="width: 200px; text-align: center;">Jumlah Buku Terkait</th>
+                    <th style="width: 180px; text-align: center;">Tanggal Dibuat</th>
                     <th style="width: 120px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($kategori as $index => $item)
+                @php
+                    $colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4'];
+                    $color = $colors[$item->id_kategori % count($colors)];
+                @endphp
                 <tr>
-                    <td>{{ $kategori->firstItem() + $index }}</td>
+                    <td style="text-align: center;">{{ $kategori->firstItem() + $index }}</td>
                     <td>
-                        <span class="cat-badge">
+                        <span class="cat-badge" style="color: {{ $color }}; background: {{ $color }}1a; border-color: {{ $color }}40;">
                             <i class="fas fa-tag"></i>
                             {{ ucwords($item->nama_kategori) }}
                         </span>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <span class="buku-count">
                             <i class="fas fa-book"></i>
                             {{ $item->bukus->count() }} buku
                         </span>
                     </td>
-                    <td style="color: var(--text-muted); font-weight: 600;">
+                    <td style="text-align: center; color: var(--text-muted); font-weight: 600;">
                         {{ $item->created_at->translatedFormat('d M Y') }}
                     </td>
                     <td>
                         <div class="actions" style="justify-content: center;">
-                            <a href="{{ route('kperpus.kategori.edit', $item->id_kategori) }}"
-                               class="btn-icon btn-edit" title="Edit Kategori">
+                            <button type="button" class="btn-icon btn-edit" title="Edit Kategori"
+                                onclick="openEditModal({
+                                    id: '{{ $item->id_kategori }}',
+                                    nama: '{{ addslashes($item->nama_kategori) }}'
+                                })">
                                 <i class="fas fa-pen"></i>
-                            </a>
+                            </button>
                             <button type="button" class="btn-icon btn-del" title="Hapus Kategori"
                                 onclick="confirmDelete(
                                     '{{ route('kperpus.kategori.destroy', $item->id_kategori) }}',
-                                    '{{ ucwords($item->nama_kategori) }}',
+                                    '{{ addslashes(ucwords($item->nama_kategori)) }}',
                                     {{ $item->bukus->count() }}
                                 )">
                                 <i class="fas fa-trash"></i>
@@ -466,6 +604,59 @@
 
 @endsection
 
+{{-- Create Modal --}}
+<div class="modal-overlay" id="create-modal">
+    <div class="form-modal-box">
+        <div class="form-modal-header">
+            <h3><i class="fas fa-plus" style="color:var(--primary)"></i> Tambah Kategori Baru</h3>
+            <button class="form-modal-close" onclick="closeCreateModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form action="{{ route('kperpus.kategori.store') }}" method="POST">
+            @csrf
+            <div class="form-modal-body">
+                <div class="form-group">
+                    <label for="create_nama">Nama Kategori <span class="req">*</span></label>
+                    <div class="form-control-wrap">
+                        <i class="fas fa-tags input-icon"></i>
+                        <input type="text" id="create_nama" name="nama_kategori" class="form-control" placeholder="Contoh: Novel, Sains..." required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeCreateModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- Edit Modal --}}
+<div class="modal-overlay" id="edit-modal">
+    <div class="form-modal-box">
+        <div class="form-modal-header">
+            <h3><i class="fas fa-pen" style="color:var(--primary)"></i> Edit Kategori</h3>
+            <button class="form-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="edit-form" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-modal-body">
+                <div class="form-group">
+                    <label for="edit_nama">Nama Kategori <span class="req">*</span></label>
+                    <div class="form-control-wrap">
+                        <i class="fas fa-tags input-icon"></i>
+                        <input type="text" id="edit_nama" name="nama_kategori" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Perbarui</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     function confirmDelete(url, nama, jumlahBuku) {
@@ -480,21 +671,50 @@
         
         const modal = document.getElementById('delete-modal');
         modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
+        setTimeout(() => { modal.classList.add('show'); }, 10);
     }
 
     function closeDeleteModal() {
         const modal = document.getElementById('delete-modal');
         modal.classList.remove('show');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 200);
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
 
     document.getElementById('delete-modal').addEventListener('click', function (e) {
         if (e.target === this) closeDeleteModal();
+    });
+
+    // ── Create Modal ──
+    function openCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.classList.add('show'); }, 10);
+    }
+    function closeCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+    document.getElementById('create-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeCreateModal();
+    });
+
+    // ── Edit Modal ──
+    function openEditModal(data) {
+        document.getElementById('edit-form').action = "{{ url('kepala-perpustakaan/kategori') }}/" + data.id;
+        document.getElementById('edit_nama').value = data.nama;
+
+        const modal = document.getElementById('edit-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.classList.add('show'); }, 10);
+    }
+    function closeEditModal() {
+        const modal = document.getElementById('edit-modal');
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+    document.getElementById('edit-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeEditModal();
     });
 </script>
 @endpush

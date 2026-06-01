@@ -41,6 +41,7 @@ Route::prefix('kepala-sekolah')
         // Laporan Aktivitas (Akses Lihat Saja)
         Route::get('report/aktivitas',              [ReportAktivitasController::class, 'index'])->name('report.aktivitas.index');
         Route::get('report/aktivitas/export-pdf',   [ReportAktivitasController::class, 'exportPdf'])->name('report.aktivitas.export-pdf');
+        Route::get('report/aktivitas/export-excel', [ReportAktivitasController::class, 'exportExcel'])->name('report.aktivitas.export-excel');
 
         // Pantauan
         Route::get('petugas',   [KsekolahOfficer::class, 'index'])->name('petugas.index');
@@ -80,6 +81,7 @@ Route::prefix('kepala-perpustakaan')
         // Laporan Aktivitas
         Route::get('report/aktivitas',              [ReportAktivitasController::class, 'index'])->name('report.aktivitas.index');
         Route::get('report/aktivitas/export-pdf',   [ReportAktivitasController::class, 'exportPdf'])->name('report.aktivitas.export-pdf');
+        Route::get('report/aktivitas/export-excel', [ReportAktivitasController::class, 'exportExcel'])->name('report.aktivitas.export-excel');
 
         // Akun
         Route::get('profile',   [KperpusProfile::class, 'index'])->name('profile.index');
@@ -135,6 +137,7 @@ Route::prefix('penjaga-perpustakaan')
         // Laporan Aktivitas
         Route::get('report/aktivitas',              [ReportAktivitasController::class, 'index'])->name('report.aktivitas.index');
         Route::get('report/aktivitas/export-pdf',   [ReportAktivitasController::class, 'exportPdf'])->name('report.aktivitas.export-pdf');
+        Route::get('report/aktivitas/export-excel', [ReportAktivitasController::class, 'exportExcel'])->name('report.aktivitas.export-excel');
 
         // Akun
         Route::get('profile',   [PperpusProfile::class, 'index'])->name('profile.index');

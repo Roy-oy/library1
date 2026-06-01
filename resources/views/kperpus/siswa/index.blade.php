@@ -1,7 +1,7 @@
 @extends('kperpus.layouts.app')
 
 @section('title', 'Data Siswa')
-@section('page-title', 'Data Siswa / Anggota')
+@section('page-title', 'Data Siswa')
 
 @push('styles')
 <style>
@@ -130,29 +130,34 @@
     /* ── Table Styling ── */
     .table-wrap {
         overflow-x: auto;
+        padding: 0;
     }
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
     }
     thead th {
-        background: #f8fafc;
+        background: #f1f5f9;
         font-size: 0.75rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        color: var(--text-muted);
-        padding: 1rem 1.5rem;
-        border-bottom: 1.5px solid var(--border);
+        color: #475569;
+        padding: 0.85rem 1rem;
+        border-bottom: 2px solid var(--border);
         white-space: nowrap;
         text-align: left;
     }
     tbody td {
-        padding: 1rem 1.5rem;
-        font-size: 0.9rem;
-        border-bottom: 1px solid #f1f5f9;
+        padding: 0.85rem 1rem;
+        font-size: 0.88rem;
+        border-bottom: 1px solid var(--border);
         color: var(--text);
         vertical-align: middle;
+    }
+    tbody tr:nth-child(even) td {
+        background: #f8fafc;
     }
     tbody td.student-name-col {
         display: flex;
@@ -179,7 +184,7 @@
         transition: background var(--transition-speed) ease;
     }
     tbody tr:hover td {
-        background: var(--theme-primary-light);
+        background: var(--theme-primary-light) !important;
     }
 
     /* ── Badges / Pills ── */
@@ -416,6 +421,144 @@
         background: #dc2626;
     }
 
+    /* ── Form Modals (Create & Edit) ── */
+    .form-modal-box {
+        background: var(--surface);
+        border-radius: var(--card-radius);
+        padding: 0;
+        width: 90%;
+        max-width: 600px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+        transform: scale(0.9);
+        transition: transform var(--transition-speed) ease;
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .modal-overlay.show .form-modal-box {
+        transform: scale(1);
+    }
+    .form-modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fafbfc;
+    }
+    .form-modal-header h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--text);
+        margin: 0;
+    }
+    .form-modal-close {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: color var(--transition-speed) ease;
+    }
+    .form-modal-close:hover {
+        color: var(--theme-danger);
+    }
+    .form-modal-body {
+        padding: 1.5rem;
+        overflow-y: auto;
+    }
+    .form-modal-footer {
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--border);
+        background: #fafbfc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+
+    /* ── Form Elements ── */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+    .form-grid .full {
+        grid-column: 1 / -1;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+    .form-group label {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .form-group label i {
+        color: var(--primary);
+        font-size: 0.85rem;
+    }
+    .form-group label .req {
+        color: var(--theme-danger);
+    }
+    .form-control-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .form-control-wrap i.input-icon {
+        position: absolute;
+        left: 1rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: var(--text);
+        background: #fff;
+        transition: all var(--transition-speed) ease;
+        outline: none;
+    }
+    .form-control-wrap i.input-icon + .form-control {
+        padding-left: 2.5rem;
+    }
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3.5px rgba(74, 144, 226, 0.15);
+    }
+    
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -444,9 +587,9 @@
         <h1><i class="fas fa-users" style="color:var(--primary)"></i> Data Siswa</h1>
         <p>Kelola profil data siswa dan status keanggotaan perpustakaan</p>
     </div>
-    <a href="{{ route('kperpus.siswa.create') }}" class="btn-primary" id="btn-tambah-siswa">
+    <button type="button" class="btn-primary" id="btn-tambah-siswa" onclick="openCreateModal()">
         <i class="fas fa-user-plus"></i> Tambah Siswa Baru
-    </a>
+    </button>
 </div>
 
 {{-- Table Card --}}
@@ -473,37 +616,34 @@
         <table id="siswa-table">
             <thead>
                 <tr>
-                    <th style="width: 60px;">#</th>
-                    <th style="width: 120px;">NIS</th>
+                    <th style="width: 50px; text-align: center;">#</th>
+                    <th style="width: 100px;">NIS</th>
                     <th>Nama Lengkap</th>
-                    <th style="width: 110px;">Kelas</th>
-                    <th style="width: 90px; text-align: center;">L/P</th>
-                    <th>Alamat Lengkap</th>
-                    <th style="width: 120px;">Status</th>
-                    <th style="width: 110px; text-align: center;">Aksi</th>
+                    <th style="width: 100px;">Kelas</th>
+                    <th style="width: 80px; text-align: center;">L/P</th>
+                    <th>Alamat</th>
+                    <th style="width: 100px; text-align: center;">Status</th>
+                    <th style="width: 100px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($siswa as $index => $item)
                 <tr>
-                    <td>{{ $siswa->firstItem() + $index }}</td>
+                    <td style="text-align: center;">{{ $siswa->firstItem() + $index }}</td>
                     <td>
                         <code style="font-size: 0.8rem; background: var(--theme-primary-light); color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 700; border: 1px solid rgba(37, 99, 235, 0.1);">{{ $item->nis }}</code>
                     </td>
                     <td class="student-name-col">
-                        <div class="name-avatar">
-                            {{ strtoupper(substr($item->nama_siswa, 0, 1)) }}
-                        </div>
                         <span style="font-weight: 700; color: var(--text);">{{ $item->nama_siswa }}</span>
                     </td>
                     <td><span class="kelas-badge">{{ $item->kelas }}</span></td>
                     <td style="text-align: center; font-weight: 700; color: #475569;">
                         {{ $item->jenis_kelamin === 'Laki-laki' ? 'L' : 'P' }}
                     </td>
-                    <td style="max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #475569;" title="{{ $item->alamat }}">
+                    <td style="max-width: 250px; color: #475569; line-height: 1.4;">
                         {{ $item->alamat }}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         @if($item->status === 'aktif')
                             <span class="pill pill-success"><i class="fas fa-check-circle" style="font-size: 0.75rem;"></i> Aktif</span>
                         @else
@@ -512,10 +652,18 @@
                     </td>
                     <td>
                         <div class="actions" style="justify-content: center;">
-                            <a href="{{ route('kperpus.siswa.edit', $item->id_siswa) }}"
-                               class="btn-icon btn-edit" title="Edit Data Siswa">
+                            <button type="button" class="btn-icon btn-edit" title="Edit Data Siswa"
+                                onclick="openEditModal({
+                                    id: '{{ $item->id_siswa }}',
+                                    nis: '{{ addslashes($item->nis) }}',
+                                    nama: '{{ addslashes($item->nama_siswa) }}',
+                                    kelas: '{{ addslashes($item->kelas) }}',
+                                    jenis_kelamin: '{{ addslashes($item->jenis_kelamin) }}',
+                                    status: '{{ addslashes($item->status) }}',
+                                    alamat: '{{ addslashes($item->alamat) }}'
+                                })">
                                 <i class="fas fa-pen"></i>
-                            </a>
+                            </button>
                             <button type="button" class="btn-icon btn-del" title="Hapus Data Siswa"
                                 onclick="confirmDelete('{{ route('kperpus.siswa.destroy', $item->id_siswa) }}', '{{ addslashes($item->nama_siswa) }}')">
                                 <i class="fas fa-trash"></i>
@@ -566,6 +714,157 @@
     </div>
 </div>
 
+{{-- Create Modal --}}
+<div class="modal-overlay" id="create-modal">
+    <div class="form-modal-box">
+        <div class="form-modal-header">
+            <h3><i class="fas fa-user-plus" style="color:var(--primary)"></i> Tambah Siswa Baru</h3>
+            <button class="form-modal-close" onclick="closeCreateModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form action="{{ route('kperpus.siswa.store') }}" method="POST">
+            @csrf
+            <div class="form-modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="create_nis">NIS <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-barcode input-icon"></i>
+                            <input type="text" id="create_nis" name="nis" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_nama">Nama Lengkap <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-tag input-icon"></i>
+                            <input type="text" id="create_nama" name="nama_siswa" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_kelas">Kelas <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-layer-group input-icon"></i>
+                            <select id="create_kelas" name="kelas" class="form-control" required>
+                                <option value="">— Pilih Kelas —</option>
+                                @foreach(['VII-A', 'VII-B', 'VIII-A', 'VIII-B', 'IX-A', 'IX-B'] as $kls)
+                                    <option value="{{ $kls }}">{{ $kls }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_jk">Jenis Kelamin <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-venus-mars input-icon"></i>
+                            <select id="create_jk" name="jenis_kelamin" class="form-control" required>
+                                <option value="">— Pilih JK —</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="create_status">Status <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-shield input-icon"></i>
+                            <select id="create_status" name="status" class="form-control" required>
+                                <option value="aktif">Siswa Aktif</option>
+                                <option value="nonaktif">Nonaktif / Pindah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="create_alamat">Alamat Lengkap <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-map-marked-alt input-icon" style="top: 1.1rem;"></i>
+                            <textarea id="create_alamat" name="alamat" rows="3" class="form-control" required style="padding-left: 2.5rem;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeCreateModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- Edit Modal --}}
+<div class="modal-overlay" id="edit-modal">
+    <div class="form-modal-box">
+        <div class="form-modal-header">
+            <h3><i class="fas fa-pen" style="color:var(--primary)"></i> Edit Data Siswa</h3>
+            <button class="form-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="edit-form" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit_nis">NIS <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-barcode input-icon"></i>
+                            <input type="text" id="edit_nis" name="nis" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_nama">Nama Lengkap <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-tag input-icon"></i>
+                            <input type="text" id="edit_nama" name="nama_siswa" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_kelas">Kelas <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-layer-group input-icon"></i>
+                            <select id="edit_kelas" name="kelas" class="form-control" required>
+                                <option value="">— Pilih Kelas —</option>
+                                @foreach(['VII-A', 'VII-B', 'VIII-A', 'VIII-B', 'IX-A', 'IX-B'] as $kls)
+                                    <option value="{{ $kls }}">{{ $kls }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_jk">Jenis Kelamin <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-venus-mars input-icon"></i>
+                            <select id="edit_jk" name="jenis_kelamin" class="form-control" required>
+                                <option value="">— Pilih JK —</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="edit_status">Status <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-shield input-icon"></i>
+                            <select id="edit_status" name="status" class="form-control" required>
+                                <option value="aktif">Siswa Aktif</option>
+                                <option value="nonaktif">Nonaktif / Pindah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="edit_alamat">Alamat Lengkap <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-map-marked-alt input-icon" style="top: 1.1rem;"></i>
+                            <textarea id="edit_alamat" name="alamat" rows="3" class="form-control" required style="padding-left: 2.5rem;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Perbarui</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -604,6 +903,44 @@
     // Close on backdrop click
     document.getElementById('delete-modal').addEventListener('click', function (e) {
         if (e.target === this) closeDeleteModal();
+    });
+
+    // ── Create Modal ──
+    function openCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.classList.add('show'); }, 10);
+    }
+    function closeCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+    document.getElementById('create-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeCreateModal();
+    });
+
+    // ── Edit Modal ──
+    function openEditModal(data) {
+        document.getElementById('edit-form').action = "{{ url('kepala-perpustakaan/siswa') }}/" + data.id;
+        document.getElementById('edit_nis').value = data.nis;
+        document.getElementById('edit_nama').value = data.nama;
+        document.getElementById('edit_kelas').value = data.kelas;
+        document.getElementById('edit_jk').value = data.jenis_kelamin;
+        document.getElementById('edit_status').value = data.status;
+        document.getElementById('edit_alamat').value = data.alamat;
+
+        const modal = document.getElementById('edit-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.classList.add('show'); }, 10);
+    }
+    function closeEditModal() {
+        const modal = document.getElementById('edit-modal');
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+    document.getElementById('edit-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeEditModal();
     });
 </script>
 @endpush

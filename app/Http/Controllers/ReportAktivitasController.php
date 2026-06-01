@@ -18,30 +18,38 @@ class ReportAktivitasController extends Controller
         // Default: bulan ini
         $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->endOfMonth()->format('Y-m-d'));
+        $sumberBuku = $request->input('sumber_buku', 'buku perpus'); // 'buku perpus' atau 'bos'
 
-        // Data Peminjaman dalam periode
-        $peminjamans = Peminjaman::with(['siswa', 'details.buku'])
-            ->whereBetween('tanggal_pinjam', [$startDate, $endDate])
-            ->latest('tanggal_pinjam')
+        $detailPeminjaman = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
+            ->where('sumber_buku', $sumberBuku)
+            ->where(function($q) use ($startDate, $endDate) {
+                $q->whereHas('peminjaman', function($q2) use ($startDate, $endDate) {
+                    $q2->whereBetween('tanggal_pinjam', [$startDate, $endDate]);
+                })->orWhereBetween('tanggal_kembali', [$startDate, $endDate]);
+            })
             ->get();
 
-        // Data Pengembalian dalam periode
-        $pengembalians = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
-            ->whereBetween('tanggal_kembali', [$startDate, $endDate])
-            ->latest('tanggal_kembali')
-            ->get();
+        $aktivitas = $detailPeminjaman->map(function($d) {
+            return (object)[
+                'kode' => $d->peminjaman->kode_peminjaman ?? '-',
+                'nis' => $d->peminjaman->siswa->nis ?? '-',
+                'siswa' => $d->peminjaman->siswa->nama_siswa ?? '-',
+                'kelas' => $d->peminjaman->siswa->kelas ?? '-',
+                'tanggal_pinjam' => optional($d->peminjaman->tanggal_pinjam)->format('Y-m-d') ?? '-',
+                'tanggal_jatuh_tempo' => optional($d->tanggal_jatuh_tempo)->format('Y-m-d') ?? '-',
+                'tanggal_kembali' => optional($d->tanggal_kembali)->format('Y-m-d') ?? '-',
+                'buku' => $d->buku->judul_buku ?? '-',
+                'telat' => $d->tanggal_kembali ? max(0, $d->jumlah_hari_terlambat) : $d->hari_terlambat_realtime,
+                'denda' => $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0),
+                'status' => $d->label_status
+            ];
+        });
 
-        // Statistik Ringkas
-        $stats = [
-            'total_pinjam'       => $peminjamans->count(),
-            'total_buku_pinjam'  => $peminjamans->sum(fn($p) => $p->details->count()),
-            'total_kembali'      => $pengembalians->count(),
-            'total_denda_masuk'  => $pengembalians->where('status_denda', 'lunas')->sum('jumlah_denda'),
-            'total_denda_tagihan'=> $pengembalians->where('status_denda', 'belum_lunas')->sum('jumlah_denda'),
-        ];
+        // Sort by tanggal pinjam descending
+        $aktivitas = $aktivitas->sortByDesc('tanggal_pinjam')->values();
 
         // Tentukan layout berdasarkan role user yang login
-        $layout = match (auth()->user()->role) {
+        $layout = match (auth()->user()->role ?? '') {
             'penjaga_perpustakaan' => 'pperpus.layouts.app',
             'kepala_perpustakaan'  => 'kperpus.layouts.app',
             'kepala_sekolah'       => 'ksekolah.layouts.app',
@@ -49,11 +57,10 @@ class ReportAktivitasController extends Controller
         };
 
         return view('report.aktivitas.index', compact(
-            'peminjamans', 
-            'pengembalians', 
-            'stats', 
+            'aktivitas', 
             'startDate', 
             'endDate',
+            'sumberBuku',
             'layout'
         ));
     }
@@ -65,24 +72,102 @@ class ReportAktivitasController extends Controller
     {
         $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->endOfMonth()->format('Y-m-d'));
+        $sumberBuku = $request->input('sumber_buku', 'buku perpus');
 
-        $peminjamans = Peminjaman::with(['siswa', 'details.buku'])
-            ->whereBetween('tanggal_pinjam', [$startDate, $endDate])
-            ->latest('tanggal_pinjam')
+        $detailPeminjaman = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
+            ->where('sumber_buku', $sumberBuku)
+            ->where(function($q) use ($startDate, $endDate) {
+                $q->whereHas('peminjaman', function($q2) use ($startDate, $endDate) {
+                    $q2->whereBetween('tanggal_pinjam', [$startDate, $endDate]);
+                })->orWhereBetween('tanggal_kembali', [$startDate, $endDate]);
+            })
             ->get();
 
-        $pengembalians = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
-            ->whereBetween('tanggal_kembali', [$startDate, $endDate])
-            ->latest('tanggal_kembali')
-            ->get();
+        $aktivitas = $detailPeminjaman->map(function($d) {
+            return (object)[
+                'kode' => $d->peminjaman->kode_peminjaman ?? '-',
+                'nis' => $d->peminjaman->siswa->nis ?? '-',
+                'siswa' => $d->peminjaman->siswa->nama_siswa ?? '-',
+                'kelas' => $d->peminjaman->siswa->kelas ?? '-',
+                'tanggal_pinjam' => optional($d->peminjaman->tanggal_pinjam)->format('Y-m-d') ?? '-',
+                'tanggal_jatuh_tempo' => optional($d->tanggal_jatuh_tempo)->format('Y-m-d') ?? '-',
+                'tanggal_kembali' => optional($d->tanggal_kembali)->format('Y-m-d') ?? '-',
+                'buku' => $d->buku->judul_buku ?? '-',
+                'telat' => $d->tanggal_kembali ? max(0, $d->jumlah_hari_terlambat) : $d->hari_terlambat_realtime,
+                'denda' => $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0),
+                'status' => $d->label_status
+            ];
+        });
+
+        // Sort by tanggal pinjam descending
+        $aktivitas = $aktivitas->sortByDesc('tanggal_pinjam')->values();
+
+        $totalDenda = $aktivitas->sum('denda');
 
         $pdf = Pdf::loadView('report.aktivitas.pdf', [
-            'peminjamans'   => $peminjamans,
-            'pengembalians' => $pengembalians,
+            'aktivitas'     => $aktivitas,
             'startDate'     => $startDate,
             'endDate'       => $endDate,
+            'sumberBuku'    => $sumberBuku,
+            'totalDenda'    => $totalDenda,
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->download('laporan-aktivitas-perpus-' . $startDate . '-sd-' . $endDate . '.pdf');
+        return $pdf->stream('laporan-aktivitas-'.($sumberBuku === 'bos' ? 'buku-bos' : 'buku-perpus').'-' . $startDate . '-sd-' . $endDate . '.pdf');
+    }
+
+    /**
+     * Export laporan aktivitas ke Excel (CSV).
+     */
+    public function exportExcel(Request $request)
+    {
+        $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', now()->endOfMonth()->format('Y-m-d'));
+        $sumberBuku = $request->input('sumber_buku', 'buku perpus');
+
+        $detailPeminjaman = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
+            ->where('sumber_buku', $sumberBuku)
+            ->where(function($q) use ($startDate, $endDate) {
+                $q->whereHas('peminjaman', function($q2) use ($startDate, $endDate) {
+                    $q2->whereBetween('tanggal_pinjam', [$startDate, $endDate]);
+                })->orWhereBetween('tanggal_kembali', [$startDate, $endDate]);
+            })
+            ->get();
+
+        $aktivitas = $detailPeminjaman->map(function($d) {
+            return (object)[
+                'kode' => $d->peminjaman->kode_peminjaman ?? '-',
+                'nis' => $d->peminjaman->siswa->nis ?? '-',
+                'siswa' => $d->peminjaman->siswa->nama_siswa ?? '-',
+                'kelas' => $d->peminjaman->siswa->kelas ?? '-',
+                'tanggal_pinjam' => optional($d->peminjaman->tanggal_pinjam)->format('Y-m-d') ?? '-',
+                'tanggal_jatuh_tempo' => optional($d->tanggal_jatuh_tempo)->format('Y-m-d') ?? '-',
+                'tanggal_kembali' => optional($d->tanggal_kembali)->format('Y-m-d') ?? '-',
+                'buku' => $d->buku->judul_buku ?? '-',
+                'telat' => $d->tanggal_kembali ? max(0, $d->jumlah_hari_terlambat) : $d->hari_terlambat_realtime,
+                'denda' => $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0),
+                'status' => $d->label_status
+            ];
+        });
+
+        // Sort by tanggal pinjam descending
+        $aktivitas = $aktivitas->sortByDesc('tanggal_pinjam')->values();
+
+        $totalDenda = $aktivitas->sum('denda');
+
+        $filename = 'laporan-aktivitas-'.($sumberBuku === 'bos' ? 'buku-bos' : 'buku-perpus').'-' . $startDate . '-sd-' . $endDate . '.xls';
+
+        return response()->view('report.aktivitas.excel', [
+            'aktivitas'     => $aktivitas,
+            'startDate'     => $startDate,
+            'endDate'       => $endDate,
+            'sumberBuku'    => $sumberBuku,
+            'totalDenda'    => $totalDenda,
+        ])->withHeaders([
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ]);
     }
 }

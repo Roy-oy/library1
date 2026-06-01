@@ -8,7 +8,7 @@
     /* ── Stat Cards ─── */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 1.2rem;
         margin-bottom: 2rem;
     }
@@ -16,9 +16,9 @@
         background: #ffffff;
         border-radius: 16px;
         padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(41, 128, 185, 0.05);
+        box-shadow: 0 4px 20px rgba(32, 201, 151, 0.05);
         display: flex; align-items: center; gap: 1.2rem;
-        border: 1px solid rgba(41, 128, 185, 0.08);
+        border: 1px solid rgba(32, 201, 151, 0.08);
         transition: all .3s ease;
         position: relative;
         overflow: hidden;
@@ -40,8 +40,8 @@
 
     .stat-card:hover { 
         transform: translateY(-5px); 
-        box-shadow: 0 12px 30px rgba(41, 128, 185, 0.12); 
-        border-color: rgba(41, 128, 185, 0.2); 
+        box-shadow: 0 12px 30px rgba(32, 201, 151, 0.12); 
+        border-color: rgba(32, 201, 151, 0.2); 
     }
     .stat-card:hover::before { opacity: 1; }
 
@@ -60,12 +60,13 @@
     .stat-card.purple .stat-icon { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #7e22ce; }
     .stat-card.green  .stat-icon { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #15803d; }
 
+    .stat-body { width: 100%; }
     .stat-body .value { font-size: 1.8rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: .3rem;}
     .stat-body .label { font-size: .85rem; font-weight: 500; color: #64748b; }
 
     .panels-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 1.5rem;
         margin-bottom: 1.5rem;
         align-items: stretch;
@@ -73,15 +74,15 @@
     .panel {
         background: var(--surface);
         border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(41, 128, 185, 0.05);
-        border: 1px solid rgba(41, 128, 185, 0.08);
+        box-shadow: 0 4px 20px rgba(32, 201, 151, 0.05);
+        border: 1px solid rgba(32, 201, 151, 0.08);
         overflow: hidden;
         display: flex;
         flex-direction: column;
     }
     .panel-header {
         padding: 1.2rem 1.5rem;
-        border-bottom: 1px solid rgba(41, 128, 185, 0.08);
+        border-bottom: 1px solid rgba(32, 201, 151, 0.08);
         display: flex; align-items: center; justify-content: space-between;
         background: #fafcff;
     }
@@ -133,16 +134,10 @@
     }
     .empty-state i { font-size: 2rem; display: block; margin-bottom: .6rem; opacity: .4; }
 
-    @media (max-width: 1200px) {
-        .stats-grid { grid-template-columns: repeat(3, 1fr); }
-    }
     @media (max-width: 1024px) {
-        .panels-row { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
         .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
         .stats-grid { grid-template-columns: 1fr; }
     }
 </style>
@@ -150,7 +145,7 @@
 
 @section('content')
 
-<div class="welcome-banner" style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 16px; padding: 2rem; color: #ffffff; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(30, 60, 114, 0.15); position: relative; overflow: hidden;">
+<div class="welcome-banner" style="background: linear-gradient(135deg, #0f766e, #14b8a6); border-radius: 16px; padding: 2rem; color: #ffffff; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(20, 184, 166, 0.15); position: relative; overflow: hidden;">
     <div style="position: absolute; right: -50px; bottom: -50px; font-size: 15rem; color: rgba(255, 255, 255, 0.05); transform: rotate(-15deg); pointer-events: none;">
         <i class="fas fa-school"></i>
     </div>
@@ -163,76 +158,208 @@
         <div style="font-size: 1.05rem; font-weight: 800; color: #f1c40f;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Administrator' }}</div>
     </div>
 </div>
+
 <div class="stats-grid">
-    <div class="stat-card blue">
-        <div class="stat-icon"><i class="fas fa-book"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_buku']) }}</div>
-            <div class="label">Total Koleksi Buku</div>
-        </div>
-    </div>
     <div class="stat-card purple">
         <div class="stat-icon"><i class="fas fa-users"></i></div>
         <div class="stat-body">
             <div class="value">{{ number_format($stats['total_siswa']) }}</div>
-            <div class="label">Total Siswa Terdaftar</div>
+            <div class="label">Jumlah Siswa</div>
+        </div>
+    </div>
+    <div class="stat-card blue">
+        <div class="stat-icon"><i class="fas fa-book"></i></div>
+        <div class="stat-body">
+            <div class="value">{{ number_format($stats['total_buku']) }}</div>
+            <div class="label">Total Buku</div>
+        </div>
+    </div>
+    <div class="stat-card sky">
+        <div class="stat-icon"><i class="fas fa-book-reader"></i></div>
+        <div class="stat-body">
+            <div class="value">{{ number_format($stats['total_buku_perpus']) }}</div>
+            <div class="label">Buku Perpustakaan</div>
         </div>
     </div>
     <div class="stat-card orange">
-        <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
+        <div class="stat-icon"><i class="fas fa-gift"></i></div>
         <div class="stat-body">
-            <div class="value">{{ number_format($stats['peminjaman_aktif']) }}</div>
-            <div class="label">Peminjaman Aktif</div>
-        </div>
-    </div>
-    <div class="stat-card red">
-        <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['terlambat']) }}</div>
-            <div class="label">Buku Terlambat</div>
-        </div>
-    </div>
-    <div class="stat-card green">
-        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['peminjaman_bulan']) }}</div>
-            <div class="label">Peminjaman Bulan Ini</div>
+            <div class="value">{{ number_format($stats['total_buku_bos']) }}</div>
+            <div class="label">Buku BOS</div>
         </div>
     </div>
 </div>
 
 <div class="panels-row">
+    <!-- Chart Panel -->
     <div class="panel">
         <div class="panel-header">
-            <h3><i class="fas fa-chart-area" style="margin-right: 8px;"></i>Aktivitas Terbaru</h3>
-            <a href="{{ route('ksekolah.report.aktivitas.index') }}" class="badge badge-blue">Lihat Laporan Lengkap</a>
+            <h3><i class="fas fa-chart-line" style="color:var(--primary);margin-right:.45rem"></i>Grafik Peminjaman Buku (7 Hari Terakhir)</h3>
+            <span class="badge badge-green">Tren Harian</span>
         </div>
-        <div class="card-body" style="padding: 12px; text-align: center; color: var(--text-muted)">
-            <p>Silakan buka menu <strong>Laporan Aktivitas</strong> untuk melihat rincian riwayat peminjaman dan pengembalian buku secara lengkap dan mendalam.</p>
+        <div style="padding: 1.4rem; position: relative; height: 320px;">
+            <canvas id="borrowingsChart" style="width: 100%; height: 100%;"></canvas>
         </div>
     </div>
     
+    <!-- Table Panel -->
     <div class="panel">
         <div class="panel-header">
-            <h3><i class="fas fa-info-circle" style="margin-right: 8px;"></i>Ringkasan Status</h3>
+            <h3><i class="fas fa-list-alt" style="color:var(--primary);margin-right:.45rem"></i>Aktivitas Terbaru</h3>
+            <a href="{{ route('ksekolah.report.aktivitas.index') }}" class="badge badge-blue" style="text-decoration: none; display: inline-flex; align-items: center; gap: .3rem;">Lihat Laporan Lengkap <i class="fas fa-arrow-right"></i></a>
         </div>
-        <div class="card-body" style="padding: 12px">
-            <ul style="list-style: none; padding: 0; font-size: .88rem; color: var(--text)">
-                <li style="margin-bottom: 1rem; display: flex; justify-content: space-between">
-                    <span>Peminjaman Aktif Saat Ini</span>
-                    <span class="pill pill-info">{{ $stats['peminjaman_aktif'] }} Transaksi</span>
-                </li>
-                <li style="margin-bottom: 1rem; display: flex; justify-content: space-between">
-                    <span>Buku Melewati Batas Waktu</span>
-                    <span class="pill pill-danger">{{ $stats['terlambat'] }} Buku</span>
-                </li>
-                <li style="display: flex; justify-content: space-between">
-                    <span>Total Siswa Terdaftar</span>
-                    <span class="pill pill-success">{{ $stats['total_siswa'] }} Orang</span>
-                </li>
-            </ul>
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Kode Peminjaman</th>
+                        <th>Siswa</th>
+                        <th>Buku</th>
+                        <th>Status</th>
+                        <th>Waktu Aktivitas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($recent_activities as $activity)
+                    <tr>
+                        <td style="font-family: monospace; font-weight: 700; color: var(--primary);">
+                            {{ $activity->peminjaman->kode_peminjaman }}
+                        </td>
+                        <td>
+                            <div style="font-weight: 700">{{ $activity->peminjaman->siswa->nama_siswa ?? '-' }}</div>
+                            <div style="font-size: .75rem; color: var(--text-muted)">{{ $activity->peminjaman->siswa->kelas ?? '-' }}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600">{{ $activity->buku->judul_buku ?? '-' }}</div>
+                        </td>
+                        <td>
+                            @if($activity->status_detail === 'dipinjam')
+                                <span class="pill pill-info"><i class="fas fa-book-reader"></i> Dipinjam</span>
+                            @elseif($activity->status_detail === 'dikembalikan')
+                                <span class="pill pill-success"><i class="fas fa-check"></i> Dikembalikan</span>
+                            @elseif($activity->status_detail === 'terlambat')
+                                <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Terlambat</span>
+                            @elseif($activity->status_detail === 'hilang')
+                                <span class="pill pill-warning"><i class="fas fa-times-circle"></i> Hilang</span>
+                            @else
+                                <span class="pill pill-info">{{ ucfirst($activity->status_detail) }}</span>
+                            @endif
+                        </td>
+                        <td style="font-size: .8rem; color: var(--text-muted);">
+                            {{ $activity->updated_at->diffForHumans() }}
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                Belum ada aktivitas terbaru.
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('borrowingsChart').getContext('2d');
+        
+        // Extract chart data from Blade variables
+        const chartData = @json(array_values($borrowingsLast7Days));
+        const labels = chartData.map(item => item.label);
+        const dataValues = chartData.map(item => item.count);
+
+        // Gradient color for dataset
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(32, 201, 151, 0.45)'); // primary teal color
+        gradient.addColorStop(1, 'rgba(32, 201, 151, 0.01)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Aktivitas Peminjaman',
+                    data: dataValues,
+                    borderColor: '#20c997', // primary teal color
+                    borderWidth: 3,
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#20c997',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: '#1aa179',
+                    pointHoverBorderColor: '#ffffff',
+                    pointHoverBorderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#2c3e50',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        cornerRadius: 8,
+                        padding: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.parsed.y} Peminjaman`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#7f8c8d',
+                            font: {
+                                family: "'Nunito', sans-serif",
+                                size: 11,
+                                weight: 600
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e2e8f0',
+                            drawTicks: false
+                        },
+                        ticks: {
+                            precision: 0,
+                            color: '#7f8c8d',
+                            font: {
+                                family: "'Nunito', sans-serif",
+                                size: 11,
+                                weight: 600
+                            },
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush

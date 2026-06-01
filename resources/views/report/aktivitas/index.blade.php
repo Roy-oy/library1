@@ -53,15 +53,13 @@
     }
     .tab-link.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-    .filter-box {
-        display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; padding: 1rem 1.4rem; background: #f8fafc;
+    .card-toolbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+        flex-wrap: wrap; gap: 1rem; background: #fafbfc;
     }
-    .search-box {
-        display: flex; align-items: center; gap: .5rem;
-        background: #fff; border: 1px solid var(--border);
-        border-radius: 8px; padding: .4rem .8rem;
-    }
-    .search-box input { border: none; outline: none; font-size: .85rem; }
+    .card-toolbar .total-label { font-size: 0.88rem; color: var(--text-muted); }
+    .card-toolbar .total-label strong { color: var(--primary); font-size: 1rem; font-weight: 800; }
 
     /* Table */
     .table-wrap { overflow-x: auto; }
@@ -93,132 +91,127 @@
         <h1><i class="fas fa-history" style="color:var(--primary);margin-right:.45rem"></i>Laporan Aktivitas</h1>
         <p>Ringkasan transaksi peminjaman dan pengembalian buku</p>
     </div>
-    <a href="{{ route(auth()->user()->role === 'penjaga_perpustakaan' ? 'pperpus.report.aktivitas.export-pdf' : 'kperpus.report.aktivitas.export-pdf', request()->all()) }}" class="btn-primary" style="background: #065f46">
-        <i class="fas fa-file-pdf"></i> Export PDF
-    </a>
-</div>
-
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="label">Total Peminjaman</div>
-        <div class="value">{{ $stats['total_pinjam'] }} Transaksi</div>
-        <div style="font-size: .75rem; color: var(--text-muted)">{{ $stats['total_buku_pinjam'] }} Total Buku</div>
-    </div>
-    <div class="stat-card kembali">
-        <div class="label">Total Pengembalian</div>
-        <div class="value">{{ $stats['total_kembali'] }} Buku</div>
-    </div>
-    <div class="stat-card denda">
-        <div class="label">Denda Diterima (Lunas)</div>
-        <div class="value">Rp{{ number_format($stats['total_denda_masuk'], 0, ',', '.') }}</div>
+    @php
+        $prefix = match(auth()->user()->role ?? '') {
+            'kepala_sekolah' => 'ksekolah.',
+            'kepala_perpustakaan' => 'kperpus.',
+            'penjaga_perpustakaan' => 'pperpus.',
+            default => ''
+        };
+    @endphp
+    <div style="display: flex; gap: 0.5rem;">
+        <a href="{{ route($prefix . 'report.aktivitas.export-pdf', request()->all()) }}" target="_blank" class="btn-primary" style="background: #dc2626">
+            <i class="fas fa-file-pdf"></i> Preview PDF
+        </a>
+        <a href="{{ route($prefix . 'report.aktivitas.export-excel', request()->all()) }}" class="btn-primary" style="background: #10b981">
+            <i class="fas fa-file-excel"></i> Export Excel
+        </a>
     </div>
 </div>
 
 <div class="card">
-    <div class="filter-box">
-        <form action="{{ route(auth()->user()->role === 'penjaga_perpustakaan' ? 'pperpus.report.aktivitas.index' : 'kperpus.report.aktivitas.index') }}" method="GET" class="d-flex gap-2 align-items-center w-100 flex-wrap">
-            <span class="total-label" style="font-size: .85rem">Periode:</span>
-            <div class="search-box">
-                <input type="date" name="start_date" value="{{ $startDate }}">
-                <span style="color:var(--border)">s/d</span>
-                <input type="date" name="end_date" value="{{ $endDate }}">
+    <div class="card-toolbar">
+        <span class="total-label">Total aktivitas: <strong>{{ count($aktivitas) }} data</strong></span>
+        
+        <form action="{{ route($prefix . 'report.aktivitas.index') }}" method="GET" style="display: flex; gap: 1rem; align-items: center; margin: 0; flex-wrap: wrap;">
+            
+            <select name="sumber_buku" class="form-control" onchange="this.form.submit()" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1.5px solid var(--border); outline: none; background: #fff; color: var(--text); font-family: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
+                <option value="buku perpus" {{ (request('sumber_buku') ?? 'buku perpus') === 'buku perpus' ? 'selected' : '' }}>Buku Perpustakaan</option>
+                <option value="bos" {{ request('sumber_buku') === 'bos' ? 'selected' : '' }}>Buku BOS</option>
+            </select>
+
+            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; border-radius: 8px; border: 1.5px solid var(--border); background: #fff; font-size: 0.88rem;">
+                <input type="date" name="start_date" value="{{ $startDate }}" style="border: none; background: transparent; outline: none; color: var(--text); font-family: inherit; font-weight: 600; cursor: pointer;" onchange="this.form.submit()">
+                <span style="color: var(--border); font-size: 0.8rem; font-weight: 600;">s/d</span>
+                <input type="date" name="end_date" value="{{ $endDate }}" style="border: none; background: transparent; outline: none; color: var(--text); font-family: inherit; font-weight: 600; cursor: pointer;" onchange="this.form.submit()">
             </div>
-            <button type="submit" class="btn-primary" style="padding: .45rem 1rem">
-                <i class="fas fa-sync"></i> Update Laporan
-            </button>
+            
         </form>
     </div>
 
-    <div class="card-header-tab">
-        <div class="tab-link active" onclick="switchTab('peminjaman', this)">Peminjaman ({{ $peminjamans->count() }})</div>
-        <div class="tab-link" onclick="switchTab('pengembalian', this)">Pengembalian ({{ $pengembalians->count() }})</div>
-    </div>
-
-    <div id="peminjaman-tab" class="tab-content">
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tgl Pinjam</th>
-                        <th>Kode</th>
-                        <th>Siswa</th>
-                        <th>Jumlah Buku</th>
-                        <th>Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($peminjamans as $pjm)
-                    <tr>
-                        <td>{{ $pjm->tanggal_pinjam->format('d/m/Y') }}</td>
-                        <td><span style="font-weight: 700; color: var(--primary)">{{ $pjm->kode_peminjaman }}</span></td>
-                        <td>
-                            <div style="font-weight: 600">{{ $pjm->siswa->nama_siswa }}</div>
-                            <div style="font-size: .75rem; color: var(--text-muted)">{{ $pjm->siswa->kelas }}</div>
-                        </td>
-                        <td><span class="pill pill-info">{{ $pjm->details->count() }} Buku</span></td>
-                        <td>{{ $pjm->keterangan ?? '-' }}</td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center" style="padding: 2rem; color: var(--text-muted)">Tidak ada data peminjaman di periode ini.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="pengembalian-tab" class="tab-content" style="display: none;">
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tgl Kembali</th>
-                        <th>Siswa</th>
-                        <th>Judul Buku</th>
-                        <th>Denda</th>
-                        <th>Status Denda</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($pengembalians as $pkb)
-                    <tr>
-                        <td>{{ $pkb->tanggal_kembali->format('d/m/Y') }}</td>
-                        <td>
-                            <div style="font-weight: 600">{{ $pkb->peminjaman->siswa->nama_siswa }}</div>
-                            <div style="font-size: .75rem; color: var(--text-muted)">{{ $pkb->peminjaman->kode_peminjaman }}</div>
-                        </td>
-                        <td>{{ $pkb->buku->judul_buku }}</td>
-                        <td>Rp{{ number_format($pkb->jumlah_denda, 0, ',', '.') }}</td>
-                        <td>
-                            @if($pkb->status_denda === 'lunas')
-                                <span class="pill pill-success">Lunas</span>
-                            @elseif($pkb->status_denda === 'belum_lunas')
-                                <span class="pill pill-danger" style="background: #fef2f2; color: #dc2626">Belum Lunas</span>
-                            @else
-                                <span class="text-muted">-</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center" style="padding: 2rem; color: var(--text-muted)">Tidak ada data pengembalian di periode ini.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center;">No</th>
+                    <th>Kode Peminjaman</th>
+                    <th>NIS</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Tgl Pinjam</th>
+                    <th>Harus Kembali</th>
+                    <th>Tgl Kembali</th>
+                    <th>Judul Buku</th>
+                    <th style="text-align: center;">Telat (Hari)</th>
+                    <th style="text-align: right;">Denda (Rp)</th>
+                    <th style="text-align: center;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($aktivitas as $index => $item)
+                <tr>
+                    <td style="text-align: center; color: var(--text-muted); font-weight: 600;">{{ $index + 1 }}</td>
+                    <td><span style="font-weight: 700; color: var(--text-muted)">{{ $item->kode }}</span></td>
+                    <td>{{ $item->nis }}</td>
+                    <td style="font-weight: 700; color: var(--text)">{{ $item->siswa }}</td>
+                    <td>{{ $item->kelas }}</td>
+                    <td>
+                        {{ $item->tanggal_pinjam !== '-' ? \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d/m/Y') : '-' }}
+                    </td>
+                    <td>
+                        {{ $item->tanggal_jatuh_tempo !== '-' ? \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d/m/Y') : '-' }}
+                    </td>
+                    <td>
+                        {{ $item->tanggal_kembali !== '-' ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d/m/Y') : '-' }}
+                    </td>
+                    <td style="max-width: 150px; font-weight: 600; color: var(--text); line-height: 1.4;">{{ $item->buku }}</td>
+                    <td style="text-align: center;">
+                        @if($item->telat > 0)
+                            <span style="color: #dc2626; font-weight: 700;">{{ $item->telat }}</span>
+                        @else
+                            <span style="color: var(--text-muted);">-</span>
+                        @endif
+                    </td>
+                    <td style="text-align: right;">
+                        @if($item->denda > 0)
+                            <span style="color: #dc2626; font-weight: 700;">{{ number_format($item->denda, 0, ',', '.') }}</span>
+                        @else
+                            <span style="color: var(--text-muted);">-</span>
+                        @endif
+                    </td>
+                    <td style="text-align: center;">
+                        @if(in_array(strtolower($item->status), ['sedang dipinjam', 'dipinjam']))
+                            <span class="pill pill-info"><i class="fas fa-clock" style="font-size: 0.6rem;"></i> Dipinjam</span>
+                        @elseif(in_array(strtolower($item->status), ['terlambat']))
+                            <span class="pill" style="background: #fef2f2; color: #dc2626;"><i class="fas fa-exclamation-triangle" style="font-size: 0.6rem;"></i> Terlambat</span>
+                        @elseif(in_array(strtolower($item->status), ['hilang', 'rusak']))
+                            <span class="pill" style="background: #fef2f2; color: #dc2626;"><i class="fas fa-times" style="font-size: 0.6rem;"></i> {{ ucfirst($item->status) }}</span>
+                        @else
+                            <span class="pill pill-success"><i class="fas fa-check" style="font-size: 0.6rem;"></i> Kembali</span>
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="12" class="text-center" style="padding: 3rem 2rem; color: var(--text-muted)">
+                        <i class="fas fa-inbox" style="font-size: 3rem; color: var(--border); margin-bottom: 1rem; display: block;"></i>
+                        <div style="font-weight: 600; font-size: 1.1rem;">Belum Ada Aktivitas</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Tidak ada data aktivitas untuk periode dan kategori ini.</p>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="10" style="text-align: right; background: #f8fafc; font-weight: 800; font-size: 0.9rem; padding: 1rem;">TOTAL DENDA:</th>
+                    <th style="text-align: right; background: #f8fafc; font-weight: 800; font-size: 0.9rem; padding: 1rem; color: #dc2626;">
+                        Rp{{ number_format($aktivitas->sum('denda'), 0, ',', '.') }}
+                    </th>
+                    <th style="background: #f8fafc;"></th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
-
-<script>
-    function switchTab(tab, el) {
-        document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-        
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.getElementById(tab + '-tab').style.display = 'block';
-    }
-</script>
 
 @endsection

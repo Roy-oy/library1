@@ -1,6 +1,6 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <div class="brand-logo"><img src="{{ asset('images/perpus.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
+        <div class="brand-logo"><img src="{{ asset('images/logos.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
         <div class="brand-text">
             <div class="title">E-Library SMP Negeri 1 Percut Sei Tuan</div>
         </div>
@@ -34,18 +34,7 @@
             </a>
         </div>
 
-        <div class="nav-section-label">Transaksi</div>
 
-        <div class="nav-item">
-            <a href="{{ route('kperpus.peminjaman.index') }}" class="nav-link {{ request()->routeIs('kperpus.peminjaman.*') ? 'active' : '' }}">
-                <i class="fas fa-clipboard-list"></i> Peminjaman
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="{{ route('kperpus.pengembalian.index') }}" class="nav-link {{ request()->routeIs('kperpus.pengembalian.*') ? 'active' : '' }}">
-                <i class="fas fa-clipboard-check"></i> Pengembalian
-            </a>
-        </div>
 
         <div class="nav-section-label">Manajemen</div>
 

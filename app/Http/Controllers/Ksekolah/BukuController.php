@@ -4,33 +4,39 @@ namespace App\Http\Controllers\Ksekolah;
 
 use App\Http\Controllers\Controller;
 use App\Models\Buku;
+use App\Models\KategoriBuku;
 use Illuminate\Http\Request;
 
 class BukuController extends Controller
 {
-    /**
-     * Lihat daftar koleksi buku perpustakaan.
-     */
     public function index(Request $request)
     {
-        $query = Buku::with('kategori');
+        $q = $request->input('q');
+        $kategoriId = $request->input('kategori');
+        $sumber = $request->input('sumber');
 
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function($sub) use ($q) {
-                $sub->where('judul_buku', 'like', "%$q%")
-                    ->orWhere('kode_buku', 'like', "%$q%")
-                    ->orWhere('penulis', 'like', "%$q%")
-                    ->orWhere('penerbit', 'like', "%$q%");
+        $query = Buku::with('kategoriBuku');
+
+        if ($q) {
+            $query->where(function($query) use ($q) {
+                $query->where('judul_buku', 'LIKE', "%{$q}%")
+                      ->orWhere('pengarang', 'LIKE', "%{$q}%")
+                      ->orWhere('kode_buku', 'LIKE', "%{$q}%")
+                      ->orWhere('isbn', 'LIKE', "%{$q}%");
             });
         }
 
-        if ($request->filled('sumber')) {
-            $query->where('sumber_buku', $request->sumber);
+        if ($kategoriId) {
+            $query->where('id_kategori', $kategoriId);
         }
 
-        $books = $query->latest()->paginate(15);
+        if ($sumber) {
+            $query->where('sumber_buku', $sumber);
+        }
 
-        return view('ksekolah.buku.index', compact('books'));
+        $buku = $query->paginate(12)->withQueryString();
+        $categories = KategoriBuku::orderBy('nama_kategori')->get();
+
+        return view('ksekolah.buku.index', compact('buku', 'categories'));
     }
 }

@@ -36,7 +36,6 @@
             font-family: 'Nunito', sans-serif;
             background: var(--bg);
             color: var(--text);
-            display: flex;
             min-height: 100vh;
         }
 
@@ -136,7 +135,7 @@
         /* ── MAIN ────────────────────────────────── */
         .main-wrapper {
             margin-left: var(--sidebar-w);
-            flex: 1;
+            min-height: 100vh;
             display: flex; flex-direction: column;
         }
 

@@ -70,6 +70,8 @@ class ReportAktivitasController extends Controller
      */
     public function exportPdf(Request $request)
     {
+        abort_if(auth()->user()->role === 'kepala_sekolah', 403, 'Akses ditolak: Kepala Sekolah hanya dapat melihat laporan.');
+
         $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->endOfMonth()->format('Y-m-d'));
         $sumberBuku = $request->input('sumber_buku', 'buku perpus');
@@ -120,6 +122,8 @@ class ReportAktivitasController extends Controller
      */
     public function exportExcel(Request $request)
     {
+        abort_if(auth()->user()->role === 'kepala_sekolah', 403, 'Akses ditolak: Kepala Sekolah hanya dapat melihat laporan.');
+
         $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->endOfMonth()->format('Y-m-d'));
         $sumberBuku = $request->input('sumber_buku', 'buku perpus');

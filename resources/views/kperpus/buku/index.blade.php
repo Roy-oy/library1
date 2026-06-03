@@ -482,61 +482,7 @@
         background: #dc2626;
     }
 
-    /* ── Form Modals (Create & Edit) ── */
-    .form-modal-box {
-        background: var(--surface);
-        border-radius: var(--card-radius);
-        padding: 0;
-        width: 90%;
-        max-width: 800px;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
-        transform: scale(0.9);
-        transition: transform var(--transition-speed) ease;
-        overflow: hidden;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-    }
-    .modal-overlay.show .form-modal-box {
-        transform: scale(1);
-    }
-    .form-modal-header {
-        padding: 1.5rem;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #fafbfc;
-    }
-    .form-modal-header h3 {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: var(--text);
-        margin: 0;
-    }
-    .form-modal-close {
-        background: transparent;
-        border: none;
-        font-size: 1.2rem;
-        color: var(--text-muted);
-        cursor: pointer;
-        transition: color var(--transition-speed) ease;
-    }
-    .form-modal-close:hover {
-        color: var(--theme-danger);
-    }
-    .form-modal-body {
-        padding: 1.5rem;
-        overflow-y: auto;
-    }
-    .form-modal-footer {
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid var(--border);
-        background: #fafbfc;
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.8rem;
-    }
+    /* ── Form Modals (Create & Edit) Removed ── */
 
     .form-grid {
         display: grid;
@@ -718,9 +664,9 @@
         <h1><i class="fas {{ $type === 'bos' ? 'fa-graduation-cap' : 'fa-book' }}" style="color:var(--primary)"></i> {{ $pageTitle }}</h1>
         <p>Kelola koleksi {{ strtolower($pageTitle) }} perpustakaan sekolah</p>
     </div>
-    <button type="button" class="btn-primary" id="btn-tambah-buku" onclick="openCreateModal()">
+    <a href="{{ route('kperpus.buku.create', ['type' => $type]) }}" class="btn-primary" id="btn-tambah-buku">
         <i class="fas fa-plus"></i> Tambah Buku Baru
-    </button>
+    </a>
 </div>
 
 {{-- Tab Navigation --}}
@@ -848,21 +794,9 @@
                     </td>
                     <td>
                         <div class="actions" style="justify-content: center;">
-                            <button type="button" class="btn-icon btn-edit" title="Edit Buku"
-                                onclick="openEditModal({{ json_encode([
-                                    'id' => $item->id_buku,
-                                    'kode' => $item->kode_buku,
-                                    'isbn' => $item->isbn,
-                                    'judul' => $item->judul_buku,
-                                    'pengarang' => $item->pengarang,
-                                    'tahun' => $item->tahun_terbit,
-                                    'sumber' => $item->sumber_buku,
-                                    'kategori' => $item->id_kategori,
-                                    'kelas' => $item->kelas,
-                                    'stok' => $item->stok,
-                                ]) }})">
+                            <a href="{{ route('kperpus.buku.edit', $item->id_buku) }}" class="btn-icon btn-edit" title="Edit Buku">
                                 <i class="fas fa-pen"></i>
-                            </button>
+                            </a>
                             <button type="button" class="btn-icon btn-del" title="Hapus Buku"
                                 onclick="confirmDelete('{{ route('kperpus.buku.destroy', $item->id_buku) }}', '{{ addslashes($item->judul_buku) }}')">
                                 <i class="fas fa-trash"></i>
@@ -915,236 +849,7 @@
 
 @endsection
 
-{{-- Create Modal --}}
-<div class="modal-overlay" id="create-modal">
-    <div class="form-modal-box" style="max-width: 900px;">
-        <div class="form-modal-header">
-            <h3><i class="fas fa-plus" style="color:var(--primary)"></i> Tambah Buku Baru</h3>
-            <button class="form-modal-close" onclick="closeCreateModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <form action="{{ route('kperpus.buku.store') }}" method="POST" enctype="multipart/form-data" id="form-buku">
-            @csrf
-            <div class="form-modal-body">
-                <div class="form-grid">
-                    {{-- ── Identitas Buku ─────────────────── --}}
-                    <div class="section-title">Identitas Buku</div>
-                    <div class="form-group">
-                        <label for="create_kode_buku">Kode Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-barcode input-icon"></i>
-                            <input type="text" id="create_kode_buku" name="kode_buku" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="create_isbn">ISBN</label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-fingerprint input-icon"></i>
-                            <input type="text" id="create_isbn" name="isbn" class="form-control" placeholder="Maksimal 13 karakter" maxlength="13">
-                        </div>
-                    </div>
-                    <div class="form-group full">
-                        <label for="create_judul_buku">Judul Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-heading input-icon"></i>
-                            <input type="text" id="create_judul_buku" name="judul_buku" class="form-control" placeholder="Masukkan judul lengkap buku" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="create_pengarang">Nama Pengarang <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-user-edit input-icon"></i>
-                            <input type="text" id="create_pengarang" name="pengarang" class="form-control" placeholder="Nama pengarang / penulis" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="create_tahun_terbit">Tahun Terbit <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-calendar-alt input-icon"></i>
-                            <input type="number" id="create_tahun_terbit" name="tahun_terbit" class="form-control" placeholder="Contoh: 2024" min="1900" max="{{ date('Y') }}" required>
-                        </div>
-                    </div>
 
-                    {{-- ── Sumber & Klasifikasi ─────────────────── --}}
-                    <hr class="section-divider">
-                    <div class="section-title">Sumber & Klasifikasi</div>
-                    <div class="form-group full">
-                        <label>Sumber Anggaran Buku <span class="req">*</span></label>
-                        <div class="radio-group">
-                            <label class="radio-label" id="create-radio-label-bos">
-                                <input type="radio" name="sumber_buku" value="bos" required>
-                                Buku BOS (Operasional Sekolah)
-                            </label>
-                            <label class="radio-label checked" id="create-radio-label-perpus">
-                                <input type="radio" name="sumber_buku" value="buku perpus" checked required>
-                                Buku Perpus (Koleksi Umum)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group" id="create-kategori-group">
-                        <label for="create_id_kategori">Kategori Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-bookmark input-icon"></i>
-                            <select id="create_id_kategori" name="id_kategori" class="form-control">
-                                <option value="">— Pilih Kategori —</option>
-                                @foreach($kategori_list as $kat)
-                                    <option value="{{ $kat->id_kategori }}">{{ $kat->nama_kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" id="create-kelas-group" style="display: none;">
-                        <label for="create_kelas">Kelas Peruntukan <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-layer-group input-icon"></i>
-                            <select id="create_kelas" name="kelas" class="form-control">
-                                <option value="">— Pilih Kelas —</option>
-                                <option value="VII">Kelas VII</option>
-                                <option value="VIII">Kelas VIII</option>
-                                <option value="IX">Kelas IX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="create_stok">Stok Awal <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-boxes input-icon"></i>
-                            <input type="number" id="create_stok" name="stok" class="form-control" value="1" min="1" required>
-                        </div>
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="section-title">Cover Buku</div>
-                    <div class="form-group full">
-                        <label for="create_gambar">Upload Cover Buku</label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-image input-icon" style="top: 1.1rem;"></i>
-                            <input type="file" id="create_gambar" name="gambar" accept="image/jpg,image/jpeg,image/png" class="form-control" style="padding-top: 0.6rem; padding-bottom: 0.6rem;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeCreateModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
-                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan Buku</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{{-- Edit Modal --}}
-<div class="modal-overlay" id="edit-modal">
-    <div class="form-modal-box" style="max-width: 900px;">
-        <div class="form-modal-header">
-            <h3><i class="fas fa-pen" style="color:var(--primary)"></i> Edit Buku</h3>
-            <button class="form-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <form id="edit-form" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <div class="form-modal-body">
-                <div class="form-grid">
-                    <div class="section-title">Identitas Buku</div>
-                    <div class="form-group">
-                        <label for="edit_kode_buku">Kode Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-barcode input-icon"></i>
-                            <input type="text" id="edit_kode_buku" name="kode_buku" class="form-control" required readonly style="background: #f1f5f9;">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_isbn">ISBN</label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-fingerprint input-icon"></i>
-                            <input type="text" id="edit_isbn" name="isbn" class="form-control" placeholder="Maksimal 13 karakter" maxlength="13">
-                        </div>
-                    </div>
-                    <div class="form-group full">
-                        <label for="edit_judul_buku">Judul Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-heading input-icon"></i>
-                            <input type="text" id="edit_judul_buku" name="judul_buku" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_pengarang">Nama Pengarang <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-user-edit input-icon"></i>
-                            <input type="text" id="edit_pengarang" name="pengarang" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_tahun_terbit">Tahun Terbit <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-calendar-alt input-icon"></i>
-                            <input type="number" id="edit_tahun_terbit" name="tahun_terbit" class="form-control" min="1900" required>
-                        </div>
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="section-title">Sumber & Klasifikasi</div>
-                    <div class="form-group full">
-                        <label>Sumber Anggaran Buku <span class="req">*</span></label>
-                        <div class="radio-group">
-                            <label class="radio-label" id="edit-radio-label-bos">
-                                <input type="radio" name="sumber_buku" value="bos" required>
-                                Buku BOS (Operasional Sekolah)
-                            </label>
-                            <label class="radio-label" id="edit-radio-label-perpus">
-                                <input type="radio" name="sumber_buku" value="buku perpus" required>
-                                Buku Perpus (Koleksi Umum)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group" id="edit-kategori-group">
-                        <label for="edit_id_kategori">Kategori Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-bookmark input-icon"></i>
-                            <select id="edit_id_kategori" name="id_kategori" class="form-control">
-                                <option value="">— Pilih Kategori —</option>
-                                @foreach($kategori_list as $kat)
-                                    <option value="{{ $kat->id_kategori }}">{{ $kat->nama_kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" id="edit-kelas-group">
-                        <label for="edit_kelas">Kelas Peruntukan <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-layer-group input-icon"></i>
-                            <select id="edit_kelas" name="kelas" class="form-control">
-                                <option value="">— Pilih Kelas —</option>
-                                <option value="VII">Kelas VII</option>
-                                <option value="VIII">Kelas VIII</option>
-                                <option value="IX">Kelas IX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_stok">Stok <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-boxes input-icon"></i>
-                            <input type="number" id="edit_stok" name="stok" class="form-control" min="0" required>
-                        </div>
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="section-title">Cover Buku</div>
-                    <div class="form-group full">
-                        <label for="edit_gambar">Upload Cover Baru (Opsional)</label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-image input-icon" style="top: 1.1rem;"></i>
-                            <input type="file" id="edit_gambar" name="gambar" accept="image/jpg,image/jpeg,image/png" class="form-control" style="padding-top: 0.6rem; padding-bottom: 0.6rem;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeEditModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
-                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Perbarui Buku</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 @push('scripts')
 <script>
@@ -1181,115 +886,12 @@
         modal.classList.remove('show');
         setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
-    
-    // Create Modal
-    function openCreateModal() {
-        const modal = document.getElementById('create-modal');
-        modal.style.display = 'flex';
-        setTimeout(() => { modal.classList.add('show'); }, 10);
-        updateCreateKodeBuku();
-    }
-    function closeCreateModal() {
-        const modal = document.getElementById('create-modal');
-        modal.classList.remove('show');
-        setTimeout(() => { modal.style.display = 'none'; }, 200);
-    }
-
-    // Edit Modal
-    function openEditModal(data) {
-        document.getElementById('edit-form').action = "{{ url('kepala-perpustakaan/buku') }}/" + data.id;
-        document.getElementById('edit_kode_buku').value = data.kode;
-        document.getElementById('edit_isbn').value = data.isbn || '';
-        document.getElementById('edit_judul_buku').value = data.judul;
-        document.getElementById('edit_pengarang').value = data.pengarang;
-        document.getElementById('edit_tahun_terbit').value = data.tahun;
-        document.getElementById('edit_stok').value = data.stok;
-
-        const radios = document.querySelectorAll('input[name="sumber_buku"][form="edit-form"], #edit-modal input[name="sumber_buku"]');
-        radios.forEach(r => {
-            if (r.value === data.sumber) r.checked = true;
-        });
-        document.getElementById('edit_id_kategori').value = data.kategori || '';
-        document.getElementById('edit_kelas').value = data.kelas || '';
-        toggleEditFields();
-
-        const modal = document.getElementById('edit-modal');
-        modal.style.display = 'flex';
-        setTimeout(() => { modal.classList.add('show'); }, 10);
-    }
-    function closeEditModal() {
-        const modal = document.getElementById('edit-modal');
-        modal.classList.remove('show');
-        setTimeout(() => { modal.style.display = 'none'; }, 200);
-    }
 
     document.querySelectorAll('.modal-overlay').forEach(modal => {
         modal.addEventListener('click', function (e) {
             if (e.target === this) closeAllModals();
         });
     });
-
-    // ── Create Modal Dynamic Logic ──
-    const createRadioBos = document.querySelector('#create-modal input[name="sumber_buku"][value="bos"]');
-    const createRadioPerpus = document.querySelector('#create-modal input[name="sumber_buku"][value="buku perpus"]');
-    const createLabelBos = document.getElementById('create-radio-label-bos');
-    const createLabelPerpus = document.getElementById('create-radio-label-perpus');
-    const createKelasGroup = document.getElementById('create-kelas-group');
-    const createKatGroup = document.getElementById('create-kategori-group');
-
-    function toggleCreateFields() {
-        if (createRadioBos.checked) {
-            createKelasGroup.style.display = 'flex';
-            createKatGroup.style.display = 'none';
-            document.getElementById('create_id_kategori').value = '';
-            createLabelBos.classList.add('checked');
-            createLabelPerpus.classList.remove('checked');
-        } else {
-            createKelasGroup.style.display = 'none';
-            createKatGroup.style.display = 'flex';
-            document.getElementById('create_kelas').value = '';
-            createLabelPerpus.classList.add('checked');
-            createLabelBos.classList.remove('checked');
-        }
-    }
-    function updateCreateKodeBuku() {
-        const checkedRadio = document.querySelector('#create-modal input[name="sumber_buku"]:checked');
-        if (!checkedRadio) return;
-        const sumber = checkedRadio.value;
-        fetch(`{{ route('kperpus.buku.generate-kode') }}?sumber=${encodeURIComponent(sumber)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.code) document.getElementById('create_kode_buku').value = data.code;
-            });
-    }
-    createRadioBos.addEventListener('change', () => { toggleCreateFields(); updateCreateKodeBuku(); });
-    createRadioPerpus.addEventListener('change', () => { toggleCreateFields(); updateCreateKodeBuku(); });
-
-    // ── Edit Modal Dynamic Logic ──
-    const editRadioBos = document.querySelector('#edit-modal input[name="sumber_buku"][value="bos"]');
-    const editRadioPerpus = document.querySelector('#edit-modal input[name="sumber_buku"][value="buku perpus"]');
-    const editLabelBos = document.getElementById('edit-radio-label-bos');
-    const editLabelPerpus = document.getElementById('edit-radio-label-perpus');
-    const editKelasGroup = document.getElementById('edit-kelas-group');
-    const editKatGroup = document.getElementById('edit-kategori-group');
-
-    function toggleEditFields() {
-        if (editRadioBos.checked) {
-            editKelasGroup.style.display = 'flex';
-            editKatGroup.style.display = 'none';
-            document.getElementById('edit_id_kategori').value = '';
-            editLabelBos.classList.add('checked');
-            editLabelPerpus.classList.remove('checked');
-        } else {
-            editKelasGroup.style.display = 'none';
-            editKatGroup.style.display = 'flex';
-            document.getElementById('edit_kelas').value = '';
-            editLabelPerpus.classList.add('checked');
-            editLabelBos.classList.remove('checked');
-        }
-    }
-    editRadioBos.addEventListener('change', toggleEditFields);
-    editRadioPerpus.addEventListener('change', toggleEditFields);
 
 </script>
 @endpush

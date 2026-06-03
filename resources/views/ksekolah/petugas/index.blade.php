@@ -64,7 +64,6 @@
                 <tr>
                     <th>#</th>
                     <th>Nama Petugas</th>
-                    <th>Email</th>
                     <th>Jabatan / Role</th>
                     <th>Terdaftar Sejak</th>
                 </tr>
@@ -78,7 +77,6 @@
                             <div style="font-weight: 700">{{ $officer->name }}</div>
                         </div>
                     </td>
-                    <td>{{ $officer->email }}</td>
                     <td>
                         @if($officer->role === 'kepala_perpustakaan')
                             <span class="role-badge role-kperpus">Kepala Perpustakaan</span>

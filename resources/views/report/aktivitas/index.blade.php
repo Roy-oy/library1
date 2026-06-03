@@ -100,12 +100,14 @@
         };
     @endphp
     <div style="display: flex; gap: 0.5rem;">
+        @if(auth()->user()->role !== 'kepala_sekolah')
         <a href="{{ route($prefix . 'report.aktivitas.export-pdf', request()->all()) }}" target="_blank" class="btn-primary" style="background: #dc2626">
             <i class="fas fa-file-pdf"></i> Preview PDF
         </a>
         <a href="{{ route($prefix . 'report.aktivitas.export-excel', request()->all()) }}" class="btn-primary" style="background: #10b981">
             <i class="fas fa-file-excel"></i> Export Excel
         </a>
+        @endif
     </div>
 </div>
 

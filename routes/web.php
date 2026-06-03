@@ -40,8 +40,6 @@ Route::prefix('kepala-sekolah')
 
         // Laporan Aktivitas (Akses Lihat Saja)
         Route::get('report/aktivitas',              [ReportAktivitasController::class, 'index'])->name('report.aktivitas.index');
-        Route::get('report/aktivitas/export-pdf',   [ReportAktivitasController::class, 'exportPdf'])->name('report.aktivitas.export-pdf');
-        Route::get('report/aktivitas/export-excel', [ReportAktivitasController::class, 'exportExcel'])->name('report.aktivitas.export-excel');
 
         // Pantauan
         Route::get('petugas',   [KsekolahOfficer::class, 'index'])->name('petugas.index');

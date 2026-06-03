@@ -600,10 +600,6 @@
     const kelasGroup  = document.getElementById('kelas-group');
     const katGroup    = document.getElementById('kategori-group');
 
-    const isBos = '{{ $buku->sumber_buku === "bos" ? "true" : "false" }}' === 'true';
-    const kelasGroup  = document.getElementById('kelas-group');
-    const katGroup    = document.getElementById('kategori-group');
-
     function toggleFields() {
         if (isBos) {
             kelasGroup.style.display = 'flex';

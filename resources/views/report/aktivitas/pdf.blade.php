@@ -179,7 +179,7 @@
         <div class="kop-inner">
             <div class="kop-logo">
                 @php
-                    $imagePath = public_path('images/smp.jpg');
+                    $imagePath = public_path('images/logos.png');
                     $src = '';
                     if (file_exists($imagePath)) {
                         $imageData = base64_encode(file_get_contents($imagePath));

@@ -40,9 +40,7 @@
                 <i class="fas fa-chevron-right nav-arrow"></i>
             </a>
             <div class="nav-dropdown-menu">
-                <a href="{{ route('pperpus.pengembalian.perpustakaan.index') }}" class="nav-link nav-child {{ request()->routeIs('pperpus.pengembalian.perpustakaan.*') ? 'active' : '' }}">
-                    <i class="fas fa-book"></i> Pengembalian Buku Perpustakaan
-                </a>
+
                 <a href="{{ route('pperpus.pengembalian.bos.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.pengembalian.bos.*') ? 'active' : '' }}">
                     <i class="fas fa-book-open"></i> Pengembalian Buku BOS

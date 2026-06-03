@@ -262,6 +262,12 @@
 @section('content')
 
 {{-- PRINT HEADER --}}
+@php
+    $realtime_total_denda = $peminjaman->details->sum(function($d) {
+        if ($d->status_denda === 'lunas') return 0;
+        return $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0);
+    });
+@endphp
 <div class="print-only">
     <div class="print-header">
         <div class="print-logo"><i class="fas fa-book-reader"></i></div>
@@ -296,13 +302,13 @@
     </div>
 
     {{-- Denda Alert --}}
-    @if($peminjaman->total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
+    @if($realtime_total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
     <div class="denda-banner">
         <div class="denda-left">
             <div class="denda-icon-wrap"><i class="fas fa-hand-holding-usd"></i></div>
             <div class="denda-info-text">
                 <div class="denda-label">Tunggakan Denda</div>
-                <div class="denda-amount">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</div>
+                <div class="denda-amount">Rp {{ number_format($realtime_total_denda, 0, ',', '.') }}</div>
                 <div class="denda-note">Siswa belum melunasi seluruh denda peminjaman.</div>
             </div>
         </div>
@@ -370,7 +376,7 @@
                     <div>
                         <div class="field-label">Total Denda</div>
                         <div class="field-val" style="color: var(--danger)">
-                            Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}
+                            Rp {{ number_format($realtime_total_denda, 0, ',', '.') }}
                         </div>
                     </div>
                     <div class="field-full">
@@ -436,6 +442,9 @@
                                 <div class="denda-status {{ $detail->status_denda === 'lunas' ? 'lunas' : 'belum' }}">
                                     {{ str_replace('_', ' ', $detail->status_denda) }}
                                 </div>
+                            @elseif($detail->status_detail === 'terlambat' && !$detail->tanggal_kembali)
+                                <div class="denda-val">Rp {{ number_format($detail->denda_realtime ?? 0, 0, ',', '.') }}</div>
+                                <div class="denda-status belum">Belum Lunas</div>
                             @else
                                 <span style="color: var(--subtle)">—</span>
                             @endif
@@ -453,8 +462,11 @@
                         </td>
                         <td>
                             @if(in_array($detail->status_detail, ['dipinjam', 'terlambat']))
-                                <button class="btn-kembali" onclick="openModal({{ $detail->id_detail }}, '{{ addslashes($detail->buku->judul_buku) }}')">
+                                <button class="btn-kembali" onclick="openKembaliModal({{ $detail->id_detail }}, '{{ addslashes($detail->buku->judul_buku) }}')">
                                     <i class="fas fa-undo-alt"></i> Kembalikan
+                                </button>
+                                <button onclick="openPerpanjangModal({{ $detail->id_detail }}, '{{ addslashes($detail->buku->judul_buku) }}', '{{ $detail->tanggal_jatuh_tempo ? $detail->tanggal_jatuh_tempo->format('Y-m-d') : '' }}')" style="background: var(--surface-3); border: 1.5px solid var(--border); color: var(--ink); display: inline-flex; align-items: center; gap: .4rem; padding: .45rem 1rem; border-radius: 8px; font-size: .78rem; font-weight: 800; cursor: pointer; transition: all .2s; margin-top: .3rem; text-decoration: none; font-family: inherit;">
+                                    <i class="fas fa-calendar-plus"></i> Perpanjang
                                 </button>
                             @else
                                 <span style="color: var(--subtle); font-size: .8rem">—</span>
@@ -488,30 +500,38 @@
     <div class="modal-box">
         <div class="modal-mhd">
             <h3><i class="fas fa-undo-alt" style="color: var(--accent)"></i> Kembalikan Buku</h3>
-            <button class="modal-close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <button class="modal-close-btn" onclick="closeKembaliModal()"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
-            <p style="font-size: .875rem; color: var(--muted); margin-bottom: 1.2rem" id="modal-book-name"></p>
+            <p style="font-size: .875rem; color: var(--muted); margin-bottom: 1.2rem" id="modal-kembali-book"></p>
             <form id="formKembali" method="POST">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
                 <div class="form-grp">
                     <label>Tanggal Pengembalian</label>
-                    <input type="date" name="tanggal_kembali" id="tanggal_kembali" class="form-input"
-                           value="{{ now()->format('Y-m-d') }}" required>
+                    <input type="date" name="tanggal_pengembalian" class="form-input" value="{{ now()->format('Y-m-d') }}" required>
                 </div>
                 <div class="form-grp">
                     <label>Kondisi Buku</label>
-                    <select name="kondisi_buku" class="form-input">
-                        <option value="baik">Baik</option>
-                        <option value="rusak_ringan">Rusak Ringan</option>
-                        <option value="rusak_berat">Rusak Berat</option>
+                    <select name="status_buku" id="status_buku" class="form-input" required onchange="toggleDendaField()">
+                        <option value="kembali">Baik (Kembali)</option>
+                        <option value="rusak">Rusak</option>
                         <option value="hilang">Hilang</option>
                     </select>
                 </div>
+                <div id="denda-keterangan-group" style="display: none;">
+                    <div class="form-grp">
+                        <label>Nominal Denda/Ganti (Rp)</label>
+                        <input type="number" name="denda_ganti" id="denda_ganti" class="form-input" min="0" value="0">
+                    </div>
+                    <div class="form-grp">
+                        <label>Keterangan</label>
+                        <textarea name="keterangan" id="keterangan" class="form-input" rows="2" placeholder="Catatan kerusakan/hilang..."></textarea>
+                    </div>
+                </div>
         </div>
         <div class="modal-foot">
-            <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+            <button type="button" class="btn-cancel" onclick="closeKembaliModal()">Batal</button>
             <button type="submit" class="btn-submit" form="formKembali">
                 <i class="fas fa-check"></i> Konfirmasi Kembali
             </button>
@@ -520,18 +540,83 @@
     </div>
 </div>
 
+{{-- MODAL PERPANJANG --}}
+<div class="modal-backdrop" id="perpanjangModal">
+    <div class="modal-box">
+        <div class="modal-mhd">
+            <h3><i class="fas fa-calendar-plus" style="color: var(--accent)"></i> Perpanjang Masa Pinjam</h3>
+            <button class="modal-close-btn" onclick="closePerpanjangModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: .875rem; color: var(--muted); margin-bottom: 1.2rem" id="modal-perpanjang-book"></p>
+            <form id="formPerpanjang" method="POST">
+                @csrf
+                <div class="form-grp">
+                    <label>Tanggal Perpanjangan (Jatuh Tempo Baru)</label>
+                    <input type="date" name="tanggal_perpanjangan" id="tanggal_perpanjangan" class="form-input" required>
+                </div>
+        </div>
+        <div class="modal-foot">
+            <button type="button" class="btn-cancel" onclick="closePerpanjangModal()">Batal</button>
+            <button type="submit" class="btn-submit" form="formPerpanjang">
+                <i class="fas fa-check"></i> Perpanjang
+            </button>
+        </div>
+            </form>
+    </div>
+</div>
+
 @push('scripts')
 <script>
-function openModal(id, title) {
-    document.getElementById('modal-book-name').textContent = 'Buku: ' + title;
-    document.getElementById('formKembali').action = '/pperpus/pengembalian/perpustakaan/' + id;
+function openKembaliModal(id, title) {
+    document.getElementById('modal-kembali-book').textContent = 'Buku: ' + title;
+    document.getElementById('formKembali').action = '{{ url("/penjaga-perpustakaan/peminjaman/kembalikan") }}/' + id;
+    document.getElementById('status_buku').value = 'kembali';
+    toggleDendaField();
     document.getElementById('kembaliModal').classList.add('open');
 }
-function closeModal() {
+function closeKembaliModal() {
     document.getElementById('kembaliModal').classList.remove('open');
 }
-document.getElementById('kembaliModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
+function toggleDendaField() {
+    const val = document.getElementById('status_buku').value;
+    const grp = document.getElementById('denda-keterangan-group');
+    if (val === 'rusak' || val === 'hilang') {
+        grp.style.display = 'block';
+    } else {
+        grp.style.display = 'none';
+        document.getElementById('denda_ganti').value = '0';
+        document.getElementById('keterangan').value = '';
+    }
+}
+
+function openPerpanjangModal(idDetail, title, currentJatuhTempo) {
+    document.getElementById('modal-perpanjang-book').textContent = 'Buku: ' + title;
+    document.getElementById('formPerpanjang').action = '{{ url("/penjaga-perpustakaan/peminjaman") }}/{{ $peminjaman->id_peminjaman }}/detail/' + idDetail + '/perpanjang';
+    
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const minDate = tomorrow.toISOString().split('T')[0];
+    document.getElementById('tanggal_perpanjangan').min = minDate;
+    
+    let target = new Date();
+    if (currentJatuhTempo) {
+        let jt = new Date(currentJatuhTempo);
+        if (jt > target) target = jt;
+    }
+    target.setDate(target.getDate() + 3);
+    document.getElementById('tanggal_perpanjangan').value = target.toISOString().split('T')[0];
+    
+    document.getElementById('perpanjangModal').classList.add('open');
+}
+function closePerpanjangModal() {
+    document.getElementById('perpanjangModal').classList.remove('open');
+}
+
+window.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-backdrop')) {
+        e.target.classList.remove('open');
+    }
 });
 </script>
 @endpush

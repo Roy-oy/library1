@@ -1,7 +1,7 @@
 @extends('ksekolah.layouts.app')
 
-@section('title', 'Koleksi Buku Perpustakaan')
-@section('page-title', 'Koleksi Buku')
+@section('title', 'Cari Koleksi Buku')
+@section('page-title', 'Pencarian Buku')
 
 @push('styles')
 <style>
@@ -15,7 +15,7 @@
     }
     .search-grid {
         display: grid;
-        grid-template-columns: 1fr 200px 120px;
+        grid-template-columns: 1fr 200px 200px 120px;
         gap: 1rem;
     }
     @media (max-width: 900px) {
@@ -29,7 +29,7 @@
         width: 100%; padding: .75rem 1rem; border: 1.5px solid var(--border);
         border-radius: 12px; font-family: inherit; font-size: .9rem; transition: all .2s;
     }
-    .form-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(32, 201, 151, 0.08); }
+    .form-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(20, 90, 50, 0.08); }
 
     .btn-search {
         background: var(--primary); color: #fff; border: none; border-radius: 12px;
@@ -90,6 +90,17 @@
             <input type="text" name="q" class="form-input" placeholder="Masukkan kata kunci..." value="{{ request('q') }}">
         </div>
         <div class="form-group">
+            <label>Kategori</label>
+            <select name="kategori" class="form-input">
+                <option value="">Semua Kategori</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id_kategori }}" {{ request('kategori') == $cat->id_kategori ? 'selected' : '' }}>
+                        {{ $cat->nama_kategori }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label>Sumber Buku</label>
             <select name="sumber" class="form-input">
                 <option value="">Semua Sumber</option>
@@ -105,22 +116,18 @@
     </form>
 </div>
 
-<div style="font-size: .85rem; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-    <div>Menampilkan <strong>{{ $books->total() }}</strong> Judul Buku</div>
-    <a href="{{ route('ksekolah.buku.index') }}" style="color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: .4rem;">
-        <i class="fas fa-sync-alt"></i> Reset Pencarian
-    </a>
-</div>
-
-@if($books->isEmpty())
+@if($buku->isEmpty())
     <div style="text-align: center; padding: 5rem 2rem; background: #fff; border-radius: 20px; border: 1px solid var(--border);">
         <div style="font-size: 4rem; color: #e2e8f0; margin-bottom: 1.5rem;"><i class="fas fa-book-open"></i></div>
         <h3 style="font-weight: 800; color: var(--text);">Buku Tidak Ditemukan</h3>
         <p style="color: var(--text-muted); margin-top: .5rem;">Coba gunakan kata kunci lain atau filter yang berbeda.</p>
+        <a href="{{ route('ksekolah.buku.index') }}" style="display: inline-block; margin-top: 1.5rem; color: var(--primary); font-weight: 700; text-decoration: none;">
+            <i class="fas fa-sync-alt"></i> Reset Pencarian
+        </a>
     </div>
 @else
     <div class="books-grid">
-        @foreach($books as $b)
+        @foreach($buku as $b)
         <div class="book-card">
             <div class="book-cover">
                 @if($b->gambar)
@@ -133,9 +140,9 @@
                 </span>
             </div>
             <div class="book-info">
-                <div class="book-cat">{{ $b->kategori->nama_kategori ?? '-' }}</div>
+                <div class="book-cat">{{ $b->kategoriBuku->nama_kategori ?? ($b->kelas ? 'Kelas '.$b->kelas : 'Umum') }}</div>
                 <div class="book-title">{{ $b->judul_buku }}</div>
-                <div class="book-author">oleh {{ $b->penulis ?? '-' }}</div>
+                <div class="book-author">oleh {{ $b->pengarang }}</div>
                 <div style="margin-top: auto; font-family: monospace; font-size: .75rem; color: var(--primary); font-weight: 700;">
                     {{ $b->kode_buku }}
                 </div>
@@ -146,7 +153,7 @@
                     <span class="stok-value {{ $b->stok <= 2 ? 'stok-low' : '' }}">{{ $b->stok }} Eks.</span>
                 </div>
                 <div style="font-size: .8rem; font-weight: 700; color: var(--text-muted);">
-                    {{ $b->tahun_terbit ?? '-' }}
+                    {{ $b->tahun_terbit }}
                 </div>
             </div>
         </div>
@@ -154,7 +161,7 @@
     </div>
 
     <div style="margin-top: 2rem;">
-        {{ $books->links() }}
+        {{ $buku->links() }}
     </div>
 @endif
 

@@ -7,9 +7,9 @@
 <style>
     /* ── Theme variables for this view ── */
     :root {
-        --theme-primary: #2563eb;
+        --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
-        --theme-primary-hover: #1d4ed8;
+        --theme-primary-hover: #172554;
         --theme-info: #0ea5e9;
         --theme-info-light: #f0f9ff;
         --theme-success: #10b981;
@@ -45,31 +45,6 @@
         font-size: 0.88rem;
         color: var(--text-muted);
         margin-top: 0.25rem;
-    }
-
-    .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.75rem 1.4rem;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.88rem;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-        box-shadow: 0 4px 14px rgba(74, 144, 226, 0.3);
-        transition: all var(--transition-speed) ease;
-    }
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
-    }
-    .btn-primary:active {
-        transform: translateY(0);
     }
 
     /* ── Tab Navigation ── */
@@ -170,13 +145,15 @@
         width: 240px;
     }
 
-    /* ── Table Styling ── */
+    /* ── Table Styling (Rapi & Jelas) ── */
     .table-wrap {
         overflow-x: auto;
         padding: 0;
+        width: 100%;
     }
     table {
         width: 100%;
+        min-width: 1100px;
         border-collapse: separate;
         border-spacing: 0;
     }
@@ -187,13 +164,12 @@
         text-transform: uppercase;
         letter-spacing: 0.8px;
         color: #475569;
-        padding: 0.85rem 1rem;
-        border-bottom: 2px solid var(--border);
+        padding: 1.1rem 1rem;
+        border-bottom: 2px solid #cbd5e1;
         white-space: nowrap;
-        text-align: left;
     }
     tbody td {
-        padding: 0.85rem 1rem;
+        padding: 1rem;
         font-size: 0.88rem;
         border-bottom: 1px solid var(--border);
         color: var(--text);
@@ -215,12 +191,13 @@
     /* ── Book Cover ── */
     .book-cover-container {
         position: relative;
-        width: 48px;
-        height: 66px;
-        border-radius: 8px;
+        width: 44px;
+        height: 60px;
+        border-radius: 6px;
         overflow: hidden;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+        box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08);
         transition: transform var(--transition-speed) ease;
+        margin: 0 auto;
     }
     .book-cover-container:hover {
         transform: scale(1.1) translateY(-2px);
@@ -233,14 +210,14 @@
     .book-cover-placeholder {
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         display: flex;
         align-items: center;
         justify-content: center;
     }
     .book-cover-placeholder i {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
     }
 
     /* ── Badges / Pills ── */
@@ -248,11 +225,12 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        padding: 0.3rem 0.8rem;
+        padding: 0.35rem 0.75rem;
         border-radius: 30px;
         font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.2px;
+        white-space: nowrap;
     }
     .pill-success {
         background: var(--theme-success-light);
@@ -263,11 +241,6 @@
         background: var(--theme-warning-light);
         color: var(--theme-warning);
         border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-    .pill-info {
-        background: var(--theme-info-light);
-        color: var(--theme-info);
-        border: 1px solid rgba(14, 165, 233, 0.2);
     }
 
     .kelas-badge {
@@ -284,18 +257,19 @@
     /* ── Action Buttons ── */
     .actions {
         display: flex;
-        gap: 0.5rem;
+        gap: 0.4rem;
+        justify-content: center;
     }
     .btn-icon {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 10px;
+        border-radius: 8px;
         border: none;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         text-decoration: none;
         transition: all var(--transition-speed) ease;
     }
@@ -306,7 +280,7 @@
     .btn-edit:hover {
         background: var(--primary);
         color: #fff;
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
     .btn-del {
         background: var(--theme-danger-light);
@@ -315,7 +289,7 @@
     .btn-del:hover {
         background: var(--theme-danger);
         color: #fff;
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 
     /* ── Pagination ── */
@@ -333,60 +307,8 @@
         font-size: 0.88rem;
         color: var(--text-muted);
     }
-    .pagination {
-        display: flex;
-        gap: 0.3rem;
-        list-style: none;
-    }
-    .pagination .page-item .page-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: var(--text-muted);
-        text-decoration: none;
-        border: 1.5px solid var(--border);
-        transition: all var(--transition-speed) ease;
-    }
-    .pagination .page-item.active .page-link {
-        background: var(--primary);
-        color: #fff;
-        border-color: var(--primary);
-        box-shadow: 0 4px 10px rgba(74, 144, 226, 0.25);
-    }
-    .pagination .page-item.disabled .page-link {
-        opacity: 0.45;
-        pointer-events: none;
-    }
-    .pagination .page-item .page-link:hover:not(.active) {
-        background: var(--theme-primary-light);
-        color: var(--primary);
-        border-color: var(--primary);
-    }
 
-    /* ── Empty state ── */
-    .empty-state {
-        padding: 4rem 2rem;
-        text-align: center;
-        color: var(--text-muted);
-    }
-    .empty-state i {
-        font-size: 3rem;
-        color: var(--primary);
-        opacity: 0.35;
-        margin-bottom: 1rem;
-        display: block;
-    }
-    .empty-state p {
-        font-size: 0.95rem;
-        font-weight: 600;
-    }
-
-    /* ── Modals ── */
+    /* ── Modals Delete ── */
     .modal-overlay {
         display: none;
         position: fixed;
@@ -427,7 +349,6 @@
         justify-content: center;
         font-size: 1.6rem;
         margin: 0 auto 1.25rem;
-        box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.1);
     }
     .modal-box h3 {
         font-size: 1.2rem;
@@ -462,7 +383,6 @@
     }
     .modal-actions .btn-cancel:hover {
         background: #e2e8f0;
-        color: var(--text);
     }
     .modal-actions .btn-confirm {
         flex: 1;
@@ -476,182 +396,6 @@
         color: #fff;
         cursor: pointer;
         transition: background var(--transition-speed) ease;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-    }
-    .modal-actions .btn-confirm:hover {
-        background: #dc2626;
-    }
-
-    /* ── Form Modals (Create & Edit) Removed ── */
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.25rem;
-    }
-    .form-grid .full {
-        grid-column: 1 / -1;
-    }
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.45rem;
-    }
-    .form-group label {
-        font-size: 0.82rem;
-        font-weight: 800;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-    .form-group label i {
-        color: var(--primary);
-        font-size: 0.85rem;
-    }
-    .form-group label .req {
-        color: var(--theme-danger);
-    }
-    .form-control-wrap {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-    .form-control-wrap i.input-icon {
-        position: absolute;
-        left: 1rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        pointer-events: none;
-    }
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.9rem;
-        color: var(--text);
-        background: #fff;
-        transition: all var(--transition-speed) ease;
-        outline: none;
-    }
-    .form-control-wrap i.input-icon + .form-control {
-        padding-left: 2.5rem;
-    }
-    .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3.5px rgba(74, 144, 226, 0.15);
-    }
-
-    /* ── Radio Styling ── */
-    .radio-group {
-        display: flex;
-        gap: 1.25rem;
-        margin-top: 0.25rem;
-    }
-    .radio-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: var(--text);
-        cursor: pointer;
-        background: #f8fafc;
-        padding: 0.75rem 1.2rem;
-        border-radius: 10px;
-        border: 1.5px solid var(--border);
-        flex: 1;
-        transition: all var(--transition-speed) ease;
-    }
-    .radio-label:hover {
-        background: var(--theme-primary-light);
-        border-color: var(--primary);
-    }
-    .radio-label input[type="radio"] {
-        accent-color: var(--primary);
-        width: 17px;
-        height: 17px;
-    }
-    .radio-label.checked {
-        background: var(--theme-primary-light);
-        border-color: var(--primary);
-        color: var(--primary);
-    }
-    .section-divider {
-        grid-column: 1 / -1;
-        border: none;
-        border-top: 1.5px dashed var(--border);
-        margin: 0.5rem 0;
-    }
-    .section-title {
-        grid-column: 1 / -1;
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .section-title::after {
-        content: '';
-        flex: 1;
-        height: 1.5px;
-        background: var(--border);
-    }
-
-    .btn-submit {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all var(--transition-speed) ease;
-        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
-    }
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
-    }
-
-    @media (max-width: 768px) {
-        .page-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .btn-primary {
-            width: 100%;
-            justify-content: center;
-        }
-        .card-toolbar {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .search-box input {
-            width: 100%;
-        }
-    }
-    @media (max-width: 640px) {
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
-        .form-grid .full {
-            grid-column: 1;
-        }
-        .radio-group {
-            flex-direction: column;
-            gap: 0.6rem;
-        }
     }
 </style>
 @endpush
@@ -664,84 +408,102 @@
         <h1><i class="fas {{ $type === 'bos' ? 'fa-graduation-cap' : 'fa-book' }}" style="color:var(--primary)"></i> {{ $pageTitle }}</h1>
         <p>Kelola koleksi {{ strtolower($pageTitle) }} perpustakaan sekolah</p>
     </div>
-    <a href="{{ route('kperpus.buku.create', ['type' => $type]) }}" class="btn-primary" id="btn-tambah-buku">
+    <a href="{{ route('kperpus.buku.create', ['sumber_buku' => $type === 'bos' ? 'bos' : 'buku perpus']) }}" class="btn-primary" id="btn-tambah-buku">
         <i class="fas fa-plus"></i> Tambah Buku Baru
     </a>
 </div>
 
 {{-- Tab Navigation --}}
 <nav class="tab-nav">
-    <a href="{{ route('kperpus.buku.index', ['type' => 'perpus']) }}" 
-       class="tab-item {{ $type !== 'bos' ? 'active' : '' }}">
+    <a href="{{ route('kperpus.buku.index', ['type' => 'perpus']) }}" class="tab-item {{ $type !== 'bos' ? 'active' : '' }}">
         <i class="fas fa-book-open"></i> Buku Perpus
     </a>
-    <a href="{{ route('kperpus.buku.index', ['type' => 'bos']) }}" 
-       class="tab-item {{ $type === 'bos' ? 'active' : '' }}">
+    <a href="{{ route('kperpus.buku.index', ['type' => 'bos']) }}" class="tab-item {{ $type === 'bos' ? 'active' : '' }}">
         <i class="fas fa-graduation-cap"></i> Buku BOS
     </a>
 </nav>
 
 {{-- Table Card --}}
 <div class="card">
-    <div class="card-toolbar">
-        <span class="total-label">Daftar koleksi: <strong>{{ $buku->total() }} buku</strong></span>
-        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-            <form action="{{ route('kperpus.buku.index') }}" method="GET" style="display: flex; gap: 0.5rem; margin: 0;">
+    <div class="card-toolbar" style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; padding: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <span class="total-label">Daftar koleksi: <strong>{{ $buku->total() }} buku</strong></span>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; width: 100%; padding-top: 1rem; border-top: 1.5px dashed var(--border);">
+            <form action="{{ route('kperpus.buku.index') }}" method="GET" style="display: flex; gap: 1rem; margin: 0; flex-wrap: wrap; flex: 1; align-items: flex-end;">
                 <input type="hidden" name="type" value="{{ $type }}">
-                @if($type === 'bos')
-                    <select name="kelas" class="form-control" onchange="this.form.submit()" style="padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border); outline: none; background: var(--surface); color: var(--text); font-family: inherit; font-size: 0.88rem;">
-                        <option value="">Semua Kelas</option>
-                        @foreach(['VII', 'VIII', 'IX'] as $kls)
-                            <option value="{{ $kls }}" {{ request('kelas') == $kls ? 'selected' : '' }}>Kelas {{ $kls }}</option>
-                        @endforeach
-                    </select>
-                @else
-                    <select name="kategori" class="form-control" onchange="this.form.submit()" style="padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border); outline: none; background: var(--surface); color: var(--text); font-family: inherit; font-size: 0.88rem;">
-                        <option value="">Semua Kategori</option>
-                        @foreach($kategori_list as $kat)
-                            <option value="{{ $kat->id_kategori }}" {{ request('kategori') == $kat->id_kategori ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
-                        @endforeach
-                    </select>
-                @endif
+                
+                <div style="flex: 1; min-width: 220px;">
+                    <label style="font-size: 0.82rem; font-weight: 800; color: var(--text-muted); margin-bottom: 0.4rem; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Filter {{ $type === 'bos' ? 'Kelas' : 'Kategori' }}</label>
+                    @if($type === 'bos')
+                        <select name="kelas" class="form-control" onchange="this.form.submit()" style="padding: 0.75rem 1.2rem; border-radius: 10px; border: 1.5px solid var(--border); outline: none; background: #fff; font-weight: 600; width: 100%;">
+                            <option value="">— Semua Kelas —</option>
+                            @foreach(['VII', 'VIII', 'IX'] as $kls)
+                                <option value="{{ $kls }}" {{ request('kelas') == $kls ? 'selected' : '' }}>Kelas {{ $kls }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <select name="kategori" class="form-control" onchange="this.form.submit()" style="padding: 0.75rem 1.2rem; border-radius: 10px; border: 1.5px solid var(--border); outline: none; background: #fff; font-weight: 600; width: 100%;">
+                            <option value="">— Semua Kategori —</option>
+                            @foreach($kategori_list as $kat)
+                                <option value="{{ $kat->id_kategori }}" {{ request('kategori') == $kat->id_kategori ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+
+                <div style="flex: 2; min-width: 280px;">
+                    <label style="font-size: 0.82rem; font-weight: 800; color: var(--text-muted); margin-bottom: 0.4rem; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Pencarian Buku</label>
+                    <div class="search-box" style="width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.75rem 1.2rem; background: #fff; display: flex; align-items: center; gap: 0.8rem;">
+                        <i class="fas fa-search" style="color: var(--theme-primary); font-size: 1.1rem;"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul, kode, atau pengarang…" style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.95rem; font-weight: 600;">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 0.5rem;">
+                    <button type="submit" class="btn-primary" style="padding: 0.75rem 1.5rem; border-radius: 10px; height: 48px; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; border: none;">
+                        <i class="fas fa-filter"></i> Cari
+                    </button>
+                    @if(request('kelas') || request('kategori') || request('search'))
+                        <a href="{{ route('kperpus.buku.index', ['type' => $type]) }}" class="btn-reset" style="padding: 0.75rem 1.5rem; background: var(--theme-danger-light); color: var(--theme-danger); border: 1.5px solid rgba(239, 68, 68, 0.2); border-radius: 10px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; height: 48px;">
+                            <i class="fas fa-times"></i> Reset
+                        </a>
+                    @endif
+                </div>
             </form>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="search-input" placeholder="Cari berdasarkan judul, kode atau pengarang…">
-            </div>
         </div>
     </div>
 
     <div class="table-wrap">
-        <table id="buku-table">
+        <table>
             <thead>
                 <tr>
-                    <th style="width: 50px;">#</th>
-                    <th style="width: 70px;">Cover</th>
-                    <th style="width: 130px;">Kode</th>
-                    <th>Judul Buku</th>
-                    <th>Pengarang</th>
-                    <th style="width: 90px;">Tahun</th>
-                    <th style="width: 140px;">ISBN</th>
-                    <th style="width: 90px;">Stok</th>
+                    <th style="width: 60px; text-align: center;">No</th>
+                    <th style="width: 80px; text-align: center;">Cover</th>
+                    <th style="width: 140px; text-align: left; padding-left: 1.5rem;">Kode Buku</th>
+                    <th style="text-align: left;">Judul Buku</th>
+                    <th style="width: 200px; text-align: left;">Pengarang</th>
+                    <th style="width: 100px; text-align: center;">Tahun</th>
+                    <th style="width: 150px; text-align: center;">ISBN</th>
+                    <th style="width: 110px; text-align: center;">Stok</th>
                     @if($type !== 'bos')
-                        <th>Kategori</th>
+                        <th style="width: 160px; text-align: left;">Kategori</th>
                     @else
-                        <th>Kelas</th>
+                        <th style="width: 110px; text-align: center;">Kelas</th>
                     @endif
-                    <th style="width: 120px;">Status</th>
+                    <th style="width: 120px; text-align: center;">Status</th>
                     <th style="width: 110px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($buku as $index => $item)
                 <tr>
-                    <td style="text-align: center;">{{ $buku->firstItem() + $index }}</td>
-                    <td style="text-align: center;">
+                    <td style="text-align: center; font-weight: 700; color: var(--text-muted);">{{ $buku->firstItem() + $index }}</td>
+                    <td>
                         <div class="book-cover-container">
                             @if($item->gambar)
-                                <img src="{{ Storage::url($item->gambar) }}"
-                                     alt="{{ $item->judul_buku }}"
-                                     class="book-cover">
+                                <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->judul_buku }}" class="book-cover">
                             @else
                                 <div class="book-cover-placeholder">
                                     <i class="fas fa-book"></i>
@@ -749,27 +511,27 @@
                             @endif
                         </div>
                     </td>
-                    <td style="text-align: center;">
-                        <code style="font-size:0.8rem; background: var(--theme-primary-light); color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 700; border: 1px solid rgba(37, 99, 235, 0.1);">{{ $item->kode_buku }}</code>
+                    <td style="padding-left: 1.5rem;">
+                        <code style="font-size:0.82rem; background: var(--theme-primary-light); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 800; border: 1px solid rgba(37, 99, 235, 0.12);">{{ $item->kode_buku }}</code>
                     </td>
-                    <td style="font-weight: 700; max-width: 240px; line-height: 1.4;">{{ $item->judul_buku }}</td>
-                    <td style="font-weight: 600; color: #475569;">{{ $item->pengarang }}</td>
-                    <td style="text-align: center;"><span style="font-weight: 700; color: #475569;">{{ $item->tahun_terbit }}</span></td>
-                    <td style="color: #64748b; text-align: center;">{{ $item->isbn ?? '—' }}</td>
+                    <td style="font-weight: 700; color: #1e293b; max-width: 280px; line-height: 1.4;">{{ $item->judul_buku }}</td>
+                    <td style="font-weight: 600; color: #4a5568;">{{ $item->pengarang }}</td>
+                    <td style="text-align: center; font-weight: 700; color: #4a5568;">{{ $item->tahun_terbit }}</td>
+                    <td style="color: #64748b; text-align: center; font-family: monospace; font-size: 0.85rem;">{{ $item->isbn ?? '—' }}</td>
                     <td style="text-align: center;">
                         <span class="pill {{ $item->stok > 0 ? 'pill-success' : 'pill-warning' }}">
-                            {{ $item->stok }} eks
+                            {{ $item->stok }} Eks
                         </span>
                     </td>
                     @if($type !== 'bos')
                         @php
-                            $catColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4'];
+                            $catColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
                             $catColor = $item->id_kategori ? $catColors[$item->id_kategori % count($catColors)] : '#64748b';
                         @endphp
                         <td>
                             @if($item->kategoriBuku)
-                                <span style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.9rem; border-radius: 30px; font-size: 0.8rem; font-weight: 700; color: {{ $catColor }}; background: {{ $catColor }}1a; border: 1px solid {{ $catColor }}40;">
-                                    <i class="fas fa-tag" style="font-size: 0.7rem;"></i>
+                                <span style="display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.78rem; font-weight: 700; color: {{ $catColor }}; background: {{ $catColor }}12; border: 1px solid {{ $catColor }}30;">
+                                    <i class="fas fa-tag" style="font-size: 0.65rem;"></i>
                                     {{ $item->kategoriBuku->nama_kategori }}
                                 </span>
                             @else
@@ -787,13 +549,13 @@
                     @endif
                     <td style="text-align: center;">
                         @if($item->status_buku === 'tersedia')
-                            <span class="pill pill-success"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> Tersedia</span>
+                            <span class="pill pill-success"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Tersedia</span>
                         @else
-                            <span class="pill pill-warning"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> Dipinjam</span>
+                            <span class="pill pill-warning"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Dipinjam</span>
                         @endif
                     </td>
                     <td>
-                        <div class="actions" style="justify-content: center;">
+                        <div class="actions">
                             <a href="{{ route('kperpus.buku.edit', $item->id_buku) }}" class="btn-icon btn-edit" title="Edit Buku">
                                 <i class="fas fa-pen"></i>
                             </a>
@@ -806,11 +568,11 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="12">
-                        <div class="empty-state">
-                            <i class="fas fa-book-open"></i>
-                            <p>Belum ada data buku dalam kategori ini.</p>
-                            <span style="font-size: 0.82rem; color: var(--text-muted)">Gunakan tombol di atas untuk menambah koleksi buku baru.</span>
+                    <td colspan="11">
+                        <div style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
+                            <i class="fas fa-book-open" style="font-size: 3rem; color: var(--primary); opacity: 0.3; margin-bottom: 1rem; display: block;"></i>
+                            <p style="font-weight: 600; font-size: 0.95rem;">Belum ada data koleksi buku.</p>
+                            <span style="font-size: 0.82rem;">Klik tombol tambah di atas untuk memasukkan buku baru.</span>
                         </div>
                     </td>
                 </tr>
@@ -830,12 +592,12 @@
     @endif
 </div>
 
-{{-- Delete Modal --}}
+{{-- Delete Confirmation Modal --}}
 <div class="modal-overlay" id="delete-modal">
     <div class="modal-box">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
-        <h3>Hapus Buku?</h3>
-        <p id="delete-modal-msg">Apakah Anda yakin ingin menghapus buku ini? Tindakan ini tidak dapat dibatalkan.</p>
+        <h3>Hapus Koleksi Buku?</h3>
+        <p id="delete-modal-msg">Tindakan ini tidak dapat dibatalkan.</p>
         <div class="modal-actions">
             <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
             <form id="delete-form" method="POST" style="flex: 1;">
@@ -849,49 +611,15 @@
 
 @endsection
 
-
-
 @push('scripts')
 <script>
-    // ── Live search client-side ──
-    document.getElementById('search-input').addEventListener('input', function () {
-        const q = this.value.toLowerCase();
-        document.querySelectorAll('#buku-table tbody tr').forEach(row => {
-            if (row.querySelector('.empty-state')) return;
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(q) ? '' : 'none';
-        });
-    });
-
-    // ── Modals Logic ──
-    function closeAllModals() {
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            modal.classList.remove('show');
-            setTimeout(() => { modal.style.display = 'none'; }, 200);
-        });
-    }
-
-    // Delete Modal
-    function confirmDelete(url, judul) {
+    function confirmDelete(url, title) {
         document.getElementById('delete-form').action = url;
-        document.getElementById('delete-modal-msg').innerHTML =
-            'Apakah Anda yakin ingin menghapus buku <strong style="color: var(--text)">"' + judul + '"</strong>? Tindakan ini tidak dapat dibatalkan.';
-        
-        const modal = document.getElementById('delete-modal');
-        modal.style.display = 'flex';
-        setTimeout(() => { modal.classList.add('show'); }, 10);
+        document.getElementById('delete-modal-msg').innerHTML = `Apakah Anda yakin ingin menghapus buku <br><strong style="color:var(--text)">"${title}"</strong>?<br>Data sirkulasi terkait juga akan terpengaruh.`;
+        document.getElementById('delete-modal').classList.add('show');
     }
     function closeDeleteModal() {
-        const modal = document.getElementById('delete-modal');
-        modal.classList.remove('show');
-        setTimeout(() => { modal.style.display = 'none'; }, 200);
+        document.getElementById('delete-modal').classList.remove('show');
     }
-
-    document.querySelectorAll('.modal-overlay').forEach(modal => {
-        modal.addEventListener('click', function (e) {
-            if (e.target === this) closeAllModals();
-        });
-    });
-
 </script>
 @endpush

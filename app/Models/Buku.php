@@ -50,13 +50,42 @@ class Buku extends Model
     }
 
     /**
-     * Generate kode buku otomatis secara berurutan berdasarkan sumber buku.
-     * Prefix: BP- untuk 'buku perpus', BOS- untuk 'bos'.
-     * Contoh: BP-0001, BOS-0001.
+     * Dapatkan prefix kode buku berdasarkan sumber dan kategori.
      */
-    public static function generateKode(string $sumber): string
+    public static function getPrefix(string $sumber, $id_kategori = null): string
     {
-        $prefix = ($sumber === 'bos') ? 'BOS-' : 'BP-';
+        $prefix = 'BP-'; // Default
+        if ($sumber === 'bos') {
+            $prefix = 'BOS-';
+        } else if ($sumber === 'buku perpus' && $id_kategori) {
+            $kategori = KategoriBuku::find($id_kategori);
+            if ($kategori) {
+                $name = strtoupper(trim($kategori->nama_kategori));
+                if ($name === 'CERPEN') {
+                    $prefix = 'BCP-';
+                } else if ($name === 'KAMUS') {
+                    $prefix = 'BKM-';
+                } else {
+                    $words = explode(' ', $name);
+                    if (count($words) > 1) {
+                        $prefix = 'B' . substr($words[0], 0, 1) . substr($words[1], 0, 1) . '-';
+                    } else {
+                        $consonants = preg_replace('/[^A-Z]/', '', $name);
+                        $consonants = preg_replace('/[AEIOU]/', '', substr($consonants, 1));
+                        $prefix = 'B' . substr($name, 0, 1) . (strlen($consonants) > 0 ? substr($consonants, 0, 1) : substr($name, 1, 1)) . '-';
+                    }
+                }
+            }
+        }
+        return $prefix;
+    }
+
+    /**
+     * Generate kode buku otomatis secara berurutan berdasarkan sumber buku dan kategori.
+     */
+    public static function generateKode(string $sumber, $id_kategori = null): string
+    {
+        $prefix = self::getPrefix($sumber, $id_kategori);
 
         // Ambil kode terakhir yang berawalan sesuai prefix
         $last = static::where('kode_buku', 'like', "{$prefix}%")
@@ -64,7 +93,7 @@ class Buku extends Model
             ->value('kode_buku');
 
         if ($last) {
-            // Ekstrak angka dari kode buku (misal: BP-0001 -> 1)
+            // Ekstrak angka dari kode buku (misal: BCP-0001 -> 1)
             $num = (int) substr($last, strlen($prefix));
             $next = $num + 1;
         } else {

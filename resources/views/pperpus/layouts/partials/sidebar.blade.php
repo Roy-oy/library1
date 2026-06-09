@@ -40,7 +40,10 @@
                 <i class="fas fa-chevron-right nav-arrow"></i>
             </a>
             <div class="nav-dropdown-menu">
-
+                <a href="{{ route('pperpus.pengembalian.perpustakaan.index') }}" 
+                   class="nav-link nav-child {{ request()->routeIs('pperpus.pengembalian.perpustakaan.*') ? 'active' : '' }}">
+                    <i class="fas fa-book"></i> Pengembalian Buku Perpustakaan
+                </a>
                 <a href="{{ route('pperpus.pengembalian.bos.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.pengembalian.bos.*') ? 'active' : '' }}">
                     <i class="fas fa-book-open"></i> Pengembalian Buku BOS
@@ -85,7 +88,13 @@
 
     <div class="sidebar-footer">
         <div class="user-card">
-            <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+            <div class="user-avatar">
+                @if(auth()->user()->foto_profile)
+                    <img src="{{ asset('storage/' . auth()->user()->foto_profile) }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                @else
+                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                @endif
+            </div>
             <div class="user-info">
                 <div class="name">{{ Str::limit(auth()->user()->name, 22) }}</div>
                 <div class="role">{{ auth()->user()->getRoleLabel() }}</div>
@@ -99,7 +108,7 @@
 .nav-dropdown-menu {
     display: none;
     overflow: hidden;
-    background: #f8fafc;
+    background: rgba(0,0,0,0.1);
     border-radius: 8px;
     margin: 4px 1.2rem 8px 1.2rem;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
@@ -133,30 +142,28 @@
 .nav-child {
     padding: 0.55rem 1rem 0.55rem 2.8rem !important;
     font-size: 0.84rem;
-    color: var(--text-muted);
+    color: var(--sidebar-text-dim);
     border-radius: 6px;
     margin: 2px 4px;
     transition: all 0.2s;
+    text-decoration: none;
+    display: block;
 }
 .nav-child i {
     font-size: 0.8rem;
     opacity: 0.8;
     position: absolute;
     left: 1.2rem;
+    color: var(--sidebar-accent) !important;
 }
 .nav-child:hover {
-    background: #ffffff;
-    color: var(--info);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    background: rgba(255,255,255,0.1);
+    color: #ffffff;
 }
 .nav-child.active {
-    background: #ffffff;
-    color: var(--info);
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
     font-weight: 700;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
-}
-.nav-child.active::before {
-    display: none;
 }
 </style>
 

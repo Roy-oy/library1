@@ -46,31 +46,6 @@
         margin-top: 0.25rem;
     }
 
-    .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.75rem 1.4rem;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.88rem;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-        box-shadow: 0 4px 14px rgba(74, 144, 226, 0.3);
-        transition: all var(--transition-speed) ease;
-    }
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
-    }
-    .btn-primary:active {
-        transform: translateY(0);
-    }
-
     /* ── Card Container ── */
     .card {
         background: var(--surface);
@@ -172,6 +147,23 @@
     .buku-count i {
         color: var(--primary);
     }
+    
+    /* Green status pill specifically for borrowed books count */
+    .borrow-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--theme-warning-light);
+        color: #b45309;
+        padding: 0.3rem 0.8rem;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .borrow-count i {
+        color: var(--theme-warning);
+    }
 
     /* ── Action Buttons ── */
     .actions {
@@ -244,7 +236,7 @@
         font-weight: 600;
     }
 
-    /* ── Delete Modal ── */
+    /* ── Pop-Up Form Modal Shared Styling ── */
     .modal-overlay {
         display: none;
         position: fixed;
@@ -264,142 +256,63 @@
     .modal-box {
         background: var(--surface);
         border-radius: var(--card-radius);
-        padding: 2rem;
-        width: 90%;
-        max-width: 420px;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
-        transform: scale(0.9);
-        transition: transform var(--transition-speed) ease;
-    }
-    .modal-overlay.show .modal-box {
-        transform: scale(1);
-    }
-    .modal-box .modal-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: var(--theme-danger-light);
-        color: var(--theme-danger);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.6rem;
-        margin: 0 auto 1.25rem;
-        box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.1);
-    }
-    .modal-box h3 {
-        font-size: 1.2rem;
-        font-weight: 800;
-        text-align: center;
-        color: var(--text);
-    }
-    .modal-box p {
-        font-size: 0.88rem;
-        color: var(--text-muted);
-        text-align: center;
-        margin-top: 0.6rem;
-        line-height: 1.5;
-    }
-    .modal-actions {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 1.75rem;
-    }
-    .modal-actions .btn-cancel {
-        flex: 1;
-        padding: 0.75rem;
-        background: var(--bg);
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: var(--text-muted);
-        cursor: pointer;
-        transition: all var(--transition-speed) ease;
-    }
-    .modal-actions .btn-cancel:hover {
-        background: #e2e8f0;
-        color: var(--text);
-    }
-    .modal-actions .btn-confirm {
-        flex: 1;
-        padding: 0.75rem;
-        background: var(--theme-danger);
-        border: none;
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #fff;
-        cursor: pointer;
-        transition: background var(--transition-speed) ease;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-    }
-    .modal-actions .btn-confirm:hover {
-        background: #dc2626;
-    }
-
-    /* ── Form Modals (Create & Edit) ── */
-    .form-modal-box {
-        background: var(--surface);
-        border-radius: var(--card-radius);
         padding: 0;
         width: 90%;
-        max-width: 500px;
+        max-width: 550px;
         box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
         transform: scale(0.9);
         transition: transform var(--transition-speed) ease;
         overflow: hidden;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
     }
-    .modal-overlay.show .form-modal-box {
+    .modal-overlay.show .modal-box {
         transform: scale(1);
     }
-    .form-modal-header {
+    .form-card {
+        background: transparent;
+        border: none;
+    }
+    .form-card-header {
         padding: 1.5rem;
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 1rem;
         background: #fafbfc;
     }
-    .form-modal-header h3 {
-        font-size: 1.2rem;
+    .form-card-header .hdr-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--theme-success), #059669);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+    }
+    .form-card-header.edit-mode .hdr-icon {
+        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+    .form-card-header h2 {
+        font-size: 1.05rem;
         font-weight: 800;
         color: var(--text);
-        margin: 0;
     }
-    .form-modal-close {
-        background: transparent;
-        border: none;
-        font-size: 1.2rem;
+    .form-card-header p {
+        font-size: 0.82rem;
         color: var(--text-muted);
-        cursor: pointer;
-        transition: color var(--transition-speed) ease;
+        margin-top: 0.15rem;
     }
-    .form-modal-close:hover {
-        color: var(--theme-danger);
-    }
-    .form-modal-body {
-        padding: 1.5rem;
-        overflow-y: auto;
-    }
-    .form-modal-footer {
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid var(--border);
-        background: #fafbfc;
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.8rem;
+    .form-body {
+        padding: 1.8rem;
     }
     .form-group {
         display: flex;
         flex-direction: column;
         gap: 0.45rem;
-        margin-bottom: 1rem;
     }
     .form-group label {
         font-size: 0.82rem;
@@ -409,12 +322,8 @@
         align-items: center;
         gap: 0.3rem;
     }
-    .form-group label i {
-        color: var(--primary);
-        font-size: 0.85rem;
-    }
     .form-group label .req {
-        color: var(--theme-danger);
+        color: var(--danger);
     }
     .form-control-wrap {
         position: relative;
@@ -444,16 +353,45 @@
         padding-left: 2.5rem;
     }
     .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3.5px rgba(74, 144, 226, 0.15);
+        border-color: var(--theme-success);
+        box-shadow: 0 0 0 3.5px rgba(16, 185, 129, 0.15);
     }
-    
+    .form-overlay-modal.edit-active .form-control:focus {
+        border-color: var(--theme-primary);
+        box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.15);
+    }
+    .form-control.is-invalid {
+        border-color: var(--theme-danger);
+    }
+    .invalid-feedback {
+        font-size: 0.78rem;
+        color: var(--theme-danger);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 0.2rem;
+        font-weight: 700;
+    }
+    .form-hint {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.4rem;
+        line-height: 1.4;
+    }
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1.25rem 1.8rem;
+        border-top: 1px solid var(--border);
+        background: #fafbfc;
+    }
     .btn-submit {
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
         padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        background: linear-gradient(135deg, var(--theme-success), #059669);
         color: #fff;
         border: none;
         border-radius: 10px;
@@ -462,11 +400,107 @@
         font-weight: 700;
         cursor: pointer;
         transition: all var(--transition-speed) ease;
-        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+    .form-overlay-modal.edit-active .btn-submit {
+        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
     }
     .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+    }
+    .btn-cancel-modal {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.2rem;
+        background: var(--bg);
+        color: var(--text-muted);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+    }
+    .btn-cancel-modal:hover {
+        background: #e2e8f0;
+        color: var(--text);
+    }
+
+    /* Delete Modal specifics style reset */
+    .modal-box-del {
+        max-width: 420px;
+        padding: 2rem;
+    }
+    .modal-box-del .modal-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--theme-danger-light);
+        color: var(--theme-danger);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        margin: 0 auto 1.25rem;
+        box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.1);
+    }
+    .modal-box-del h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        text-align: center;
+        color: var(--text);
+    }
+    .modal-box-del p {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        text-align: center;
+        margin-top: 0.6rem;
+        line-height: 1.5;
+    }
+    .modal-box-del .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+        padding: 0;
+        background: transparent;
+        border: none;
+    }
+    .modal-box-del .modal-actions .btn-cancel {
+        flex: 1;
+        padding: 0.75rem;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+    }
+    .modal-box-del .modal-actions .btn-cancel:hover {
+        background: #e2e8f0;
+        color: var(--text);
+    }
+    .modal-box-del .modal-actions .btn-confirm {
+        flex: 1;
+        padding: 0.75rem;
+        background: var(--theme-danger);
+        border: none;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        transition: background var(--transition-speed) ease;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+    .modal-box-del .modal-actions .btn-confirm:hover {
+        background: #dc2626;
     }
 
     @media (max-width: 768px) {
@@ -494,7 +528,7 @@
         <h1><i class="fas fa-tags" style="color:var(--primary)"></i> Kategori Buku</h1>
         <p>Kelola kategori klasifikasi untuk koleksi buku perpustakaan</p>
     </div>
-    <button type="button" class="btn-primary" id="btn-tambah-kategori" onclick="openCreateModal()">
+    <button type="button" onclick="openCreateModal()" class="btn-primary" style="border:none; cursor:pointer; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.2rem; border-radius:10px; font-weight:700;">
         <i class="fas fa-plus"></i> Tambah Kategori
     </button>
 </div>
@@ -511,8 +545,8 @@
                 <tr>
                     <th style="width: 60px; text-align: center;">#</th>
                     <th>Nama Kategori</th>
-                    <th style="width: 200px; text-align: center;">Jumlah Buku Terkait</th>
-                    <th style="width: 180px; text-align: center;">Tanggal Dibuat</th>
+                    <th style="width: 180px; text-align: center;">Jumlah Buku</th>
+                    <th style="width: 180px; text-align: center;">Jumlah yang Di Pinjam</th>
                     <th style="width: 120px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
@@ -533,26 +567,26 @@
                     <td style="text-align: center;">
                         <span class="buku-count">
                             <i class="fas fa-book"></i>
-                            {{ $item->bukus->count() }} buku
+                            {{ $item->total_buku }} Buku
                         </span>
                     </td>
-                    <td style="text-align: center; color: var(--text-muted); font-weight: 600;">
-                        {{ $item->created_at->translatedFormat('d M Y') }}
+                    <td style="text-align: center;">
+                        <span class="borrow-count">
+                            <i class="fas fa-bookmark"></i>
+                            {{ $item->jumlah_dipinjam }} Terpinjam
+                        </span>
                     </td>
                     <td>
                         <div class="actions" style="justify-content: center;">
-                            <button type="button" class="btn-icon btn-edit" title="Edit Kategori"
-                                onclick="openEditModal({
-                                    id: '{{ $item->id_kategori }}',
-                                    nama: '{{ addslashes($item->nama_kategori) }}'
-                                })">
+                            <button type="button" class="btn-icon btn-edit" title="Edit Kategori" 
+                                    onclick="openEditModal('{{ $item->id_kategori }}', '{{ addslashes($item->nama_kategori) }}')">
                                 <i class="fas fa-pen"></i>
                             </button>
                             <button type="button" class="btn-icon btn-del" title="Hapus Kategori"
                                 onclick="confirmDelete(
                                     '{{ route('kperpus.kategori.destroy', $item->id_kategori) }}',
                                     '{{ addslashes(ucwords($item->nama_kategori)) }}',
-                                    {{ $item->bukus->count() }}
+                                    {{ $item->total_buku }}
                                 )">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -587,7 +621,7 @@
 
 {{-- Delete Modal --}}
 <div class="modal-overlay" id="delete-modal">
-    <div class="modal-box">
+    <div class="modal-box modal-box-del">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
         <h3>Hapus Kategori?</h3>
         <p id="delete-modal-msg">Apakah Anda yakin ingin menghapus kategori ini?</p>
@@ -602,73 +636,65 @@
     </div>
 </div>
 
+{{-- Memanggil Modular Blade Modal Create dan Edit --}}
+@include('kperpus.kategori.create')
+@include('kperpus.kategori.edit')
+
 @endsection
-
-{{-- Create Modal --}}
-<div class="modal-overlay" id="create-modal">
-    <div class="form-modal-box">
-        <div class="form-modal-header">
-            <h3><i class="fas fa-plus" style="color:var(--primary)"></i> Tambah Kategori Baru</h3>
-            <button class="form-modal-close" onclick="closeCreateModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <form action="{{ route('kperpus.kategori.store') }}" method="POST">
-            @csrf
-            <div class="form-modal-body">
-                <div class="form-group">
-                    <label for="create_nama">Nama Kategori <span class="req">*</span></label>
-                    <div class="form-control-wrap">
-                        <i class="fas fa-tags input-icon"></i>
-                        <input type="text" id="create_nama" name="nama_kategori" class="form-control" placeholder="Contoh: Novel, Sains..." required>
-                    </div>
-                </div>
-            </div>
-            <div class="form-modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeCreateModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
-                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{{-- Edit Modal --}}
-<div class="modal-overlay" id="edit-modal">
-    <div class="form-modal-box">
-        <div class="form-modal-header">
-            <h3><i class="fas fa-pen" style="color:var(--primary)"></i> Edit Kategori</h3>
-            <button class="form-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <form id="edit-form" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="form-modal-body">
-                <div class="form-group">
-                    <label for="edit_nama">Nama Kategori <span class="req">*</span></label>
-                    <div class="form-control-wrap">
-                        <i class="fas fa-tags input-icon"></i>
-                        <input type="text" id="edit_nama" name="nama_kategori" class="form-control" required>
-                    </div>
-                </div>
-            </div>
-            <div class="form-modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeEditModal()" style="padding: 0.75rem 1.2rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-weight: 700; cursor: pointer; color: var(--text-muted);">Batal</button>
-                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Perbarui</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 @push('scripts')
 <script>
+    const updateUrlBase = "{{ url('kperpus/kategori') }}"; 
+
+    /* ── Fungsi Pop-up Create ── */
+    function openCreateModal() {
+        const modal = document.getElementById('create-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { 
+            modal.classList.add('show'); 
+            document.getElementById('create_nama_kategori').focus();
+        }, 10);
+    }
+
+    /* ── Fungsi Pop-up Edit ── */
+    function openEditModal(id, nama) {
+        const modal = document.getElementById('edit-modal');
+        const form = document.getElementById('edit-form-action');
+        const inputNama = document.getElementById('edit_nama_kategori');
+
+        form.action = updateUrlBase + '/' + id;
+        inputNama.value = nama;
+
+        modal.style.display = 'flex';
+        setTimeout(() => { 
+            modal.classList.add('show'); 
+            inputNama.focus();
+        }, 10);
+    }
+
+    /* ── Fungsi Global Close Modal ── */
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 200);
+    }
+
+    // Event Klik area luar untuk menutup
+    document.getElementById('create-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeModal('create-modal');
+    });
+    document.getElementById('edit-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeModal('edit-modal');
+    });
+
+    /* ── Fungsi Modal Delete Bawaan Anda ── */
     function confirmDelete(url, nama, jumlahBuku) {
         document.getElementById('delete-form').action = url;
-
         let msg = 'Apakah Anda yakin ingin menghapus kategori <strong style="color: var(--text)">"' + nama + '"</strong>?';
         if (jumlahBuku > 0) {
             msg += '<br><br><span style="color: var(--theme-danger); font-weight: 700;"><i class="fas fa-exclamation-circle"></i> PERINGATAN:</span> Kategori ini memiliki <strong>' + jumlahBuku + ' buku</strong> terkait yang akan ikut terhapus secara otomatis (cascade).';
         }
-        
         document.getElementById('delete-modal-msg').innerHTML = msg;
-        
         const modal = document.getElementById('delete-modal');
         modal.style.display = 'flex';
         setTimeout(() => { modal.classList.add('show'); }, 10);
@@ -684,37 +710,13 @@
         if (e.target === this) closeDeleteModal();
     });
 
-    // ── Create Modal ──
-    function openCreateModal() {
-        const modal = document.getElementById('create-modal');
-        modal.style.display = 'flex';
-        setTimeout(() => { modal.classList.add('show'); }, 10);
-    }
-    function closeCreateModal() {
-        const modal = document.getElementById('create-modal');
-        modal.classList.remove('show');
-        setTimeout(() => { modal.style.display = 'none'; }, 200);
-    }
-    document.getElementById('create-modal').addEventListener('click', function (e) {
-        if (e.target === this) closeCreateModal();
-    });
-
-    // ── Edit Modal ──
-    function openEditModal(data) {
-        document.getElementById('edit-form').action = "{{ url('kepala-perpustakaan/kategori') }}/" + data.id;
-        document.getElementById('edit_nama').value = data.nama;
-
-        const modal = document.getElementById('edit-modal');
-        modal.style.display = 'flex';
-        setTimeout(() => { modal.classList.add('show'); }, 10);
-    }
-    function closeEditModal() {
-        const modal = document.getElementById('edit-modal');
-        modal.classList.remove('show');
-        setTimeout(() => { modal.style.display = 'none'; }, 200);
-    }
-    document.getElementById('edit-modal').addEventListener('click', function (e) {
-        if (e.target === this) closeEditModal();
-    });
+    // Auto-open jika terdapat validasi error dari Laravel
+    @if($errors->any())
+        @if(old('_method') == 'PUT')
+            openEditModal('{{ basename(url()->previous()) }}', '{{ old("nama_kategori") }}');
+        @else
+            openCreateModal();
+        @endif
+    @endif
 </script>
 @endpush

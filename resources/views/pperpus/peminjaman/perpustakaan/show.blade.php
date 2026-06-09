@@ -43,18 +43,18 @@
 
     /* ── Page Header ── */
     .pg-head {
-        display: flex; align-items: flex-start; justify-content: space-between;
+        display: flex; align-items: center; justify-content: space-between;
         margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;
     }
     .pg-head-left { display: flex; align-items: center; gap: 1.1rem; }
     .back-btn {
-        width: 46px; height: 46px; border-radius: 12px; border: 1.5px solid var(--border);
+        width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--border);
         background: var(--surface); display: flex; align-items: center; justify-content: center;
         color: var(--muted); text-decoration: none; font-size: 1rem; flex-shrink: 0;
         transition: all .2s ease;
     }
     .back-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); transform: translateX(-2px); }
-    .pg-title { font-size: 1.65rem; font-weight: 900; color: var(--ink); line-height: 1.15; }
+    .pg-title { font-size: 1.65rem; font-weight: 900; color: var(--ink); line-height: 1.15; margin: 0; }
     .pg-meta { display: flex; align-items: center; gap: .75rem; margin-top: .4rem; flex-wrap: wrap; }
     .kode-chip {
         font-family: 'JetBrains Mono', monospace; font-size: .85rem; font-weight: 700;
@@ -63,6 +63,7 @@
     }
     .meta-sep { color: var(--border-strong); font-size: .9rem; }
     .meta-date { font-size: .875rem; color: var(--muted); font-weight: 600; }
+    
     .btn-print {
         display: inline-flex; align-items: center; gap: .55rem;
         background: var(--accent); color: #fff; border: none;
@@ -72,8 +73,8 @@
     }
     .btn-print:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,64,175,.35); }
 
-    /* ── Section Divider ── */
-    .section-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    /* ── Section Layout Grid ── */
+    .section-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
     @media (max-width: 768px) { .section-row { grid-template-columns: 1fr; } }
 
     /* ── Card Base ── */
@@ -84,32 +85,33 @@
     }
     .card:hover { box-shadow: var(--shadow); }
     .card-hd {
-        padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border);
+        padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
         display: flex; align-items: center; justify-content: space-between;
         background: var(--surface-2);
     }
     .card-hd-title {
-        font-size: .875rem; font-weight: 800; color: var(--ink-light);
+        font-size: .85rem; font-weight: 800; color: var(--ink-light);
         display: flex; align-items: center; gap: .6rem; text-transform: uppercase; letter-spacing: .5px;
     }
     .card-hd-icon {
-        width: 30px; height: 30px; border-radius: 8px;
+        width: 32px; height: 32px; border-radius: 8px;
         background: var(--accent-light); color: var(--accent);
-        display: flex; align-items: center; justify-content: center; font-size: .8rem;
+        display: flex; align-items: center; justify-content: center; font-size: .85rem;
     }
-    .card-body { padding: 1.4rem; }
+    .card-body { padding: 1.5rem; }
 
     /* ── Data Fields ── */
-    .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.5rem; }
+    .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1.5rem; }
     .field-full { grid-column: 1 / -1; }
-    .field-label { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--subtle); margin-bottom: .3rem; }
+    .field-label { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--subtle); margin-bottom: .35rem; }
     .field-val { font-size: 1rem; font-weight: 700; color: var(--ink); line-height: 1.4; }
-    .field-val.muted { font-size: .875rem; font-weight: 500; color: var(--muted); }
+    .field-val.muted { font-size: .9rem; font-weight: 500; color: var(--muted); }
+    .field-val.danger { color: var(--danger); font-weight: 800; }
 
     /* ── Status Badge ── */
     .badge {
-        display: inline-flex; align-items: center; gap: .35rem;
-        padding: .28rem .85rem; border-radius: 20px; font-size: .78rem; font-weight: 800;
+        display: inline-flex; align-items: center; gap: .4rem;
+        padding: .3rem .9rem; border-radius: 20px; font-size: .78rem; font-weight: 800;
     }
     .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; display: block; }
     .badge-warning { background: var(--warning-light); color: var(--warning); border: 1px solid #fde68a; }
@@ -121,87 +123,95 @@
     .badge-default { background: var(--surface-3); color: var(--muted); border: 1px solid var(--border); }
     .badge-default::before { background: var(--subtle); }
 
-    /* ── Denda Alert ── */
+    /* ── Denda Alert Banner ── */
     .denda-banner {
         background: var(--danger-light); border: 1px solid #fecaca;
-        border-radius: var(--radius); margin-bottom: 1.25rem;
+        border-radius: var(--radius); margin-bottom: 1.5rem;
         display: flex; align-items: center; justify-content: space-between;
         padding: 1.25rem 1.5rem; gap: 1rem; flex-wrap: wrap;
+        box-shadow: var(--shadow-sm);
     }
     .denda-left { display: flex; align-items: center; gap: 1rem; }
     .denda-icon-wrap {
         width: 48px; height: 48px; border-radius: 50%; background: var(--danger); color: #fff;
         display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;
     }
-    .denda-info-text .denda-label { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--danger); }
-    .denda-info-text .denda-amount { font-size: 1.3rem; font-weight: 900; color: #7f1d1d; margin-top: .1rem; }
-    .denda-info-text .denda-note { font-size: .8rem; color: #991b1b; font-weight: 500; margin-top: .1rem; }
+    .denda-info-text .denda-label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--danger); }
+    .denda-info-text .denda-amount { font-size: 1.35rem; font-weight: 900; color: #7f1d1d; margin-top: .1rem; }
+    .denda-info-text .denda-note { font-size: .85rem; color: #991b1b; font-weight: 500; margin-top: .1rem; }
+    
     .btn-lunas {
         background: var(--danger); color: #fff; border: none;
-        padding: .7rem 1.5rem; border-radius: 10px; font-weight: 800; font-size: .875rem;
+        padding: .75rem 1.5rem; border-radius: 10px; font-weight: 800; font-size: .875rem;
         cursor: pointer; font-family: inherit; transition: all .2s ease;
         display: inline-flex; align-items: center; gap: .5rem;
-        box-shadow: 0 4px 12px rgba(220,38,38,.3);
+        box-shadow: 0 4px 12px rgba(220,38,38,.25);
     }
-    .btn-lunas:hover { background: #b91c1c; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(220,38,38,.4); }
+    .btn-lunas:hover { background: #b91c1c; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(220,38,38,.35); }
 
-    /* ── Books Table ── */
-    .table-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 1.25rem; overflow: hidden; }
+    /* ── Books Table UI ── */
+    .table-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; overflow: hidden; }
     .table-hd {
-        padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border);
+        padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
         display: flex; align-items: center; justify-content: space-between;
         background: var(--surface-2);
     }
-    .table-hd-title { font-size: .875rem; font-weight: 800; color: var(--ink-light); display: flex; align-items: center; gap: .6rem; text-transform: uppercase; letter-spacing: .5px; }
+    .table-hd-title { font-size: .85rem; font-weight: 800; color: var(--ink-light); display: flex; align-items: center; gap: .6rem; text-transform: uppercase; letter-spacing: .5px; }
     .count-chip {
         background: var(--accent); color: #fff;
-        font-size: .75rem; font-weight: 800; padding: .18rem .6rem; border-radius: 20px;
+        font-size: .75rem; font-weight: 800; padding: .2rem .65rem; border-radius: 20px;
     }
     .tbl-wrap { overflow-x: auto; }
-    .tbl {
-        width: 100%; border-collapse: collapse;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    .tbl { width: 100%; border-collapse: collapse; font-family: 'Plus Jakarta Sans', sans-serif; }
     .tbl thead th {
-        padding: .85rem 1.2rem; font-size: .72rem; font-weight: 800;
-        text-transform: uppercase; letter-spacing: .7px; color: var(--subtle);
+        padding: 1rem 1.2rem; font-size: .72rem; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .7px; color: var(--muted);
         background: var(--surface-2); border-bottom: 1px solid var(--border);
         text-align: left; white-space: nowrap;
     }
-    .tbl tbody tr { transition: background .15s; }
+    .tbl tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
     .tbl tbody tr:hover td { background: var(--surface-2); }
-    .tbl tbody td {
-        padding: 1rem 1.2rem; font-size: .9rem; color: var(--ink-light);
-        border-bottom: 1px solid var(--border); vertical-align: middle;
-    }
-    .tbl tbody tr:last-child td { border-bottom: none; }
-    .book-title-main { font-size: .95rem; font-weight: 800; color: var(--ink); line-height: 1.3; }
-    .book-chips { display: flex; align-items: center; gap: .5rem; margin-top: .35rem; flex-wrap: wrap; }
+    .tbl tbody tr:last-child { border-bottom: none; }
+    .tbl tbody td { padding: 1.1rem 1.2rem; font-size: .9rem; color: var(--ink-light); vertical-align: middle; }
+    
+    .book-title-main { font-size: .95rem; font-weight: 800; color: var(--ink); line-height: 1.4; }
+    .book-chips { display: flex; align-items: center; gap: .5rem; margin-top: .4rem; flex-wrap: wrap; }
     .chip-code {
         font-family: 'JetBrains Mono', monospace; font-size: .72rem; font-weight: 700;
-        background: var(--accent-light); color: var(--accent); padding: .15rem .5rem; border-radius: 5px;
+        background: var(--accent-light); color: var(--accent); padding: .15rem .5rem; border-radius: 5px; border: 1px solid rgba(30,64,175,0.1);
     }
     .chip-cat {
         font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .3px;
         background: var(--surface-3); color: var(--muted); padding: .15rem .5rem; border-radius: 5px;
     }
     .date-main { font-size: .875rem; font-weight: 700; color: var(--ink); }
-    .late-note { font-size: .72rem; font-weight: 800; color: var(--danger); margin-top: .2rem; display: flex; align-items: center; gap: .25rem; }
+    .late-note { font-size: .75rem; font-weight: 800; color: var(--danger); margin-top: .25rem; display: flex; align-items: center; gap: .25rem; }
     .denda-val { font-size: .9rem; font-weight: 800; color: var(--danger); }
-    .denda-status { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .3px; margin-top: .15rem; }
+    .denda-status { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; margin-top: .2rem; width: max-content; }
     .denda-status.lunas { color: var(--success); }
     .denda-status.belum { color: var(--warning); }
 
+    /* Action Buttons in Table Row */
+    .actions-cell { display: flex; flex-direction: column; gap: .4rem; max-width: 150px; }
     .btn-kembali {
-        display: inline-flex; align-items: center; gap: .4rem;
-        padding: .45rem 1rem; border-radius: 8px; font-size: .78rem; font-weight: 800;
+        display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+        padding: .5rem 1rem; border-radius: 8px; font-size: .78rem; font-weight: 800;
         cursor: pointer; border: 1.5px solid var(--accent); background: var(--accent-light);
         color: var(--accent); transition: all .2s; text-decoration: none; font-family: inherit;
         white-space: nowrap;
     }
-    .btn-kembali:hover { background: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(30,64,175,.2); }
+    .btn-kembali:hover { background: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(30,64,175,.15); }
+    
+    .btn-extend {
+        background: var(--surface-3); border: 1.5px solid var(--border); color: var(--ink-light); 
+        display: inline-flex; align-items: center; justify-content: center; gap: .4rem; 
+        padding: .5rem 1rem; border-radius: 8px; font-size: .78rem; font-weight: 800; 
+        cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
+        white-space: nowrap;
+    }
+    .btn-extend:hover { background: var(--border); color: var(--ink); border-color: var(--border-strong); transform: translateY(-1px); }
 
-    /* ── Modal ── */
+    /* ── Modal Design ── */
     .modal-backdrop {
         display: none; position: fixed; inset: 0; background: rgba(15,23,42,.55);
         z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
@@ -212,48 +222,51 @@
         background: var(--surface); border-radius: 18px; width: 100%; max-width: 460px;
         box-shadow: var(--shadow-lg); animation: popIn .25s cubic-bezier(.16,1,.3,1);
         border: 1px solid var(--border); font-family: 'Plus Jakarta Sans', sans-serif;
+        overflow: hidden;
     }
     @keyframes popIn { from { opacity:0; transform:scale(.95) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
-    .modal-mhd { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-mhd { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface-2); }
     .modal-mhd h3 { font-size: 1rem; font-weight: 800; color: var(--ink); margin: 0; display: flex; align-items: center; gap: .6rem; }
     .modal-body { padding: 1.5rem; }
-    .modal-foot { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: .7rem; background: var(--surface-2); border-radius: 0 0 18px 18px; }
-    .modal-close-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1.1rem; padding: .2rem; transition: color .2s; }
+    .modal-foot { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: .7rem; background: var(--surface-2); }
+    .modal-close-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1.1rem; padding: .2rem; transition: color .2s; display: flex; align-items: center; }
     .modal-close-btn:hover { color: var(--ink); }
+    
     .form-grp { margin-bottom: 1.1rem; }
     .form-grp label { display: block; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--subtle); margin-bottom: .45rem; }
     .form-input {
         width: 100%; padding: .75rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
         font-family: inherit; font-size: .95rem; outline: none; transition: all .2s; color: var(--ink);
-        box-sizing: border-box;
+        box-sizing: border-box; background: #fff;
     }
-    .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,64,175,.1); }
+    .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,64,175,.15); }
+    
     .btn-cancel { padding: .65rem 1.2rem; border-radius: 9px; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); font-weight: 700; font-size: .875rem; cursor: pointer; font-family: inherit; transition: all .2s; }
     .btn-cancel:hover { border-color: var(--border-strong); color: var(--ink); }
-    .btn-submit { padding: .65rem 1.4rem; border-radius: 9px; border: none; background: var(--success); color: #fff; font-weight: 800; font-size: .875rem; cursor: pointer; font-family: inherit; transition: all .2s; display: inline-flex; align-items: center; gap: .4rem; }
-    .btn-submit:hover { background: #047857; transform: translateY(-1px); }
+    .btn-submit { padding: .65rem 1.4rem; border-radius: 9px; border: none; background: var(--success); color: #fff; font-weight: 800; font-size: .875rem; cursor: pointer; font-family: inherit; transition: all .2s; display: inline-flex; align-items: center; gap: .4rem; box-shadow: 0 2px 6px rgba(5,150,105,0.2); }
+    .btn-submit:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.3); }
 
-    /* ── Print ── */
+    /* ── Print Styles Custom ── */
     .print-only { display: none; }
     @media print {
         @page { margin: 1.5cm; size: A4; }
         body { background: #fff !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
-        .sidebar, .header, .back-btn, .btn-print, .btn-lunas, .btn-kembali, .modal-backdrop { display: none !important; }
+        .sidebar, .header, .back-btn, .btn-print, .btn-lunas, .btn-kembali, .btn-extend, .modal-backdrop { display: none !important; }
         .main-wrapper { margin-left: 0 !important; padding: 0 !important; }
         .content { padding: 0 !important; }
         .detail-wrap { max-width: 100% !important; animation: none !important; }
-        .card, .table-card, .denda-banner { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
-        .section-row { grid-template-columns: 1fr 1fr; }
+        .card, .table-card, .denda-banner { box-shadow: none !important; border: 1px solid #cbd5e1 !important; margin-bottom: 1.5rem !important; }
+        .section-row { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .tbl tbody tr:hover td { background: transparent !important; }
         .print-only { display: block !important; text-align: center; margin-bottom: 2rem; padding-bottom: 1.2rem; border-bottom: 2px solid #000; }
         .print-header { display: flex; align-items: center; justify-content: center; gap: 1rem; }
-        .print-logo { font-size: 2.2rem; }
-        .print-title h1 { font-size: 1.3rem; font-weight: 900; margin: 0; text-transform: uppercase; }
-        .print-title p { font-size: .75rem; margin: .15rem 0; color: #555; }
-        .pg-head { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; }
-        .print-footer { display: flex !important; justify-content: space-between; margin-top: 3.5rem; }
-        .sig-box { text-align: center; }
-        .sig-space { height: 65px; }
+        .print-logo { font-size: 2.2rem; color: #000; }
+        .print-title h1 { font-size: 1.4rem; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .print-title p { font-size: .8rem; margin: .2rem 0; color: #444; }
+        .pg-head { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; }
+        .print-footer { display: flex !important; justify-content: space-between; margin-top: 4rem; }
+        .sig-box { text-align: center; width: 200px; }
+        .sig-space { height: 70px; }
         .sig-name { font-weight: 800; text-decoration: underline; font-size: .9rem; }
     }
 </style>
@@ -274,7 +287,7 @@
         <div class="print-title">
             <h1>Bukti Transaksi Peminjaman Perpustakaan</h1>
             <p>Sistem Informasi Perpustakaan (SIP) Sekolah</p>
-            <p>Dicetak: {{ now()->translatedFormat('d F Y, H:i') }}</p>
+            <p>Dicetak: {{ now()->translatedFormat('d F Y, H:i') }} WIB</p>
         </div>
     </div>
 </div>
@@ -288,7 +301,7 @@
                 <i class="fas fa-arrow-left"></i>
             </a>
             <div>
-                <div class="pg-title">Detail Peminjaman</div>
+                <h1 class="pg-title">Detail Peminjaman</h1>
                 <div class="pg-meta">
                     <span class="kode-chip">{{ $peminjaman->kode_peminjaman }}</span>
                     <span class="meta-sep">·</span>
@@ -301,7 +314,7 @@
         </button>
     </div>
 
-    {{-- Denda Alert --}}
+    {{-- Denda Alert Banner --}}
     @if($realtime_total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
     <div class="denda-banner">
         <div class="denda-left">
@@ -309,7 +322,7 @@
             <div class="denda-info-text">
                 <div class="denda-label">Tunggakan Denda</div>
                 <div class="denda-amount">Rp {{ number_format($realtime_total_denda, 0, ',', '.') }}</div>
-                <div class="denda-note">Siswa belum melunasi seluruh denda peminjaman.</div>
+                <div class="denda-note">Siswa belum melunasi seluruh denda dari peminjaman ini.</div>
             </div>
         </div>
         <form action="{{ route('pperpus.pengembalian.perpustakaan.lunasSemuaDenda', $peminjaman->id_peminjaman) }}" method="POST" onsubmit="return confirm('Lunaskan semua denda untuk peminjaman ini?')">
@@ -321,14 +334,14 @@
     </div>
     @endif
 
-    {{-- Info Cards --}}
+    {{-- Info Cards Segment --}}
     <div class="section-row">
-        {{-- Data Siswa --}}
+        {{-- Card: Data Siswa --}}
         <div class="card">
             <div class="card-hd">
                 <div class="card-hd-title">
                     <span class="card-hd-icon"><i class="fas fa-user-graduate"></i></span>
-                    Data Siswa
+                    Data Siswa Peminjam
                 </div>
             </div>
             <div class="card-body">
@@ -349,7 +362,7 @@
             </div>
         </div>
 
-        {{-- Status & Info --}}
+        {{-- Card: Status & Info Utama --}}
         <div class="card">
             <div class="card-hd">
                 <div class="card-hd-title">
@@ -370,32 +383,32 @@
             <div class="card-body">
                 <div class="fields-grid">
                     <div>
-                        <div class="field-label">Tgl Pinjam</div>
+                        <div class="field-label">Tanggal Pinjam</div>
                         <div class="field-val">{{ $peminjaman->tanggal_pinjam->translatedFormat('d M Y') }}</div>
                     </div>
                     <div>
-                        <div class="field-label">Total Denda</div>
-                        <div class="field-val" style="color: var(--danger)">
+                        <div class="field-label">Total Nominal Denda</div>
+                        <div class="field-val danger">
                             Rp {{ number_format($realtime_total_denda, 0, ',', '.') }}
                         </div>
                     </div>
                     <div class="field-full">
-                        <div class="field-label">Keterangan</div>
-                        <div class="field-val muted">{{ $peminjaman->keterangan ?? 'Tidak ada catatan.' }}</div>
+                        <div class="field-label">Keterangan / Catatan</div>
+                        <div class="field-val muted">{{ $peminjaman->keterangan ?? 'Tidak ada catatan khusus.' }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Books Table --}}
+    {{-- Books Table Card --}}
     <div class="table-card">
         <div class="table-hd">
             <div class="table-hd-title">
                 <span class="card-hd-icon"><i class="fas fa-book-open"></i></span>
                 Daftar Buku Dipinjam
             </div>
-            <span class="count-chip">{{ $peminjaman->details->count() }} Buku</span>
+            <span class="count-chip">{{ $peminjaman->details->count() }} Koleksi Buku</span>
         </div>
         <div class="tbl-wrap">
             <table class="tbl">
@@ -406,7 +419,7 @@
                         <th>Tgl Kembali</th>
                         <th>Denda</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="print-none">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -423,7 +436,7 @@
                             @if($detail->tanggal_jatuh_tempo)
                                 <div class="date-main">{{ $detail->tanggal_jatuh_tempo->format('d/m/Y') }}</div>
                                 @if($detail->status_detail === 'terlambat' && !$detail->tanggal_kembali)
-                                    <div class="late-note"><i class="fas fa-exclamation-circle"></i> {{ $detail->hari_terlambat_realtime }} hari</div>
+                                    <div class="late-note"><i class="fas fa-exclamation-circle"></i> Terlambat {{ $detail->hari_terlambat_realtime }} hari</div>
                                 @endif
                             @else
                                 <span style="color: var(--subtle); font-size: .85rem">—</span>
@@ -433,7 +446,7 @@
                             @if($detail->tanggal_kembali)
                                 <div class="date-main">{{ $detail->tanggal_kembali->format('d/m/Y') }}</div>
                             @else
-                                <span style="color: var(--subtle); font-size: .85rem; font-style: italic">Belum Kembali</span>
+                                <span style="color: var(--muted); font-size: .85rem; font-style: italic">Belum Kembali</span>
                             @endif
                         </td>
                         <td>
@@ -460,14 +473,14 @@
                             @endphp
                             <span class="badge {{ $sc }}">{{ $detail->label_status }}</span>
                         </td>
-                        <td>
+                        <td class="print-none">
                             @if(in_array($detail->status_detail, ['dipinjam', 'terlambat']))
-                                <button class="btn-kembali" onclick="openKembaliModal({{ $detail->id_detail }}, '{{ addslashes($detail->buku->judul_buku) }}')">
-                                    <i class="fas fa-undo-alt"></i> Kembalikan
-                                </button>
-                                <button onclick="openPerpanjangModal({{ $detail->id_detail }}, '{{ addslashes($detail->buku->judul_buku) }}', '{{ $detail->tanggal_jatuh_tempo ? $detail->tanggal_jatuh_tempo->format('Y-m-d') : '' }}')" style="background: var(--surface-3); border: 1.5px solid var(--border); color: var(--ink); display: inline-flex; align-items: center; gap: .4rem; padding: .45rem 1rem; border-radius: 8px; font-size: .78rem; font-weight: 800; cursor: pointer; transition: all .2s; margin-top: .3rem; text-decoration: none; font-family: inherit;">
-                                    <i class="fas fa-calendar-plus"></i> Perpanjang
-                                </button>
+                                <div class="actions-cell">
+
+                                    <button class="btn-extend" onclick="openPerpanjangModal({{ $detail->id_detail }}, '{{ addslashes($detail->buku->judul_buku) }}', '{{ $detail->tanggal_jatuh_tempo ? $detail->tanggal_jatuh_tempo->format('Y-m-d') : '' }}')">
+                                        <i class="fas fa-calendar-plus"></i> Perpanjang
+                                    </button>
+                                </div>
                             @else
                                 <span style="color: var(--subtle); font-size: .8rem">—</span>
                             @endif
@@ -479,10 +492,10 @@
         </div>
     </div>
 
-    {{-- Print Footer --}}
+    {{-- Print Footer Signature --}}
     <div class="print-footer" style="display: none;">
         <div class="sig-box">
-            <p>Peminjam,</p>
+            <p>Siswa Peminjam,</p>
             <div class="sig-space"></div>
             <p class="sig-name">{{ $peminjaman->siswa->nama_siswa }}</p>
         </div>
@@ -495,51 +508,6 @@
 
 </div>
 
-{{-- MODAL KEMBALIKAN --}}
-<div class="modal-backdrop" id="kembaliModal">
-    <div class="modal-box">
-        <div class="modal-mhd">
-            <h3><i class="fas fa-undo-alt" style="color: var(--accent)"></i> Kembalikan Buku</h3>
-            <button class="modal-close-btn" onclick="closeKembaliModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="modal-body">
-            <p style="font-size: .875rem; color: var(--muted); margin-bottom: 1.2rem" id="modal-kembali-book"></p>
-            <form id="formKembali" method="POST">
-                @csrf
-                @method('PATCH')
-                <div class="form-grp">
-                    <label>Tanggal Pengembalian</label>
-                    <input type="date" name="tanggal_pengembalian" class="form-input" value="{{ now()->format('Y-m-d') }}" required>
-                </div>
-                <div class="form-grp">
-                    <label>Kondisi Buku</label>
-                    <select name="status_buku" id="status_buku" class="form-input" required onchange="toggleDendaField()">
-                        <option value="kembali">Baik (Kembali)</option>
-                        <option value="rusak">Rusak</option>
-                        <option value="hilang">Hilang</option>
-                    </select>
-                </div>
-                <div id="denda-keterangan-group" style="display: none;">
-                    <div class="form-grp">
-                        <label>Nominal Denda/Ganti (Rp)</label>
-                        <input type="number" name="denda_ganti" id="denda_ganti" class="form-input" min="0" value="0">
-                    </div>
-                    <div class="form-grp">
-                        <label>Keterangan</label>
-                        <textarea name="keterangan" id="keterangan" class="form-input" rows="2" placeholder="Catatan kerusakan/hilang..."></textarea>
-                    </div>
-                </div>
-        </div>
-        <div class="modal-foot">
-            <button type="button" class="btn-cancel" onclick="closeKembaliModal()">Batal</button>
-            <button type="submit" class="btn-submit" form="formKembali">
-                <i class="fas fa-check"></i> Konfirmasi Kembali
-            </button>
-        </div>
-            </form>
-    </div>
-</div>
-
 {{-- MODAL PERPANJANG --}}
 <div class="modal-backdrop" id="perpanjangModal">
     <div class="modal-box">
@@ -548,47 +516,26 @@
             <button class="modal-close-btn" onclick="closePerpanjangModal()"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
-            <p style="font-size: .875rem; color: var(--muted); margin-bottom: 1.2rem" id="modal-perpanjang-book"></p>
+            <p style="font-size: .875rem; color: var(--muted); margin-bottom: 1.2rem; font-weight: 600;" id="modal-perpanjang-book"></p>
             <form id="formPerpanjang" method="POST">
                 @csrf
                 <div class="form-grp">
                     <label>Tanggal Perpanjangan (Jatuh Tempo Baru)</label>
                     <input type="date" name="tanggal_perpanjangan" id="tanggal_perpanjangan" class="form-input" required>
                 </div>
+            </form>
         </div>
         <div class="modal-foot">
             <button type="button" class="btn-cancel" onclick="closePerpanjangModal()">Batal</button>
             <button type="submit" class="btn-submit" form="formPerpanjang">
-                <i class="fas fa-check"></i> Perpanjang
+                <i class="fas fa-check"></i> Konfirmasi Perpanjang
             </button>
         </div>
-            </form>
     </div>
 </div>
 
 @push('scripts')
 <script>
-function openKembaliModal(id, title) {
-    document.getElementById('modal-kembali-book').textContent = 'Buku: ' + title;
-    document.getElementById('formKembali').action = '{{ url("/penjaga-perpustakaan/peminjaman/kembalikan") }}/' + id;
-    document.getElementById('status_buku').value = 'kembali';
-    toggleDendaField();
-    document.getElementById('kembaliModal').classList.add('open');
-}
-function closeKembaliModal() {
-    document.getElementById('kembaliModal').classList.remove('open');
-}
-function toggleDendaField() {
-    const val = document.getElementById('status_buku').value;
-    const grp = document.getElementById('denda-keterangan-group');
-    if (val === 'rusak' || val === 'hilang') {
-        grp.style.display = 'block';
-    } else {
-        grp.style.display = 'none';
-        document.getElementById('denda_ganti').value = '0';
-        document.getElementById('keterangan').value = '';
-    }
-}
 
 function openPerpanjangModal(idDetail, title, currentJatuhTempo) {
     document.getElementById('modal-perpanjang-book').textContent = 'Buku: ' + title;

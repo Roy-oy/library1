@@ -4,217 +4,506 @@
 
 @push('styles')
 <style>
+    /* Global Variables fallback if not defined in app layout */
+    :root {
+        --primary: #9b59b6;
+        --primary-dark: #8e44ad;
+        --surface: #ffffff;
+        --background: #f8fafc;
+        --border: #e2e8f0;
+        --text: #334155;
+        --text-muted: #64748b;
+        --success: #22c55e;
+        --danger: #ef4444;
+        --radius: 12px;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .container-peminjaman {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    /* Page Header */
     .page-header {
-        display: flex; align-items: center; gap: .8rem; margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
     .page-header a {
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 36px; height: 36px; border-radius: 8px;
-        background: var(--surface); border: 1px solid var(--border);
-        color: var(--text-muted); text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .page-header h1 { font-size: 1.25rem; font-weight: 800; color: var(--text); }
+    .page-header a:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+        transform: translateX(-2px);
+    }
+    .page-header h1 { 
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        color: var(--text); 
+        margin: 0;
+    }
 
+    /* Card Design */
     .card {
-        background: var(--surface); border-radius: var(--radius);
-        box-shadow: var(--shadow); margin-bottom: 1.5rem;
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        overflow: hidden;
     }
     .card-header {
-        padding: 1rem 1.4rem; border-bottom: 1px solid var(--border);
-        display: flex; align-items: center; gap: .6rem; justify-content: space-between;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(to right, #ffffff, #f8fafc);
     }
-    .card-header h2 { font-size: .95rem; font-weight: 700; margin: 0; }
-    .card-body { padding: 1.4rem; }
+    .card-header-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .card-header h2 { 
+        font-size: 1.1rem; 
+        font-weight: 700; 
+        margin: 0; 
+        color: var(--text);
+    }
+    .card-body { 
+        padding: 1.75rem; 
+    }
 
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-size: .8rem; font-weight: 700; margin-bottom: .4rem; }
+    /* Form Layouts */
+    .form-row { 
+        display: flex; 
+        gap: 1.25rem; 
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
+    }
+    .form-group { 
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 1.25rem; 
+    }
+    .form-group.flex-sm { flex: 0.8; }
+    .form-group.flex-lg { flex: 2; }
+    
+    .form-group label { 
+        display: block; 
+        font-size: .85rem; 
+        font-weight: 700; 
+        margin-bottom: .5rem; 
+        color: var(--text);
+    }
     .form-control {
-        width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border);
-        border-radius: 8px; font-family: inherit; font-size: .88rem; outline: none;
+        width: 100%; 
+        padding: .75rem 1rem; 
+        border: 1.5px solid var(--border);
+        border-radius: 8px; 
+        font-family: inherit; 
+        font-size: .9rem; 
+        outline: none;
+        color: var(--text);
+        background-color: #fff;
+        transition: all 0.2s ease;
     }
-    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,60,94,.1); }
+    .form-control:focus { 
+        border-color: var(--primary); 
+        box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.15); 
+    }
+    .form-control:disabled {
+        background-color: #f1f5f9 !important;
+        color: var(--text-muted);
+        cursor: not-allowed;
+    }
+    .form-control.code-peminjaman {
+        background: #fdf4ff !important; 
+        font-weight: 800; 
+        color: var(--primary); 
+        border: 1.5px dashed var(--primary);
+    }
+    .required-star {
+        color: var(--danger);
+    }
 
-    .form-row { display: flex; gap: 1rem; }
-    .form-row > .form-group { flex: 1; }
+    /* Section Divider */
+    .section-divider {
+        border: 0; 
+        border-top: 1px solid var(--border); 
+        margin: 2rem 0;
+    }
 
-    /* Books Selection UI */
-    .accordion-item { border: 1px solid var(--border); border-radius: 8px; margin-bottom: .6rem; overflow: hidden; }
+    /* Books Selection Header */
+    .books-selection-header {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+    .books-selection-title {
+        font-size: .95rem; 
+        font-weight: 800; 
+        color: var(--text);
+        margin: 0;
+    }
+    .books-selection-subtitle {
+        font-size: .8rem; 
+        color: var(--text-muted); 
+        margin-top: .25rem;
+    }
+    .counter-badge {
+        font-size: .85rem; 
+        font-weight: 800; 
+        color: var(--primary); 
+        background: #f5e6fa; 
+        padding: .5rem 1rem; 
+        border-radius: 30px;
+        border: 1px solid rgba(155, 89, 182, 0.1);
+    }
+
+    /* Accordion Custom */
+    .accordion-item { 
+        border: 1px solid var(--border); 
+        border-radius: 10px; 
+        margin-bottom: .75rem; 
+        overflow: hidden; 
+        background: var(--surface);
+        transition: box-shadow 0.2s ease;
+    }
+    .accordion-item:hover {
+        box-sizing: border-box;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
     .accordion-header {
-        background: #f8fafc; padding: .75rem 1rem; cursor: pointer;
-        display: flex; align-items: center; justify-content: space-between;
-        font-weight: 700; font-size: .85rem;
+        background: #f8fafc; 
+        padding: 1rem 1.25rem; 
+        cursor: pointer;
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        font-weight: 700; 
+        font-size: .9rem;
+        color: var(--text);
+        user-select: none;
     }
-    .accordion-body { padding: 1rem; display: none; }
-    .accordion-item.open .accordion-body { display: block; }
+    .accordion-header i {
+        transition: transform 0.3s ease;
+        color: var(--text-muted);
+    }
+    .accordion-body { 
+        padding: 1.25rem; 
+        display: none; 
+        background: #fff;
+        border-top: 1px solid var(--border);
+    }
+    .accordion-item.open .accordion-body { 
+        display: block; 
+    }
+    .accordion-item.open .accordion-header i {
+        transform: rotate(180deg);
+        color: var(--primary);
+    }
 
+    /* Books Grid UI */
     .buku-grid {
-        display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
+        gap: 1rem;
     }
     .buku-item {
-        border: 1.5px solid var(--border); border-radius: 12px; padding: 1rem;
-        cursor: pointer; transition: all .3s ease; position: relative;
-        background: #fff; display: flex; flex-direction: column; gap: 0.3rem;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        border: 1.5px solid var(--border); 
+        border-radius: 12px; 
+        padding: 1.25rem;
+        cursor: pointer; 
+        transition: all .25s ease; 
+        position: relative;
+        background: #fff; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 0.5rem;
     }
-    .buku-item:hover { border-color: var(--primary); background: #fdfefe; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-3px); }
-    .buku-item.selected { border-color: var(--primary); background: rgba(155, 89, 182, 0.04); box-shadow: 0 0 0 2px var(--primary); transform: translateY(-3px); }
+    .buku-item:hover { 
+        border-color: var(--primary); 
+        background: #faf5ff; 
+        transform: translateY(-2px); 
+        box-shadow: 0 6px 12px rgba(155, 89, 182, 0.05);
+    }
+    .buku-item.selected { 
+        border-color: var(--primary); 
+        background: rgba(155, 89, 182, 0.05); 
+        box-shadow: 0 0 0 2px var(--primary); 
+        transform: translateY(-2px); 
+    }
+    .buku-item.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: #f8fafc;
+        pointer-events: none;
+    }
     
     .buku-item .check-mark {
-        position: absolute; top: 1rem; right: 1rem; color: var(--primary); display: none; font-size: 1.1rem;
+        position: absolute; 
+        top: 1rem; 
+        right: 1rem; 
+        color: var(--primary); 
+        display: none; 
+        font-size: 1.2rem;
     }
-    .buku-item.selected .check-mark { display: block; }
+    .buku-item.selected .check-mark { 
+        display: block; 
+    }
 
-    .buku-item .judul { font-weight: 800; font-size: .9rem; margin-bottom: 0; color: var(--text); padding-right: 1.5rem; line-height: 1.4; }
-    .buku-item .meta  { font-size: .78rem; color: var(--text-muted); display: flex; align-items: center; gap: .4rem; }
-    .stok-badge {
-        display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
-        font-size: 0.7rem; font-weight: 700; margin-top: 0.4rem; width: max-content;
+    .buku-item .judul { 
+        font-weight: 700; 
+        font-size: .95rem; 
+        color: var(--text); 
+        padding-right: 1.75rem; 
+        line-height: 1.4;
     }
-    .stok-tersedia { background: #eafaf1; color: var(--success); border: 1px solid #a9dfbf; }
-    .stok-habis { background: #fdf0ef; color: var(--danger); border: 1px solid #f5c6c2; }
+    .buku-item .meta { 
+        font-size: .8rem; 
+        color: var(--text-muted); 
+        display: flex; 
+        align-items: center; 
+        gap: .4rem; 
+    }
+    .stok-badge {
+        display: inline-flex; 
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.25rem 0.75rem; 
+        border-radius: 20px;
+        font-size: 0.75rem; 
+        font-weight: 700; 
+        margin-top: auto; 
+        width: max-content;
+    }
+    .stok-tersedia { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .stok-habis { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     
+    /* Selected Books Basket List */
     .selected-list { 
-        margin-top: 1rem; background: var(--surface); border-radius: 12px; 
-        border: 2px dashed var(--border); padding: 1rem;
-        display: flex; flex-direction: column; gap: .5rem;
+        margin-top: 1.5rem; 
+        background: #f8fafc; 
+        border-radius: 12px; 
+        border: 2px dashed var(--border); 
+        padding: 1.25rem;
+        display: flex; 
+        flex-direction: column; 
+        gap: .75rem;
     }
     .selected-book {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: .8rem 1rem; background: rgba(155, 89, 182, 0.08); border: 1px solid rgba(155, 89, 182, 0.2);
-        border-radius: 8px; font-size: .85rem; font-weight: 700; color: var(--primary-dark);
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        padding: .8rem 1.25rem; 
+        background: #fff; 
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--primary);
+        border-radius: 8px; 
+        font-size: .9rem; 
+        font-weight: 600; 
+        color: var(--text);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .selected-book .remove { color: var(--danger); cursor: pointer; padding: .2rem; transition: transform .2s; }
-    .selected-book .remove:hover { transform: scale(1.1); }
+    .selected-book .remove { 
+        color: var(--text-muted); 
+        cursor: pointer; 
+        padding: .25rem; 
+        transition: all .2s; 
+    }
+    .selected-book .remove:hover { 
+        color: var(--danger);
+        transform: scale(1.15); 
+    }
 
-    .btn-submit {
-        width: 100%; padding: .8rem; background: var(--primary); color: #fff;
-        border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
-        margin-top: 1rem; transition: background .2s;
+    .empty-books-wrapper {
+        padding: 2rem; 
+        text-align: center; 
+        color: var(--text-muted); 
+        font-size: .9rem; 
+        display: flex; 
+        flex-direction: column; 
+        gap: .5rem; 
+        align-items: center;
     }
-    .btn-submit:hover { background: var(--primary-dark); }
+    .empty-books-wrapper i {
+        font-size: 2.5rem; 
+        color: #cbd5e1;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+        width: 100%; 
+        padding: .9rem; 
+        background: var(--primary); 
+        color: #fff;
+        border: none; 
+        border-radius: 8px; 
+        font-weight: 700; 
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 1.5rem; 
+        transition: all .2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 6px rgba(155, 89, 182, 0.2);
+    }
+    .btn-submit:hover { 
+        background: var(--primary-dark); 
+        transform: translateY(-1px);
+        box-shadow: 0 6px 12px rgba(155, 89, 182, 0.3);
+    }
+    .btn-submit:active {
+        transform: translateY(0);
+    }
 </style>
 @endpush
 
 @section('content')
 
-<div style="max-width: 850px; margin: 0 auto;">
-<div class="page-header">
-    <a href="{{ route('pperpus.peminjaman.perpustakaan.index') }}"><i class="fas fa-arrow-left"></i></a>
-    <h1>Catat Peminjaman Buku Perpustakaan</h1>
-</div>
+<div class="container-peminjaman">
+    <div class="page-header">
+        <a href="{{ route('pperpus.peminjaman.perpustakaan.index') }}" title="Kembali ke Daftar">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1>Catat Peminjaman Buku Perpustakaan</h1>
+    </div>
 
-<form action="{{ route('pperpus.peminjaman.perpustakaan.store') }}" method="POST" id="form-peminjaman">
-    @csrf
-    <input type="hidden" name="id_siswa" id="hidden-id-siswa" required>
-    
-    <div class="card">
-        <div class="card-header">
-            <div style="display:flex; align-items:center; gap:.6rem;">
-                <i class="fas fa-edit" style="color:var(--primary)"></i>
-                <h2>Form Peminjaman</h2>
+    <form action="{{ route('pperpus.peminjaman.perpustakaan.store') }}" method="POST" id="form-peminjaman">
+        @csrf
+        <input type="hidden" name="id_siswa" id="hidden-id-siswa" required>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <i class="fas fa-edit" style="color: var(--primary); font-size: 1.1rem;"></i>
+                    <h2>Form Informasi Peminjaman</h2>
+                </div>
             </div>
-        </div>
-        <div class="card-body">
             
-            <div class="form-row">
-                <div class="form-group" style="flex: 0.8">
-                    <label>Kode Peminjaman</label>
-                    <input type="text" class="form-control" value="{{ $kodePeminjaman }}" disabled style="background:#f8fafc; font-weight:800; color:var(--primary); border: 1px dashed var(--primary)">
-                </div>
-                <div class="form-group">
-                    <label>Tanggal Pinjam <span style="color:var(--danger)">*</span></label>
-                    <input type="date" name="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" required>
-                </div>
-                <div class="form-group">
-                    <label>Batas Waktu / Tanggal Kembali <span style="color:var(--danger)">*</span></label>
-                    <input type="date" name="tanggal_kembali" class="form-control" value="{{ \Carbon\Carbon::now()->addDays(7)->format('Y-m-d') }}" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group" style="flex: 0.8">
-                    <label>Pilih Kelas <span style="color:var(--danger)">*</span></label>
-                    <select id="select-kelas" class="form-control" required style="background: #fff;">
-                        <option value="">— Pilih Kelas —</option>
-                        <option value="VII">VII</option>
-                        <option value="VIII">VIII</option>
-                        <option value="IX">IX</option>
-                    </select>
-                </div>
-                <div class="form-group" style="flex: 2">
-                    <label>Nama Siswa <span style="color:var(--danger)">*</span></label>
-                    <select id="select-siswa" class="form-control" required disabled>
-                        <option value="">— Pilih Kelas Terlebih Dahulu —</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row" style="margin-top: -0.5rem; margin-bottom: 1rem;">
-                <div class="form-group" style="flex: 1">
-                    <input type="text" id="input-nis" class="form-control" placeholder="NIS" disabled style="background:#f8fafc; font-size:.8rem;">
-                </div>
-                <div class="form-group" style="flex: 1">
-                    <input type="text" id="input-kelas" class="form-control" placeholder="Kelas" disabled style="background:#f8fafc; font-size:.8rem;">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Keterangan Tambahan</label>
-                <textarea name="keterangan" class="form-control" rows="2" placeholder="Opsional: catatan untuk peminjaman ini..."></textarea>
-            </div>
-
-            <hr style="border:0; border-top:1px solid var(--border); margin:1.5rem 0">
-            
-            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem;">
-                <div>
-                    <label style="margin:0; font-size:.9rem; font-weight:800; color:var(--text)">Pilih Koleksi Buku Perpustakaan <span style="color:var(--danger)">*</span></label>
-                    <div style="font-size:.75rem; color:var(--text-muted); margin-top:.2rem">Klik pada buku yang ingin dipinjam.</div>
-                </div>
-                <span style="font-size:.85rem; font-weight:800; color:var(--primary); background:#eef4fc; padding:.4rem .8rem; border-radius:20px;">Terpilih: <span id="book-count">0</span> Buku</span>
-            </div>
-
-            <div id="section-perpus">
-                @foreach($bukuPerpusPerKategori as $kat => $books)
-                <div class="accordion-item {{ $loop->first ? 'open' : '' }}">
-                    <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
-                        <span>{{ $kat }} ({{ $books->count() }} Buku)</span>
-                        <i class="fas fa-chevron-down"></i>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group flex-sm">
+                        <label>Kode Peminjaman</label>
+                        <input type="text" class="form-control code-peminjaman" value="{{ $kodePeminjaman }}" disabled>
                     </div>
-                    <div class="accordion-body">
-                        <div class="buku-grid">
-                            @foreach($books as $b)
-                            <div class="buku-item" data-id="{{ $b->id_buku }}" data-judul="{{ $b->judul_buku }}">
-                                <i class="fas fa-check-circle check-mark"></i>
-                                <div class="judul">{{ $b->judul_buku }}</div>
-                                <div class="meta"><i class="fas fa-user-edit"></i> {{ $b->pengarang ?? 'Tanpa Pengarang' }}, {{ $b->tahun_terbit ?? '-' }}</div>
-                                <div class="stok-badge {{ $b->stok > 0 ? 'stok-tersedia' : 'stok-habis' }}">
-                                    <i class="fas fa-layer-group"></i> Stok: {{ $b->stok }}
+                    <div class="form-group">
+                        <label>Tanggal Pinjam <span class="required-star">*</span></label>
+                        <input type="date" name="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Kembali / Batas Waktu <span class="required-star">*</span></label>
+                        <input type="date" name="tanggal_kembali" class="form-control" value="{{ \Carbon\Carbon::now()->addDays(7)->format('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-sm">
+                        <label>Pilih Kelas <span class="required-star">*</span></label>
+                        <select id="select-kelas" class="form-control" required>
+                            <option value="">— Pilih Kelas —</option>
+                            <option value="VII">VII</option>
+                            <option value="VIII">VIII</option>
+                            <option value="IX">IX</option>
+                        </select>
+                    </div>
+                    <div class="form-group flex-lg">
+                        <label>Nama Siswa <span class="required-star">*</span></label>
+                        <select id="select-siswa" class="form-control" required disabled>
+                            <option value="">— Pilih Kelas Terlebih Dahulu —</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-top: -0.5rem;">
+                    <div class="form-group">
+                        <input type="text" id="input-nis" class="form-control" placeholder="NIS Otomatis" disabled style="font-size: .85rem;">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="input-kelas" class="form-control" placeholder="Kelas Detail" disabled style="font-size: .85rem;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Keterangan Tambahan</label>
+                    <textarea name="keterangan" class="form-control" rows="2" placeholder="Opsional: masukkan catatan tambahan jika diperlukan..."></textarea>
+                </div>
+
+                <hr class="section-divider">
+                
+                <div class="books-selection-header">
+                    <div>
+                        <h3 class="books-selection-title">Pilih Koleksi Buku Perpustakaan <span class="required-star">*</span></h3>
+                        <div class="books-selection-subtitle">Silakan klik satu atau beberapa kartu buku di bawah ini.</div>
+                    </div>
+                    <div class="counter-badge">
+                        Terpilih: <span id="book-count">0</span> Buku
+                    </div>
+                </div>
+
+                <div id="section-perpus">
+                    @foreach($bukuPerpusPerKategori as $kat => $books)
+                    <div class="accordion-item {{ $loop->first ? 'open' : '' }}">
+                        <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                            <span>{{ $kat }} ({{ $books->count() }} Buku)</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-body">
+                            <div class="buku-grid">
+                                @foreach($books as $b)
+                                <div class="buku-item {{ $b->stok <= 0 ? 'disabled' : '' }}" data-id="{{ $b->id_buku }}" data-judul="{{ $b->judul_buku }}">
+                                    <i class="fas fa-check-circle check-mark"></i>
+                                    <div class="judul">{{ $b->judul_buku }}</div>
+                                    <div class="meta">
+                                        <i class="fas fa-user-edit"></i> 
+                                        <span>{{ $b->pengarang ?? 'Tanpa Pengarang' }} {{ $b->tahun_terbit ? '('.$b->tahun_terbit.')' : '' }}</span>
+                                    </div>
+                                    <div class="stok-badge {{ $b->stok > 0 ? 'stok-tersedia' : 'stok-habis' }}">
+                                        <i class="fas fa-layer-group"></i> 
+                                        <span>Stok: {{ $b->stok }}</span>
+                                    </div>
                                 </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
-            </div>
 
-            <div id="selected-books-list" class="selected-list">
-                <div class="empty-books" style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: .85rem; display: flex; flex-direction: column; gap: .5rem; align-items: center;">
-                    <i class="fas fa-book-open" style="font-size: 2rem; color: var(--border);"></i>
-                    <span>Belum ada buku dipilih.<br>Silakan pilih buku dari daftar di atas.</span>
+                <div id="selected-books-list" class="selected-list">
+                    <div class="empty-books-wrapper">
+                        <i class="fas fa-book-open"></i>
+                        <span>Belum ada buku dipilih.<br>Silakan pilih beberapa buku di atas.</span>
+                    </div>
                 </div>
+
+                <div id="hidden-inputs"></div>
+
+                <button type="submit" class="btn-submit" id="btn-submit">
+                    <i class="fas fa-save"></i>Simpan Data Peminjaman
+                </button>
+
             </div>
-
-            {{-- Hidden inputs for books --}}
-            <div id="hidden-inputs"></div>
-
-            <button type="submit" class="btn-submit" id="btn-submit">
-                <i class="fas fa-save" style="margin-right:.4rem"></i>Simpan Peminjaman
-            </button>
-
         </div>
-    </div>
-</form>
+    </form>
 </div>
 
 @endsection
@@ -230,6 +519,7 @@
 
     const allSiswas = @json($siswas);
 
+    // Filter Siswa Berdasarkan Kelas
     selectKelas.addEventListener('change', function() {
         const kelas = this.value;
         
@@ -261,6 +551,7 @@
         });
     });
 
+    // Event saat Siswa dipilih
     selectSiswa.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         
@@ -275,10 +566,10 @@
         }
     });
 
-    // Books Selection Logic
+    // Map Buku Terpilih
     const selectedBooks = new Map();
 
-    document.querySelectorAll('.buku-item').forEach(item => {
+    document.querySelectorAll('.buku-item:not(.disabled)').forEach(item => {
         item.addEventListener('click', function() {
             const id = this.dataset.id;
             const judul = this.dataset.judul;
@@ -295,6 +586,7 @@
         });
     });
 
+    // Render List Keranjang Buku
     function renderSelectedList() {
         const list = document.getElementById('selected-books-list');
         const inputs = document.getElementById('hidden-inputs');
@@ -306,9 +598,9 @@
 
         if (selectedBooks.size === 0) {
             list.innerHTML = `
-                <div class="empty-books" style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: .85rem; display: flex; flex-direction: column; gap: .5rem; align-items: center;">
-                    <i class="fas fa-book-open" style="font-size: 2rem; color: var(--border);"></i>
-                    <span>Belum ada buku dipilih.<br>Silakan pilih buku dari daftar di atas.</span>
+                <div class="empty-books-wrapper">
+                    <i class="fas fa-book-open"></i>
+                    <span>Belum ada buku dipilih.<br>Silakan pilih beberapa buku di atas.</span>
                 </div>
             `;
             list.style.borderStyle = 'dashed';
@@ -319,16 +611,16 @@
 
         let i = 0;
         selectedBooks.forEach((judul, id) => {
-            // List UI
+            // Element List UI
             const div = document.createElement('div');
             div.className = 'selected-book';
             div.innerHTML = `
-                <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:90%">${judul}</span>
-                <i class="fas fa-times remove" onclick="removeBook('${id}')"></i>
+                <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:85%">${judul}</span>
+                <i class="fas fa-times remove" onclick="removeBook('${id}')" title="Hapus Buku"></i>
             `;
             list.appendChild(div);
 
-            // Hidden input for form
+            // Hidden input form
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = `buku[${i}][id_buku]`;
@@ -338,6 +630,7 @@
         });
     }
 
+    // Fungsi menghapus buku lewat list keranjang bawah
     window.removeBook = function(id) {
         selectedBooks.delete(id);
         const el = document.querySelector(`.buku-item[data-id="${id}"]`);
@@ -345,17 +638,17 @@
         renderSelectedList();
     }
 
-    // Form validation
+    // Validasi Akhir Sebelum Submit Form
     document.getElementById('form-peminjaman').addEventListener('submit', function(e) {
         if (!hiddenIdSiswa.value) {
             e.preventDefault();
-            alert('Pilih nama siswa dari daftar yang valid!');
+            alert('Silakan pilih nama siswa yang valid!');
             return;
         }
 
         if (selectedBooks.size === 0) {
             e.preventDefault();
-            alert('Silakan pilih minimal satu buku!');
+            alert('Gagal menyimpan! Anda harus memilih minimal 1 buku.');
         }
     });
 </script>

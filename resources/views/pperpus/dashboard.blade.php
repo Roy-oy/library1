@@ -5,223 +5,333 @@
 
 @push('styles')
 <style>
+    .section-label {
+        font-size: .68rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1.5px;
+        color: var(--text-light);
+        margin-bottom: 1rem;
+        display: flex; align-items: center; gap: .5rem;
+    }
+    .section-label i { color: var(--purple-400); }
+    .section-label::after {
+        content: ''; flex: 1; height: 1px;
+        background: var(--border);
+    }
+
+    .welcome-banner {
+        background: linear-gradient(130deg, #4c1d95 0%, #7c3aed 55%, #a78bfa 100%);
+        border-radius: 18px;
+        padding: 1.8rem 2rem;
+        color: #ffffff;
+        margin-bottom: 1.8rem;
+        display: flex; align-items: center; justify-content: space-between;
+        box-shadow: 0 8px 28px rgba(76,29,149,.22);
+        position: relative; overflow: hidden;
+    }
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        width: 220px; height: 220px; border-radius: 50%;
+        background: rgba(255,255,255,.05);
+        right: -60px; top: -80px;
+    }
+    .welcome-banner::after {
+        content: '';
+        position: absolute;
+        width: 140px; height: 140px; border-radius: 50%;
+        background: rgba(167,139,250,.12);
+        right: 120px; bottom: -60px;
+    }
+    .welcome-banner > div { z-index: 1; }
+    .welcome-banner h2 {
+        font-size: 1.45rem; font-weight: 800;
+        margin-bottom: .4rem; letter-spacing: -.4px;
+    }
+    .welcome-banner p {
+        font-size: .88rem; opacity: .88;
+        font-weight: 500; line-height: 1.5;
+    }
+    .welcome-banner .banner-buttons { display: flex; gap: 1rem; flex-shrink: 0; align-items: center; }
+    .welcome-banner .banner-access {
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 13px;
+        padding: .9rem 1.4rem;
+        text-align: center;
+        backdrop-filter: blur(6px);
+    }
+    .banner-access .access-label {
+        font-size: .68rem; text-transform: uppercase;
+        letter-spacing: 1.4px; opacity: .8; font-weight: 700; margin-bottom: .25rem;
+        display: flex; align-items: center; justify-content: center; gap: .3rem;
+    }
+    .banner-access .access-role { font-size: 1rem; font-weight: 800; color: #f1c40f; }
+    .banner-bg-icon {
+        position: absolute; right: -40px; bottom: -40px;
+        font-size: 12rem; color: rgba(255,255,255,.04);
+        transform: rotate(-15deg); pointer-events: none; z-index: 0;
+    }
+
+    .alert-card {
+        background: var(--danger);
+        color: white;
+        border-radius: 13px;
+        padding: .8rem 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        animation: pulse 2s infinite;
+        backdrop-filter: blur(6px);
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 1.2rem;
-        margin-bottom: 2rem;
+        gap: 1rem; margin-bottom: 1.8rem;
     }
-    @media (max-width: 1024px) {
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-        .stats-grid { grid-template-columns: 1fr; }
-    }
-
     .stat-card {
-        background: #ffffff;
+        background: var(--surface);
         border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(155, 89, 182, 0.05);
-        display: flex; align-items: center; gap: 1.2rem;
-        border: 1px solid rgba(155, 89, 182, 0.08);
-        transition: all .3s ease;
-        position: relative;
-        overflow: hidden;
+        padding: 1.3rem;
+        box-shadow: var(--shadow-sm);
+        display: flex; flex-direction: column; gap: .8rem;
+        border: 1px solid var(--border);
+        transition: all .25s ease;
+        position: relative; overflow: hidden;
+    }
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(124,58,237,.15);
     }
     .stat-card::before {
         content: '';
-        position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-        opacity: 0; transition: opacity .3s ease;
+        position: absolute; top: 0; left: 0; right: 0;
+        height: 3px; border-radius: 16px 16px 0 0;
     }
-    .stat-card.blue::before   { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
-    .stat-card.teal::before   { background: linear-gradient(90deg, #2ecc71, #27ae60); }
-    .stat-card.red::before    { background: linear-gradient(90deg, #e74c3c, #c0392b); }
-    .stat-card.orange::before { background: linear-gradient(90deg, #f39c12, #e67e22); }
-    .stat-card.green::before  { background: linear-gradient(90deg, #2ecc71, #27ae60); }
-    .stat-card.lime::before   { background: linear-gradient(90deg, #f39c12, #e67e22); }
+    .stat-card.purple::before   { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+    .stat-card.teal::before   { background: linear-gradient(90deg, #0d9488, #2dd4bf); }
+    .stat-card.rose::before   { background: linear-gradient(90deg, #e11d48, #fb7185); }
+    .stat-card.amber::before  { background: linear-gradient(90deg, #d97706, #fbbf24); }
 
-    .stat-card:hover { 
-        transform: translateY(-5px); 
-        box-shadow: 0 12px 30px rgba(155, 89, 182, 0.12); 
-        border-color: rgba(155, 89, 182, 0.2); 
-    }
-    .stat-card:hover::before { opacity: 1; }
-
-    .stat-icon {
-        width: 54px; height: 54px; border-radius: 14px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; flex-shrink: 0;
-    }
-    .stat-card.blue   .stat-icon { background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(142, 68, 173, 0.15)); color: #9b59b6; }
-    .stat-card.teal   .stat-icon { background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.15)); color: #2ecc71; }
-    .stat-card.red    .stat-icon { background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(192, 57, 43, 0.15)); color: #e74c3c; }
-    .stat-card.orange .stat-icon { background: linear-gradient(135deg, rgba(243, 156, 18, 0.15), rgba(230, 126, 34, 0.15)); color: #f39c12; }
-    .stat-card.green  .stat-icon { background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.15)); color: #2ecc71; }
-    .stat-card.lime   .stat-icon { background: linear-gradient(135deg, rgba(243, 156, 18, 0.15), rgba(230, 126, 34, 0.15)); color: #f39c12; }
-
-    .stat-body { width: 100%; }
-    .stat-body .value { font-size: 1.8rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: .3rem;}
-    .stat-body .label { font-size: .85rem; font-weight: 500; color: #64748b; }
-
-    .dashboard-row {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1.8rem;
-    }
-    @media (max-width: 992px) {
-        .dashboard-row {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-    .panel-header {
-        padding: 1.1rem 1.4rem;
-        border-bottom: 1px solid var(--border);
+    .stat-card-top {
         display: flex; align-items: center; justify-content: space-between;
     }
-    .panel-header h3 { font-size: .92rem; font-weight: 700; color: var(--text); }
-    .badge { font-size: .72rem; font-weight: 700; padding: .25rem .65rem; border-radius: 20px; }
-    .badge-green  { background: rgba(46, 204, 113, 0.1); color: var(--success); }
-    .badge-orange { background: rgba(243, 156, 18, 0.1); color: var(--warning); }
-    .badge-red    { background: rgba(231, 76, 60, 0.1); color: var(--danger); }
+    .stat-icon {
+        width: 44px; height: 44px; border-radius: 11px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.1rem; flex-shrink: 0;
+    }
+    .stat-card.purple .stat-icon { background: #f5f3ff; color: #7c3aed; }
+    .stat-card.teal   .stat-icon { background: #f0fdfa; color: #0d9488; }
+    .stat-card.rose   .stat-icon { background: #fff1f2; color: #e11d48; }
+    .stat-card.amber  .stat-icon { background: #fffbeb; color: #d97706; }
 
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th {
-        font-size: .75rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: .5px;
-        color: var(--text-muted); padding: .8rem 1.4rem;
-        background: #f8fafc; border-bottom: 1px solid var(--border); text-align: left;
+    .stat-tag {
+        font-size: .64rem; font-weight: 700;
+        padding: .2rem .5rem; border-radius: 20px; letter-spacing: .3px;
     }
-    .data-table td {
-        padding: .85rem 1.4rem; font-size: .86rem;
-        border-bottom: 1px solid #f0f4f8; color: var(--text);
-        vertical-align: middle;
+    .tag-purple { background: #ede9fe; color: #6d28d9; }
+    .tag-teal   { background: #ccfbf1; color: #0f766e; }
+    .tag-rose   { background: #ffe4e6; color: #be123c; }
+    .tag-amber  { background: #fef3c7; color: #b45309; }
+
+    .stat-val { font-size: 1.9rem; font-weight: 800; color: var(--text); line-height: 1; }
+    .stat-lbl { font-size: .82rem; font-weight: 600; color: var(--text-muted); }
+    .stat-sub { font-size: .72rem; color: var(--text-light); font-weight: 500; margin-top: .08rem; }
+
+    .monitoring-row {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 1.2rem; margin-bottom: 1.8rem;
     }
-    .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover td { background: #f8fafc; }
+
+    .panel {
+        background: var(--surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        overflow: hidden; display: flex; flex-direction: column;
+    }
+    .panel-header {
+        padding: 1rem 1.4rem;
+        border-bottom: 1px solid var(--border-soft);
+        display: flex; align-items: center; justify-content: space-between;
+        background: var(--surface-2);
+    }
+    .panel-header h3 {
+        font-size: .86rem; font-weight: 700; color: var(--text);
+        display: flex; align-items: center; gap: .6rem;
+    }
+    .ph-icon {
+        width: 27px; height: 27px; border-radius: 7px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: .78rem;
+    }
+    .panel-badge {
+        font-size: .64rem; font-weight: 700;
+        padding: .22rem .6rem; border-radius: 20px;
+    }
+    .pb-purple { background: #ede9fe; color: #6d28d9; }
+    .pb-green  { background: #dcfce7; color: #15803d; }
+    .pb-orange { background: #ffedd5; color: #c2410c; }
+    .pb-rose   { background: #ffe4e6; color: #be123c; }
+
+    .chart-denda-layout {
+        display: grid; grid-template-columns: 1.6fr 1fr;
+        gap: 1.2rem; margin-bottom: 1.8rem;
+    }
+
+    .denda-total-card {
+        background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 60%, #a78bfa 100%);
+        border-radius: 13px;
+        padding: 1.2rem 1.4rem;
+        color: white; text-align: center;
+        position: relative; overflow: hidden;
+        margin: 1rem 1rem .75rem;
+        box-shadow: 0 6px 20px rgba(76,29,149,.22);
+    }
+    .denda-total-card::before {
+        content: '';
+        position: absolute;
+        width: 100px; height: 100px; border-radius: 50%;
+        background: rgba(255,255,255,.07);
+        top: -40px; right: -30px;
+    }
+    .denda-total-lbl { font-size: .68rem; font-weight: 700; opacity: .85; text-transform: uppercase; letter-spacing: 1.1px; }
+    .denda-total-val { font-size: 1.6rem; font-weight: 900; margin-top: .25rem; letter-spacing: -.5px; }
+
+    .denda-row {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: .75rem; padding: 0 1rem; margin-bottom: .85rem;
+    }
+    .denda-box {
+        border-radius: 11px; padding: .85rem 1rem; border: 1px solid;
+    }
+    .denda-box.green { background: #f0fdf4; border-color: #bbf7d0; }
+    .denda-box.red   { background: #fef2f2; border-color: #fecaca; }
+    .denda-box .db-lbl { font-size: .7rem; font-weight: 600; color: var(--text-muted); margin-bottom: .25rem; display: flex; align-items: center; gap: .3rem; }
+    .denda-box.green .db-lbl i { color: var(--success); }
+    .denda-box.red   .db-lbl i { color: var(--danger); }
+    .denda-box .db-val { font-size: 1.05rem; font-weight: 800; color: var(--text); }
+
+    .progress-section { padding: 0 1rem 1rem; }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .45rem; }
+    .progress-header span { font-size: .75rem; font-weight: 600; color: var(--text-muted); }
+    .progress-header .pct { font-weight: 800; color: var(--primary); }
+    .progress-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .progress-fill  { height: 100%; background: linear-gradient(90deg, #7c3aed, #a78bfa); border-radius: 99px; transition: width 1s ease; }
+
+    .table-responsive { overflow-x: auto; padding: 1rem; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th { text-align: left; padding: .6rem .5rem; border-bottom: 1px solid var(--border-soft); font-size: .75rem; color: var(--text-muted); text-transform: uppercase; }
+    .table td { padding: .75rem .5rem; border-bottom: 1px solid var(--border-soft); font-size: .85rem; }
+    .table tr:last-child td { border-bottom: none; }
 
     .code-badge {
         font-family: 'JetBrains Mono', monospace; font-size: .78rem;
-        background: #f0f4f8; color: var(--primary);
-        padding: .2rem .45rem; border-radius: 6px; font-weight: 600;
+        background: var(--surface-2); color: var(--primary);
+        padding: .2rem .45rem; border-radius: 6px; font-weight: 700;
         border: 1px solid var(--border);
+        text-decoration: none; display: inline-block;
     }
-    .code-badge:hover {
-        background: var(--accent-light);
-        color: var(--primary-dark);
-    }
+    .pill { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .7rem; border-radius: 20px; font-size: .7rem; font-weight: 700; }
+    .pill-success { background: #dcfce7; color: #15803d; }
+    .pill-danger  { background: #fee2e2; color: #b91c1c; }
 
-    .pill { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .7rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
-    .pill-success { background: rgba(46, 204, 113, 0.1); color: var(--success); }
-    .pill-danger  { background: rgba(231, 76, 60, 0.1); color: var(--danger); }
-    .pill-warning { background: rgba(243, 156, 18, 0.1); color: var(--warning); }
-    .pill-info    { background: rgba(155, 89, 182, 0.1); color: var(--info); }
+    .empty-state {
+        padding: 2.5rem; text-align: center;
+        color: var(--text-light); font-size: .84rem;
+    }
+    .empty-state i { font-size: 2rem; display: block; margin-bottom: .6rem; opacity: .35; }
 
-    .empty-state { padding: 3rem 2rem; text-align: center; color: var(--text-muted); font-size: .88rem; }
-    .empty-state i { font-size: 2.2rem; display: block; margin-bottom: .8rem; opacity: .4; }
-
-    .welcome-banner {
-        background: linear-gradient(135deg, #9b59b6, #8e44ad);
-        border-radius: 16px;
-        padding: 2rem;
-        color: #ffffff;
-        margin-bottom: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 10px 25px rgba(155, 89, 182, 0.25);
-        position: relative;
-        overflow: hidden;
+    /* Stunning Horizontal Scroll for Popular Books */
+    .books-showcase {
+        display: flex; gap: 1.25rem; overflow-x: auto;
+        padding: 1.5rem 1rem 2rem 1rem; scroll-snap-type: x mandatory;
+        scrollbar-width: thin; scrollbar-color: var(--purple-300) transparent;
+        -webkit-overflow-scrolling: touch;
     }
-
-    /* Fine summary specific styles */
-    .fine-summary-card {
-        background: var(--bg);
-        border-radius: var(--radius);
-        padding: 1.1rem;
-        margin-bottom: 1rem;
-        text-align: center;
-        border: 1px solid var(--border);
-    }
-    .fine-summary-card .fine-label {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-    }
-    .fine-summary-card .fine-value {
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: var(--text);
-        margin-top: 0.3rem;
-    }
-    .fine-sub-card {
-        border-radius: 8px;
-        padding: 0.8rem;
-        border: 1px solid var(--border);
-    }
-    .fine-sub-card.lunas {
-        background: rgba(46, 204, 113, 0.1);
-        border-color: rgba(46, 204, 113, 0.3);
-    }
-    .fine-sub-card.belum-lunas {
-        background: rgba(231, 76, 60, 0.1);
-        border-color: rgba(231, 76, 60, 0.3);
-    }
-    .fine-sub-card .sub-label {
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    .fine-sub-card.lunas .sub-label { color: var(--success); }
-    .fine-sub-card.belum-lunas .sub-label { color: var(--danger); }
+    .books-showcase::-webkit-scrollbar { height: 6px; }
+    .books-showcase::-webkit-scrollbar-thumb { background: var(--purple-300); border-radius: 10px; }
     
-    .fine-sub-card .sub-value {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--text);
-        margin-top: 0.2rem;
+    .book-card-sleek {
+        min-width: 140px; max-width: 140px; flex-shrink: 0;
+        scroll-snap-align: start; display: flex; flex-direction: column;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+    }
+    .book-card-sleek:hover { transform: translateY(-8px); }
+    
+    .book-card-sleek .cover-box {
+        width: 100%; aspect-ratio: 2/3; border-radius: 12px;
+        overflow: hidden; position: relative;
+        box-shadow: 0 8px 16px rgba(109, 40, 217, 0.15);
+        background: linear-gradient(135deg, var(--purple-50), var(--purple-100));
+        border: 1px solid rgba(255,255,255,0.4);
+    }
+    .book-card-sleek .cover-box img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .book-card-sleek:hover .cover-box img { transform: scale(1.08); }
+    
+    .book-card-sleek .rank-badge {
+        position: absolute; top: 0; left: 0;
+        background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
+        color: white; font-size: 0.75rem; font-weight: 800;
+        padding: 0.3rem 0.6rem; border-bottom-right-radius: 12px;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.2); z-index: 2;
+    }
+    
+    .book-card-sleek .borrow-stat {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px);
+        color: #fff; font-size: 0.7rem; font-weight: 600;
+        padding: 0.4rem; text-align: center;
+        transform: translateY(100%); transition: transform 0.3s ease;
+    }
+    .book-card-sleek:hover .borrow-stat { transform: translateY(0); }
+    
+    .book-card-sleek .info-box { padding: 0.8rem 0.2rem 0; text-align: center; }
+    .book-card-sleek .info-box h4 {
+        font-size: 0.85rem; font-weight: 800; color: var(--text);
+        margin: 0 0 0.2rem 0; line-height: 1.3;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .book-card-sleek .info-box p {
+        font-size: 0.7rem; color: var(--text-muted); margin: 0;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    .progress-wrap { margin-top: 1.1rem; }
-    .progress-info {
-        display: flex; justify-content: space-between;
-        font-size: 0.78rem; font-weight: 600;
-        margin-bottom: 0.4rem; color: var(--text);
+    @media (max-width: 1300px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 1100px) {
+        .chart-denda-layout { grid-template-columns: 1fr; }
+        .monitoring-row { grid-template-columns: 1fr; }
     }
-    .progress-bar-bg {
-        height: 8px; background: #e2e8f0;
-        border-radius: 4px; overflow: hidden;
-    }
-    .progress-bar-fill {
-        height: 100%; background: var(--success);
-        border-radius: 4px; transition: width 0.5s ease-in-out;
-    }
-
-    @keyframes pulse {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
-        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
-    }
+    @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px)  { .stats-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 600px)  { .welcome-banner { flex-direction: column; gap: 1rem; align-items: flex-start; } .welcome-banner .banner-buttons { width: 100%; flex-direction: column; align-items: stretch; } }
 </style>
 @endpush
 
 @section('content')
 
 <div class="welcome-banner">
-    <div style="position: absolute; right: -50px; bottom: -50px; font-size: 15rem; color: rgba(255, 255, 255, 0.05); transform: rotate(-15deg); pointer-events: none;">
-        <i class="fas fa-book-reader"></i>
+    <div class="banner-bg-icon"><i class="fas fa-book-reader"></i></div>
+    <div>
+        <h2>Halo, {{ auth()->user()->name ?? 'Penjaga Perpustakaan' }}! 👋</h2>
+        <p>Selamat bertugas &mdash; {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
-    <div style="z-index: 1;">
-        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Halo, {{ auth()->user()->name ?? 'Penjaga Perpustakaan' }}! 👋</h2>
-        <p style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; max-width: 600px; line-height: 1.5;">Selamat bertugas &mdash; {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
-    </div>
-    <div style="display: flex; gap: 1rem; z-index: 1;">
+    <div class="banner-buttons">
         @if($stats['buku_terlambat'] > 0)
-        <a href="#denda-section" style="background: var(--danger); color: white; border-radius: 12px; padding: 0.8rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; text-decoration: none; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); animation: pulse 2s infinite;">
+        <a href="#denda-section" class="alert-card">
             <div style="font-size: 1.5rem;"><i class="fas fa-bell"></i></div>
             <div>
                 <div style="font-weight: 800; font-size: 1rem; line-height: 1.2;">{{ $stats['buku_terlambat'] }} Buku Terlambat!</div>
@@ -229,115 +339,127 @@
             </div>
         </a>
         @endif
-        <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1rem 1.5rem; text-align: center; backdrop-filter: blur(10px); flex-shrink: 0;">
-            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 700; margin-bottom: 0.3rem;">Hak Akses</div>
-            <div style="font-size: 1.05rem; font-weight: 800; color: #f1c40f;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Administrator' }}</div>
-        </div>
     </div>
 </div>
 
+<div class="section-label">
+    <i class="fas fa-layer-group"></i> Statistik Hari Ini &amp; Pengelolaan
+</div>
 <div class="stats-grid">
     <!-- Siswa Card -->
-    <div class="stat-card blue">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_siswa'], 0, ',', '.') }}</div>
-            <div class="label">Total Siswa</div>
-            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
-                <span style="color: var(--success); font-weight: 700;">{{ number_format($stats['siswa_aktif'], 0, ',', '.') }}</span> Siswa Aktif
-            </div>
+    <div class="stat-card purple">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <span class="stat-tag tag-purple">Anggota</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['total_siswa'], 0, ',', '.') }}</div>
+            <div class="stat-lbl">Total Siswa</div>
+            <div class="stat-sub"><span style="color: var(--success); font-weight: 700;">{{ number_format($stats['siswa_aktif'], 0, ',', '.') }}</span> Siswa Aktif</div>
         </div>
     </div>
     <!-- Buku Card -->
     <div class="stat-card teal">
-        <div class="stat-icon"><i class="fas fa-book"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_buku'], 0, ',', '.') }}</div>
-            <div class="label">Judul Buku</div>
-            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
-                Stok Fisik: <span style="font-weight: 700;">{{ number_format($stats['total_stok'], 0, ',', '.') }}</span> Eks.
-            </div>
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-book"></i></div>
+            <span class="stat-tag tag-teal">Koleksi</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['total_buku'], 0, ',', '.') }}</div>
+            <div class="stat-lbl">Judul Buku</div>
+            <div class="stat-sub">Stok Fisik: <span style="font-weight: 700;">{{ number_format($stats['total_stok'], 0, ',', '.') }}</span> Eks.</div>
         </div>
     </div>
     <!-- Pinjaman Hari Ini Card -->
-    <div class="stat-card green">
-        <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['peminjaman_hari_ini'], 0, ',', '.') }}</div>
-            <div class="label">PJM Hari Ini</div>
-            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
-                Detail: <span style="font-weight: 700;">{{ number_format($stats['buku_dipinjam_hari_ini'], 0, ',', '.') }}</span> Buku Dipinjam
-            </div>
+    <div class="stat-card amber">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+            <span class="stat-tag tag-amber">Hari Ini</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['peminjaman_hari_ini'], 0, ',', '.') }}</div>
+            <div class="stat-lbl">PJM Hari Ini</div>
+            <div class="stat-sub">Detail: <span style="font-weight: 700;">{{ number_format($stats['buku_dipinjam_hari_ini'], 0, ',', '.') }}</span> Buku Dipinjam</div>
         </div>
     </div>
     <!-- Buku Terlambat Card -->
-    <div class="stat-card red">
-        <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['buku_terlambat'], 0, ',', '.') }}</div>
-            <div class="label">Buku Terlambat</div>
-            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
-                Perlu ditindaklanjuti segera
-            </div>
+    <div class="stat-card rose">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <span class="stat-tag tag-rose">Alert</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['buku_terlambat'], 0, ',', '.') }}</div>
+            <div class="stat-lbl">Buku Terlambat</div>
+            <div class="stat-sub">Perlu ditindaklanjuti segera</div>
         </div>
     </div>
 </div>
 
-<div class="dashboard-row">
+<div class="section-label">
+    <i class="fas fa-chart-bar"></i> Analitik Peminjaman &amp; Laporan Keuangan
+</div>
+<div class="chart-denda-layout">
     <!-- Left Column: Chart -->
     <div class="panel">
         <div class="panel-header">
-            <h3><i class="fas fa-chart-line" style="color:var(--primary);margin-right:.45rem"></i>Grafik Peminjaman Buku (7 Hari Terakhir)</h3>
-            <span class="badge badge-green">Tren Harian</span>
+            <h3>
+                <span class="ph-icon" style="background:#f5f3ff;">
+                    <i class="fas fa-chart-line" style="color:#7c3aed;"></i>
+                </span>
+                Grafik Peminjaman — 7 Hari Terakhir
+            </h3>
+            <span class="panel-badge pb-purple">Tren Harian</span>
         </div>
-        <div style="padding: 1.4rem; position: relative; height: 320px;">
-            <canvas id="borrowingsChart" style="width: 100%; height: 100%;"></canvas>
+        <div style="padding: 1.4rem; position: relative; min-height: 320px; display: flex; flex-direction: column;">
+            <div style="flex-grow: 1; position: relative;">
+                <canvas id="borrowingsChart" style="width: 100%; height: 100%;"></canvas>
+            </div>
         </div>
     </div>
 
     <!-- Right Column: Fine Breakdown Panel -->
     <div class="panel">
         <div class="panel-header">
-            <h3><i class="fas fa-coins" style="color:var(--warning);margin-right:.45rem"></i>Ringkasan Keuangan Denda</h3>
-            <span class="badge badge-orange">Status Keuangan</span>
+            <h3>
+                <span class="ph-icon" style="background:#ffedd5;">
+                    <i class="fas fa-coins" style="color:#c2410c;"></i>
+                </span>
+                Ringkasan Denda
+            </h3>
+            <span class="panel-badge pb-orange">Status Keuangan</span>
         </div>
-        <div style="padding: 1.4rem;">
-            <!-- Grand Total -->
-            <div class="fine-summary-card">
-                <div class="fine-label">Total Akumulasi Denda</div>
-                <div class="fine-value">Rp {{ number_format($stats['total_denda_grand'], 0, ',', '.') }}</div>
+        <div class="denda-total-card">
+            <div class="denda-total-lbl"><i class="fas fa-coins" style="margin-right:5px;"></i>Total Akumulasi Denda</div>
+            <div class="denda-total-val">Rp {{ number_format($stats['total_denda_grand'] ?? 0, 0, ',', '.') }}</div>
+        </div>
+        <div class="denda-row">
+            <div class="denda-box green">
+                <div class="db-lbl"><i class="fas fa-check-circle"></i> Lunas</div>
+                <div class="db-val">Rp {{ number_format($stats['denda_lunas'] ?? 0, 0, ',', '.') }}</div>
             </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem;">
-                <!-- Paid -->
-                <div class="fine-sub-card lunas">
-                    <div class="sub-label"><i class="fas fa-check-circle"></i> Lunas</div>
-                    <div class="sub-value">Rp {{ number_format($stats['denda_lunas'], 0, ',', '.') }}</div>
-                </div>
-                <!-- Unpaid -->
-                <div class="fine-sub-card belum-lunas">
-                    <div class="sub-label"><i class="fas fa-clock"></i> Belum Lunas</div>
-                    <div class="sub-value">Rp {{ number_format($stats['denda_belum_lunas'], 0, ',', '.') }}</div>
-                </div>
+            <div class="denda-box red">
+                <div class="db-lbl"><i class="fas fa-clock"></i> Belum Lunas</div>
+                <div class="db-val">Rp {{ number_format($stats['denda_belum_lunas'] ?? 0, 0, ',', '.') }}</div>
             </div>
-
-            <!-- Progress Bar -->
-            @php
-                $percentLunas = ($stats['total_denda_grand'] > 0) 
-                    ? round(($stats['denda_lunas'] / $stats['total_denda_grand']) * 100, 1) 
-                    : 0;
-            @endphp
-            <div class="progress-wrap">
-                <div class="progress-info">
-                    <span>Persentase Denda Lunas</span>
-                    <span style="font-weight: 700;">{{ $percentLunas }}%</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: {{ $percentLunas }}%"></div>
-                </div>
-                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem; text-align: center;">
-                    Denda lunas membantu operasional & perawatan buku perpustakaan.
-                </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        @php
+            $percentLunas = ($stats['total_denda_grand'] > 0) 
+                ? round(($stats['denda_lunas'] / $stats['total_denda_grand']) * 100, 1) 
+                : 0;
+        @endphp
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Persentase Denda Lunas</span>
+                <span class="pct">{{ $percentLunas }}%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: {{ $percentLunas }}%;"></div>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem; text-align: center;">
+                Denda lunas membantu operasional & perawatan buku perpustakaan.
             </div>
         </div>
     </div>
@@ -345,12 +467,17 @@
 
 <div class="panel" style="margin-bottom: 1.8rem;" id="denda-section">
     <div class="panel-header">
-        <h3><i class="fas fa-coins" style="color:var(--primary);margin-right:.45rem"></i>Daftar Denda Peminjaman (Lunas & Belum Lunas)</h3>
-        <span class="badge badge-green">Total: {{ $fines->total() }} Denda</span>
+        <h3>
+            <span class="ph-icon" style="background:#fef3c7;">
+                <i class="fas fa-file-invoice-dollar" style="color:#b45309;"></i>
+            </span>
+            Daftar Denda Peminjaman (Lunas & Belum Lunas)
+        </h3>
+        <span class="panel-badge pb-orange">Total: {{ $fines->total() }} Denda</span>
     </div>
     
-    <div style="overflow-x: auto;">
-        <table class="data-table">
+    <div class="table-responsive">
+        <table class="table align-middle">
             <thead>
                 <tr>
                     <th style="width: 50px;">#</th>
@@ -359,7 +486,7 @@
                     <th>Judul Buku</th>
                     <th>Jumlah Denda</th>
                     <th>Status</th>
-                    <th>Tanggal Kembali / Keterangan</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
@@ -367,9 +494,9 @@
                 <tr>
                     <td>{{ ($fines->currentPage() - 1) * $fines->perPage() + $index + 1 }}</td>
                     <td>
-                        <a href="#" class="code-badge" style="text-decoration: none; display: inline-block;">
+                        <span class="code-badge">
                             {{ $fine->peminjaman->kode_peminjaman }}
-                        </a>
+                        </span>
                     </td>
                     <td>
                         <div style="font-weight: 700;">{{ $fine->peminjaman->siswa->nama_siswa }}</div>
@@ -418,10 +545,101 @@
     </div>
     
     @if($fines->hasPages())
-    <div style="padding: 1.1rem; border-top: 1px solid var(--border)">
+    <div style="padding: 1.1rem; border-top: 1px solid var(--border-soft)">
         {{ $fines->links() }}
     </div>
     @endif
+</div>
+
+<div class="section-label" style="margin-top: 1.5rem;">
+    <i class="fas fa-star"></i> Peringkat Siswa &amp; Buku Populer
+</div>
+<div class="monitoring-row">
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>
+                <span class="ph-icon" style="background:#dcfce7;">
+                    <i class="fas fa-medal" style="color:#15803d;"></i>
+                </span>
+                Siswa Rajin Meminjam
+            </h3>
+            <span class="panel-badge pb-green">Top 5</span>
+        </div>
+        <div class="table-responsive" style="padding: 1rem;">
+            <table class="table align-middle">
+                <thead class="text-muted" style="font-size: .7rem; text-transform: uppercase;">
+                    <tr>
+                        <th style="width: 20%;">Peringkat</th>
+                        <th>Siswa</th>
+                        <th style="text-align: right;">Total Pinjam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($topStudents as $index => $siswa)
+                    <tr>
+                        <td style="font-weight: 800; color: var(--text-muted); font-size: .9rem;">#{{ $index + 1 }}</td>
+                        <td>
+                            <div style="font-weight: 700; font-size: .85rem; color: var(--text);">{{ $siswa->nama_siswa }}</div>
+                            <div style="font-size: .7rem; color: var(--text-light);">NIS: {{ $siswa->nis }} &bull; Kelas: {{ $siswa->kelas }}</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <span class="pill pill-success">{{ $siswa->total_buku_dipinjam }} Buku</span>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @if($topStudents->isEmpty())
+                    <tr>
+                        <td colspan="3" class="text-center py-4 text-muted" style="text-align: center; font-size: .8rem;">
+                            <i class="fas fa-inbox" style="font-size: 1.5rem; display: block; margin-bottom: .5rem; opacity: .4;"></i>
+                            Belum ada data peminjaman
+                        </td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel" style="overflow: hidden;">
+        <div class="panel-header">
+            <h3>
+                <span class="ph-icon" style="background:#ede9fe;">
+                    <i class="fas fa-fire" style="color:#6d28d9;"></i>
+                </span>
+                Buku Terpopuler
+            </h3>
+            <span class="panel-badge pb-purple">Top 10</span>
+        </div>
+        <div class="books-showcase">
+            @foreach($topBooks as $index => $buku)
+            <div class="book-card-sleek" title="{{ $buku->judul_buku }}">
+                <div class="cover-box">
+                    <div class="rank-badge">#{{ $index + 1 }}</div>
+                    @if($buku->gambar)
+                        <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul_buku }}">
+                    @else
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--purple-300); font-size:3rem;"><i class="fas fa-book"></i></div>
+                    @endif
+                    <div class="borrow-stat">
+                        <i class="fas fa-fire" style="color: #fbbf24;"></i> Dipinjam {{ $buku->total_dipinjam }}x
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h4>{{ $buku->judul_buku }}</h4>
+                    <p>{{ $buku->pengarang ?: 'Penulis tidak diketahui' }}</p>
+                </div>
+            </div>
+            @endforeach
+            @if($topBooks->isEmpty())
+                <div style="width: 100%; text-align: center; padding: 3rem 0; color: var(--text-muted);">
+                    <i class="fas fa-book-open" style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem; display:block;"></i>
+                    <p style="font-weight: 600; font-size: 0.9rem;">Belum ada buku yang populer</p>
+                </div>
+            @endif
+        </div>
+    </div>
+
 </div>
 
 @endsection
@@ -437,10 +655,10 @@
         const labels = chartData.map(item => item.label);
         const dataValues = chartData.map(item => item.count);
 
-        // Gradient color for dataset
+        // Gradient color for dataset (Purple theme)
         const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(39, 174, 96, 0.45)'); // success color
-        gradient.addColorStop(1, 'rgba(39, 174, 96, 0.01)');
+        gradient.addColorStop(0, 'rgba(124, 58, 237, 0.45)'); // purple-600
+        gradient.addColorStop(1, 'rgba(124, 58, 237, 0.01)');
 
         new Chart(ctx, {
             type: 'line',
@@ -449,17 +667,17 @@
                 datasets: [{
                     label: 'Buku Dipinjam',
                     data: dataValues,
-                    borderColor: '#27ae60', // success color
+                    borderColor: '#7c3aed', // purple-600
                     borderWidth: 3,
                     backgroundColor: gradient,
                     fill: true,
                     tension: 0.35,
-                    pointBackgroundColor: '#27ae60',
+                    pointBackgroundColor: '#7c3aed',
                     pointBorderColor: '#ffffff',
                     pointBorderWidth: 2,
                     pointRadius: 5,
                     pointHoverRadius: 7,
-                    pointHoverBackgroundColor: '#1e8449',
+                    pointHoverBackgroundColor: '#6d28d9',
                     pointHoverBorderColor: '#ffffff',
                     pointHoverBorderWidth: 2,
                 }]
@@ -495,7 +713,7 @@
                             font: {
                                 family: "'Plus Jakarta Sans', sans-serif",
                                 size: 11,
-                                weight: 500
+                                weight: 600
                             }
                         }
                     },
@@ -511,7 +729,7 @@
                             font: {
                                 family: "'Plus Jakarta Sans', sans-serif",
                                 size: 11,
-                                weight: 500
+                                weight: 600
                             },
                             stepSize: 1
                         }
@@ -519,6 +737,8 @@
                 }
             }
         });
+
+
     });
 </script>
 @endpush

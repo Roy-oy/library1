@@ -96,7 +96,7 @@
                 </div>
                 <div class="form-group" style="flex: 2">
                     <label>Tanggal Pinjam <span style="color:var(--danger)">*</span></label>
-                    <input type="date" name="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" required>
+                    <input type="date" name="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" readonly required>
                 </div>
             </div>
 

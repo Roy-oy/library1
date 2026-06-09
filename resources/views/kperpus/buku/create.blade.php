@@ -5,622 +5,388 @@
 
 @push('styles')
 <style>
-    /* ── Theme variables for this view ── */
-    :root {
-        --theme-primary: #2563eb;
-        --theme-primary-light: #eff6ff;
-        --theme-primary-hover: #1d4ed8;
-        --theme-info: #0ea5e9;
-        --theme-info-light: #f0f9ff;
-        --theme-success: #10b981;
-        --theme-success-light: #ecfdf5;
-        --theme-warning: #f59e0b;
-        --theme-warning-light: #fffbeb;
-        --theme-danger: #ef4444;
-        --card-radius: 16px;
-        --transition-speed: 0.25s;
+    /* Desain Modern, Bersih, dan Tenang */
+    .simple-container {
+        max-width: 800px;
+        margin: 1rem auto 2.5rem auto;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 2.5rem;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     }
 
-    .page-header {
+    .form-header {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 0.8rem;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 1.25rem;
         margin-bottom: 2rem;
     }
-    .page-header a {
+
+    .form-header h2 {
+        margin: 0;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .form-header p {
+        margin: 0.35rem 0 0 0;
+        font-size: 0.88rem;
+        color: #64748b;
+    }
+
+    .btn-kembali {
+        text-decoration: none;
+        color: #475569;
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        padding: 0.5rem 0.9rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: var(--surface);
-        border: 1.5px solid var(--border);
-        color: var(--text-muted);
-        text-decoration: none;
-        transition: all var(--transition-speed) ease;
-    }
-    .page-header a:hover {
-        background: var(--theme-primary-light);
-        color: var(--primary);
-        border-color: var(--primary);
-        transform: translateX(-2px);
-    }
-    .page-header h1 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--text);
-        letter-spacing: -0.5px;
+        gap: 0.4rem;
+        transition: all 0.2s ease;
     }
 
-    /* ── Single Column Layout ── */
-    .layout-grid {
-        max-width: 800px;
-        margin: 0 auto;
+    .btn-kembali:hover {
+        background: #f8fafc;
+        border-color: #94a3b8;
+        color: #1e293b;
     }
 
-    /* ── Form Card ── */
-    .form-card {
-        background: var(--surface);
-        border-radius: var(--card-radius);
-        box-shadow: var(--shadow);
-        border: 1px solid rgba(228, 233, 240, 0.6);
-        overflow: hidden;
-    }
-    .form-card-header {
-        padding: 1.5rem;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: #fafbfc;
-    }
-    .form-card-header .hdr-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 1.1rem;
-        flex-shrink: 0;
-        box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
-    }
-    .form-card-header h2 {
-        font-size: 1.05rem;
-        font-weight: 800;
-        color: var(--text);
-    }
-    .form-card-header p {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        margin-top: 0.15rem;
-    }
-
-    .form-body {
-        padding: 1.8rem;
-    }
-
-    /* ── Form elements ── */
+    /* Form Grid Standar */
     .form-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.25rem;
+        gap: 1.5rem;
     }
-    .form-grid .full {
-        grid-column: 1 / -1;
+
+    .full-width {
+        grid-column: span 2;
     }
 
     .form-group {
         display: flex;
         flex-direction: column;
-        gap: 0.45rem;
+        gap: 0.5rem;
     }
+
     .form-group label {
-        font-size: 0.82rem;
-        font-weight: 800;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-    .form-group label i {
-        color: var(--primary);
         font-size: 0.85rem;
-    }
-    .form-group label .req {
-        color: var(--danger);
-    }
-
-    .form-control-wrap {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-    .form-control-wrap i.input-icon {
-        position: absolute;
-        left: 1rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        pointer-events: none;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.9rem;
-        color: var(--text);
-        background: #fff;
-        transition: all var(--transition-speed) ease;
-        outline: none;
-    }
-    .form-control-wrap i.input-icon + .form-control {
-        padding-left: 2.5rem;
-    }
-    .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3.5px rgba(74, 144, 226, 0.15);
-    }
-    .form-control.is-invalid {
-        border-color: var(--theme-danger);
-    }
-    .form-control.is-invalid:focus {
-        box-shadow: 0 0 0 3.5px rgba(239, 68, 68, 0.15);
-    }
-
-    .invalid-feedback {
-        font-size: 0.78rem;
-        color: var(--theme-danger);
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        margin-top: 0.2rem;
         font-weight: 700;
-    }
-    .form-hint {
-        font-size: 0.76rem;
-        color: var(--text-muted);
-        margin-top: 0.15rem;
-    }
-
-    /* ── Radio Styling ── */
-    .radio-group {
-        display: flex;
-        gap: 1.25rem;
-        margin-top: 0.25rem;
-    }
-    .radio-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: var(--text);
-        cursor: pointer;
-        background: #f8fafc;
-        padding: 0.75rem 1.2rem;
-        border-radius: 10px;
-        border: 1.5px solid var(--border);
-        flex: 1;
-        transition: all var(--transition-speed) ease;
-    }
-    .radio-label:hover {
-        background: var(--theme-primary-light);
-        border-color: var(--primary);
-    }
-    .radio-label input[type="radio"] {
-        accent-color: var(--primary);
-        width: 17px;
-        height: 17px;
-    }
-    .radio-label.checked {
-        background: var(--theme-primary-light);
-        border-color: var(--primary);
-        color: var(--primary);
-    }
-
-    /* ── Divider ── */
-    .section-divider {
-        grid-column: 1 / -1;
-        border: none;
-        border-top: 1.5px dashed var(--border);
-        margin: 0.5rem 0;
-    }
-    .section-title {
-        grid-column: 1 / -1;
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 1px;
+        color: #334155;
         text-transform: uppercase;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .section-title::after {
-        content: '';
-        flex: 1;
-        height: 1.5px;
-        background: var(--border);
+        letter-spacing: 0.5px;
     }
 
-    /* ── Action buttons ── */
+    .form-group label span {
+        color: #ef4444;
+        margin-left: 2px;
+    }
+
+    /* Input Modern Ringan */
+    .form-input {
+        padding: 0.65rem 0.85rem;
+        font-size: 0.9rem;
+        font-family: inherit;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 6px;
+        color: #1e293b;
+        background-color: #fff;
+        outline: none;
+        transition: all 0.15s ease;
+    }
+
+    .form-input:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+
+    .form-input::placeholder {
+        color: #94a3b8;
+    }
+
+    /* Custom styling khusus select box agar serasi */
+    select.form-input {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
+        padding-right: 2.5rem;
+    }
+
+    .info-bantuan {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin-top: 0.1rem;
+    }
+
+    /* Tombol Aksi */
     .form-actions {
+        margin-top: 2.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid #e2e8f0;
         display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        padding: 1.25rem 1.8rem;
-        border-top: 1px solid var(--border);
-        background: #fafbfc;
+        justify-content: flex-end;
+        gap: 0.85rem;
     }
-    .btn-submit {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        font-family: inherit;
+
+    .btn {
+        padding: 0.65rem 1.5rem;
         font-size: 0.9rem;
         font-weight: 700;
+        border-radius: 6px;
         cursor: pointer;
-        transition: all var(--transition-speed) ease;
-        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
-    }
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
-    }
-    .btn-reset {
+        text-decoration: none;
+        text-align: center;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.75rem 1.2rem;
-        background: var(--bg);
-        color: var(--text-muted);
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all var(--transition-speed) ease;
-    }
-    .btn-reset:hover {
-        background: #e2e8f0;
-        color: var(--text);
+        transition: all 0.15s ease;
     }
 
-    @media (max-width: 640px) {
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
-        .form-grid .full {
-            grid-column: 1;
-        }
-        .radio-group {
-            flex-direction: column;
-            gap: 0.6rem;
-        }
+    .btn-batal {
+        background: #ffffff;
+        color: #475569;
+        border: 1.5px solid #cbd5e1;
+    }
+
+    .btn-batal:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+    }
+
+    .btn-simpan {
+        background: #2563eb;
+        color: #ffffff;
+        border: 1px solid #2563eb;
+    }
+
+    .btn-simpan:hover {
+        background: #1d4ed8;
+        opacity: 0.95;
+    }
+
+    @media (max-width: 600px) {
+        .simple-container { padding: 1.5rem; margin: 1rem; }
+        .form-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        .btn-kembali { width: 100%; justify-content: center; }
+        .form-grid { grid-template-columns: 1fr; gap: 1.1rem; }
+        .full-width { grid-column: span 1; }
+        .form-actions { flex-direction: column-reverse; }
+        .btn { width: 100%; justify-content: center; }
     }
 </style>
 @endpush
 
 @section('content')
-
-{{-- Page Header --}}
-<div class="page-header">
-    <a href="{{ route('kperpus.buku.index') }}" title="Kembali ke Daftar Buku">
-        <i class="fas fa-arrow-left"></i>
-    </a>
-    <h1>Tambah Buku Baru</h1>
-</div>
-
-<div class="layout-grid">
-    {{-- Left Column: Form --}}
-    <div class="form-card">
-        <div class="form-card-header">
-            <div class="hdr-icon"><i class="fas fa-book-medical"></i></div>
-            <div>
-                <h2>Formulir Data Buku</h2>
-                <p>Isi seluruh informasi buku di bawah ini. Tanda (<span style="color:var(--danger)">*</span>) wajib diisi.</p>
-            </div>
+<div class="simple-container">
+    
+    <div class="form-header">
+        <div>
+            <h2>Form Tambah Buku</h2>
+            <p style="margin-top: 4px;">Isi formulir di bawah secara lengkap untuk menambah koleksi perpustakaan.</p>
         </div>
-
-        <form action="{{ route('kperpus.buku.store') }}" method="POST" enctype="multipart/form-data" id="form-buku">
-            @csrf
-
-            <div class="form-body">
-                <div class="form-grid">
-
-                    {{-- ── Identitas Buku ─────────────────── --}}
-                    <div class="section-title">Identitas Buku</div>
-
-                    {{-- Kode Buku --}}
-                    <div class="form-group">
-                        <label for="kode_buku">Kode Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-barcode input-icon"></i>
-                            <input type="text" id="kode_buku" name="kode_buku"
-                                   class="form-control @error('kode_buku') is-invalid @enderror"
-                                   value="{{ old('kode_buku') }}" placeholder="Contoh: BK-0001" required>
-                        </div>
-                        @error('kode_buku')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- ISBN --}}
-                    <div class="form-group">
-                        <label for="isbn">ISBN</label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-fingerprint input-icon"></i>
-                            <input type="text" id="isbn" name="isbn"
-                                   class="form-control @error('isbn') is-invalid @enderror"
-                                   value="{{ old('isbn') }}" placeholder="Maksimal 13 karakter" maxlength="13">
-                        </div>
-                        @error('isbn')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- Judul Buku --}}
-                    <div class="form-group full">
-                        <label for="judul_buku">Judul Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-heading input-icon"></i>
-                            <input type="text" id="judul_buku" name="judul_buku"
-                                   class="form-control @error('judul_buku') is-invalid @enderror"
-                                   value="{{ old('judul_buku') }}" placeholder="Masukkan judul lengkap buku" required>
-                        </div>
-                        @error('judul_buku')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- Pengarang --}}
-                    <div class="form-group">
-                        <label for="pengarang">Nama Pengarang <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-user-edit input-icon"></i>
-                            <input type="text" id="pengarang" name="pengarang"
-                                   class="form-control @error('pengarang') is-invalid @enderror"
-                                   value="{{ old('pengarang') }}" placeholder="Nama pengarang / penulis" required>
-                        </div>
-                        @error('pengarang')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- Tahun Terbit --}}
-                    <div class="form-group">
-                        <label for="tahun_terbit">Tahun Terbit <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-calendar-alt input-icon"></i>
-                            <input type="number" id="tahun_terbit" name="tahun_terbit"
-                                   class="form-control @error('tahun_terbit') is-invalid @enderror"
-                                   value="{{ old('tahun_terbit') }}"
-                                   placeholder="Contoh: 2024" min="1900" max="{{ date('Y') }}" required>
-                        </div>
-                        @error('tahun_terbit')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- ── Sumber & Klasifikasi ─────────────────── --}}
-                    <hr class="section-divider">
-                    <div class="section-title">Sumber & Klasifikasi</div>
-
-                    {{-- Sumber Buku --}}
-                    <div class="form-group full">
-                        <label>Sumber Anggaran Buku <span class="req">*</span></label>
-                        <div class="radio-group">
-                            <label class="radio-label" id="radio-label-bos">
-                                <input type="radio" name="sumber_buku" value="bos" 
-                                       {{ old('sumber_buku', $preSelectedSource) === 'bos' ? 'checked' : '' }} required>
-                                Buku BOS (Operasional Sekolah)
-                            </label>
-                            <label class="radio-label" id="radio-label-perpus">
-                                <input type="radio" name="sumber_buku" value="buku perpus" 
-                                       {{ old('sumber_buku', $preSelectedSource ?? 'buku perpus') === 'buku perpus' ? 'checked' : '' }} required>
-                                Buku Perpus (Koleksi Umum)
-                            </label>
-                        </div>
-                        @error('sumber_buku')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- Kategori (only for Buku Perpus) --}}
-                    <div class="form-group" id="kategori-group">
-                        <label for="id_kategori">Kategori Buku <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-bookmark input-icon"></i>
-                            <select id="id_kategori" name="id_kategori"
-                                    class="form-control @error('id_kategori') is-invalid @enderror">
-                                <option value="">— Pilih Kategori —</option>
-                                @foreach($kategori as $kat)
-                                    <option value="{{ $kat->id_kategori }}"
-                                            {{ old('id_kategori') == $kat->id_kategori ? 'selected' : '' }}>
-                                        {{ $kat->nama_kategori }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @error('id_kategori')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- Kelas (only for Buku BOS) --}}
-                    <div class="form-group" id="kelas-group">
-                        <label for="kelas">Kelas Peruntukan <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-layer-group input-icon"></i>
-                            <select id="kelas" name="kelas"
-                                    class="form-control @error('kelas') is-invalid @enderror">
-                                <option value="">— Pilih Kelas —</option>
-                                <option value="VII"  {{ old('kelas') === 'VII'  ? 'selected' : '' }}>Kelas VII</option>
-                                <option value="VIII" {{ old('kelas') === 'VIII' ? 'selected' : '' }}>Kelas VIII</option>
-                                <option value="IX"   {{ old('kelas') === 'IX'   ? 'selected' : '' }}>Kelas IX</option>
-                            </select>
-                        </div>
-                        @error('kelas')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- Stok --}}
-                    <div class="form-group">
-                        <label for="stok">Stok Awal <span class="req">*</span></label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-boxes input-icon"></i>
-                            <input type="number" id="stok" name="stok"
-                                   class="form-control @error('stok') is-invalid @enderror"
-                                   value="{{ old('stok', 1) }}" min="1" required>
-                        </div>
-                        @error('stok')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="section-title">Cover Buku</div>
-
-                    {{-- Gambar --}}
-                    <div class="form-group full">
-                        <label for="gambar">Upload Cover Buku</label>
-                        <div class="form-control-wrap">
-                            <i class="fas fa-image input-icon" style="top: 1.1rem;"></i>
-                            <input type="file" id="gambar" name="gambar" accept="image/jpg,image/jpeg,image/png"
-                                   class="form-control @error('gambar') is-invalid @enderror"
-                                   style="padding-top: 0.6rem; padding-bottom: 0.6rem;">
-                        </div>
-                        <span class="form-hint">Format file: JPG, JPEG, PNG. Maksimal ukuran 2 MB.</span>
-                        @error('gambar')
-                            <span class="invalid-feedback"><i class="fas fa-exclamation-circle"></i> {{ $message }}</span>
-                        @enderror
-                    </div>
-
-                </div>{{-- .form-grid --}}
-            </div>{{-- .form-body --}}
-
-            <div class="form-actions">
-                <button type="submit" class="btn-submit" id="btn-simpan">
-                    <i class="fas fa-save"></i> Simpan Buku
-                </button>
-                <button type="reset" class="btn-reset" onclick="resetPreview()">
-                    <i class="fas fa-undo"></i> Reset Form
-                </button>
-            </div>
-        </form>
+        <a href="{{ route('kperpus.buku.index') }}" class="btn-kembali">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </div>
 
+    <form action="{{ route('kperpus.buku.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
+        <div class="form-grid">
+            
+            {{-- Jenis Anggaran --}}
+            <div class="form-group">
+                <label for="sumber_buku">Sumber Anggaran / Jenis Buku <span>*</span></label>
+                <select name="sumber_buku" id="sumber_buku" class="form-input" onchange="pilihJenisBuku(this.value)">
+                    <option value="buku perpus" {{ old('sumber_buku', request('sumber_buku')) !== 'bos' ? 'selected' : '' }}>Buku Reguler (Perpustakaan)</option>
+                    <option value="bos" {{ old('sumber_buku', request('sumber_buku')) === 'bos' ? 'selected' : '' }}>Buku Paket (Dana BOS)</option>
+                </select>
+            </div>
+
+            {{-- Input Dinamis: Kategori --}}
+            <div class="form-group" id="input-kategori">
+                <label for="id_kategori">Kategori Rak Buku <span>*</span></label>
+                <select name="id_kategori" id="id_kategori" class="form-input">
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach($kategori ?? [] as $kat)
+                        <option value="{{ $kat->id_kategori }}" {{ old('id_kategori') == $kat->id_kategori ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Input Dinamis: Kelas (Sembunyi Default) --}}
+            <div class="form-group" id="input-kelas" style="display: none;">
+                <label for="kelas">Untuk Siswa Kelas <span>*</span></label>
+                <select name="kelas" id="kelas" class="form-input">
+                    <option value="">-- Pilih Tingkatan Kelas --</option>
+                    <option value="VII" {{ old('kelas') == 'VII' ? 'selected' : '' }}>Kelas VII</option>
+                    <option value="VIII" {{ old('kelas') == 'VIII' ? 'selected' : '' }}>Kelas VIII</option>
+                    <option value="IX" {{ old('kelas') == 'IX' ? 'selected' : '' }}>Kelas IX</option>
+                </select>
+            </div>
+
+            {{-- Kode Buku --}}
+            <div class="form-group">
+                <label for="kode_buku">Kode Registrasi Buku <span>*</span></label>
+                <input type="text" name="kode_buku" id="kode_buku" class="form-input" placeholder="Contoh: BKP-001" required value="{{ old('kode_buku') }}">
+            </div>
+
+            {{-- ISBN --}}
+            <div class="form-group">
+                <label for="isbn">Nomor ISBN</label>
+                <input type="text" name="isbn" id="isbn" class="form-input" placeholder="Boleh dikosongkan jika tidak ada" value="{{ old('isbn') }}">
+            </div>
+
+            {{-- Judul Buku --}}
+            <div class="form-group full-width">
+                <label for="judul_buku">Judul Buku <span>*</span></label>
+                <input type="text" name="judul_buku" id="judul_buku" class="form-input" placeholder="Masukkan judul lengkap buku secara jelas" required value="{{ old('judul_buku') }}">
+            </div>
+
+            {{-- Pengarang --}}
+            <div class="form-group full-width">
+                <label for="pengarang">Nama Pengarang / Penulis <span>*</span></label>
+                <input type="text" name="pengarang" id="pengarang" class="form-input" placeholder="Nama penulis asli atau instansi penerbit resmi" required value="{{ old('pengarang') }}">
+            </div>
+
+            {{-- Tahun Terbit --}}
+            <div class="form-group">
+                <label for="tahun_terbit">Tahun Terbit <span>*</span></label>
+                <input type="number" name="tahun_terbit" id="tahun_terbit" class="form-input" placeholder="Contoh: 2024" required min="1800" max="{{ date('Y') }}" value="{{ old('tahun_terbit') }}">
+            </div>
+
+            {{-- Stok Buku --}}
+            <div class="form-group">
+                <label for="stok">Jumlah Stok Fisik <span>*</span></label>
+                <input type="number" name="stok" id="stok" class="form-input" required min="0" value="{{ old('stok', 1) }}">
+            </div>
+
+            {{-- File Sampul --}}
+            <div class="form-group full-width">
+                <label for="gambar">Foto Sampul Buku</label>
+                <input type="file" name="gambar" id="gambar" class="form-input" accept="image/*" style="padding: 0.45rem 0.75rem;">
+                <span class="info-bantuan">Format gambar wajib: JPG atau PNG (Ukuran maksimal file 2MB).</span>
+            </div>
+
+        </div>
+
+        {{-- Navigasi Bawah --}}
+        <div class="form-actions">
+            <a href="{{ route('kperpus.buku.index') }}" class="btn btn-batal">Batal</a>
+            <button type="submit" class="btn btn-simpan">
+                <i class="fas fa-save" style="font-size: 0.85rem;"></i> Simpan Data Buku
+            </button>
+        </div>
+
+    </form>
 </div>
-
 @endsection
 
 @push('scripts')
 <script>
-    const radioBos    = document.querySelector('input[name="sumber_buku"][value="bos"]');
-    const radioPerpus = document.querySelector('input[name="sumber_buku"][value="buku perpus"]');
-    const labelBos    = document.getElementById('radio-label-bos');
-    const labelPerpus  = document.getElementById('radio-label-perpus');
-    
-    const kelasGroup  = document.getElementById('kelas-group');
-    const katGroup    = document.getElementById('kategori-group');
+    function pilihJenisBuku(nilai) {
+        const divKategori = document.getElementById('input-kategori');
+        const divKelas = document.getElementById('input-kelas');
+        const selectKategori = document.getElementById('id_kategori');
+        const selectKelas = document.getElementById('kelas');
 
-    function toggleFields() {
-        if (radioBos.checked) {
-            kelasGroup.style.display = 'flex';
-            katGroup.style.display   = 'none';
-            document.getElementById('id_kategori').value = '';
-            
-            labelBos.classList.add('checked');
-            labelPerpus.classList.remove('checked');
+        if (nilai === 'bos') {
+            divKelas.style.display = 'flex';
+            selectKelas.setAttribute('required', 'required');
+            divKategori.style.display = 'none';
+            selectKategori.removeAttribute('required');
+            selectKategori.value = '';
         } else {
-            kelasGroup.style.display = 'none';
-            katGroup.style.display   = 'flex';
-            document.getElementById('kelas').value = '';
-
-            labelPerpus.classList.add('checked');
-            labelBos.classList.remove('checked');
+            divKategori.style.display = 'flex';
+            selectKategori.setAttribute('required', 'required');
+            divKelas.style.display = 'none';
+            selectKelas.removeAttribute('required');
+            selectKelas.value = '';
         }
+        
+        generateKodeBuku();
     }
 
-    function updateKodeBuku() {
-        const checkedRadio = document.querySelector('input[name="sumber_buku"]:checked');
-        if (!checkedRadio) return;
-        const sumber = checkedRadio.value;
+    let currentPrefix = '';
+
+    function generateKodeBuku() {
+        const sumber = document.getElementById('sumber_buku').value;
+        const id_kategori = document.getElementById('id_kategori').value;
         
-        fetch(`{{ route('kperpus.buku.generate-kode') }}?sumber=${encodeURIComponent(sumber)}`)
+        // Cek jika buku perpus belum pilih kategori, kosongkan kode
+        if (sumber === 'buku perpus' && !id_kategori) {
+            document.getElementById('kode_buku').value = '';
+            currentPrefix = '';
+            return;
+        }
+
+        const url = `{{ route('kperpus.buku.generate-kode') }}?sumber=${encodeURIComponent(sumber)}&id_kategori=${encodeURIComponent(id_kategori)}`;
+        
+        fetch(url)
             .then(response => response.json())
             .then(data => {
-                if (data && data.code) {
+                if(data.code) {
                     document.getElementById('kode_buku').value = data.code;
+                    currentPrefix = data.prefix;
                 }
             })
-            .catch(err => console.error('Error fetching generated code:', err));
+            .catch(error => console.error('Error fetching kode buku:', error));
     }
 
-    radioBos.addEventListener('change', () => {
-        toggleFields();
-        updateKodeBuku();
-    });
-    radioPerpus.addEventListener('change', () => {
-        toggleFields();
-        updateKodeBuku();
-    });
-
-    // Enforce prefix rules for kode_buku
-    function getPrefix() {
-        const checkedRadio = document.querySelector('input[name="sumber_buku"]:checked');
-        return checkedRadio && checkedRadio.value === 'bos' ? 'BOS-' : 'BP-';
-    }
-
-    const kodeBukuInput = document.getElementById('kode_buku');
-    
-    kodeBukuInput.addEventListener('input', function() {
-        const prefix = getPrefix();
-        if (!this.value.startsWith(prefix)) {
-            let valWithoutPrefix = this.value.replace(/^(BOS-|BP-)/, '');
-            valWithoutPrefix = valWithoutPrefix.replaceAll('BOS-', '').replaceAll('BP-', '');
-            this.value = prefix + valWithoutPrefix;
-        }
-    });
-
-    kodeBukuInput.addEventListener('keydown', function(e) {
-        const prefix = getPrefix();
-        const start = this.selectionStart;
-        const end = this.selectionEnd;
+    document.addEventListener('DOMContentLoaded', function() {
+        const jenisBukuAwal = document.getElementById('sumber_buku').value;
+        pilihJenisBuku(jenisBukuAwal);
         
-        if (e.key === 'Backspace' && start <= prefix.length && end === start) {
-            e.preventDefault();
-        }
-        if (e.key === 'Delete' && start < prefix.length) {
-            e.preventDefault();
-        }
+        // Pasang event listener untuk kategori
+        document.getElementById('id_kategori').addEventListener('change', generateKodeBuku);
+
+        // Mencegah penghapusan prefix pada kode buku
+        const kodeInput = document.getElementById('kode_buku');
+        kodeInput.addEventListener('keydown', function(e) {
+            if (!currentPrefix) return;
+            
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            
+            // Allow copy, select all, etc.
+            if (e.ctrlKey || e.metaKey) return;
+            
+            // Allow navigation keys
+            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Tab'].includes(e.key)) return;
+
+            // Prevent deleting within prefix
+            if (e.key === 'Backspace' && start <= currentPrefix.length && start === end) {
+                e.preventDefault();
+            }
+            if (e.key === 'Delete' && start < currentPrefix.length && start === end) {
+                e.preventDefault();
+            }
+            // Prevent selection/replacement that touches the prefix
+            if (start < currentPrefix.length && end > 0 && e.key.length === 1) {
+                e.preventDefault();
+            }
+        });
+
+        kodeInput.addEventListener('input', function(e) {
+            if (!currentPrefix) return;
+            if (!this.value.startsWith(currentPrefix)) {
+                // If prefix is modified, restore prefix and keep the rest of the string if possible
+                let suffix = this.value.substring(this.value.length - (this.value.length - currentPrefix.length + 1)); 
+                // A safer fallback:
+                this.value = currentPrefix;
+            }
+        });
     });
-
-    // Initializations
-    toggleFields();
-    if (!kodeBukuInput.value) {
-        updateKodeBuku();
-    }
-
-    function resetPreview() {
-        setTimeout(() => {
-            toggleFields();
-            updateKodeBuku();
-        }, 30);
-    }
 </script>
 @endpush

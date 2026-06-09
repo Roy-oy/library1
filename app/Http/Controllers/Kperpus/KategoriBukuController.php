@@ -10,7 +10,21 @@ class KategoriBukuController extends Controller
 {
     public function index()
     {
-        $kategori = KategoriBuku::latest()->paginate(10);
+        $kategori = KategoriBuku::with('bukus')->latest()->paginate(10);
+
+        foreach ($kategori as $item) {
+            $bukuIds = $item->bukus->pluck('id_buku')->toArray();
+            $item->total_buku = count($bukuIds);
+            
+            if (!empty($bukuIds)) {
+                $item->jumlah_dipinjam = \App\Models\DetailPeminjaman::whereIn('id_buku', $bukuIds)
+                    ->whereIn('status_detail', ['dipinjam', 'terlambat'])
+                    ->count();
+            } else {
+                $item->jumlah_dipinjam = 0;
+            }
+        }
+
         return view('kperpus.kategori.index', compact('kategori'));
     }
 

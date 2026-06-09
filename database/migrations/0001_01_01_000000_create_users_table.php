@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
+            $table->string('foto_profile')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['kepala_sekolah', 'kepala_perpustakaan', 'penjaga_perpustakaan'])->default('penjaga_perpustakaan');

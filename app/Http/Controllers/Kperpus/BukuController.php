@@ -51,8 +51,10 @@ class BukuController extends Controller
     public function getGeneratedKode(Request $request)
     {
         $sumber = $request->query('sumber', 'buku perpus');
-        $code = Buku::generateKode($sumber);
-        return response()->json(['code' => $code]);
+        $id_kategori = $request->query('id_kategori');
+        $code = Buku::generateKode($sumber, $id_kategori);
+        $prefix = Buku::getPrefix($sumber, $id_kategori);
+        return response()->json(['code' => $code, 'prefix' => $prefix]);
     }
 
     public function store(Request $request)
@@ -79,11 +81,11 @@ class BukuController extends Controller
             return back()->withErrors(['id_kategori' => 'Kategori wajib diisi untuk Buku Perpus'])->withInput();
         }
 
-        // Validasi format kode_buku: BP- untuk perpus, BOS- untuk BOS
-        $prefix = ($request->sumber_buku === 'bos') ? 'BOS-' : 'BP-';
-        if (!str_starts_with($request->kode_buku, $prefix)) {
+        // Validasi format kode_buku dinamis
+        $expectedPrefix = Buku::getPrefix($request->sumber_buku, $request->id_kategori);
+        if (!str_starts_with($request->kode_buku, $expectedPrefix)) {
             return back()->withErrors([
-                'kode_buku' => "Kode Buku harus diawali dengan '{$prefix}' untuk " . ($request->sumber_buku === 'bos' ? 'Buku BOS' : 'Buku Perpus')
+                'kode_buku' => "Kode Buku harus diawali dengan '{$expectedPrefix}' berdasarkan kategori yang dipilih."
             ])->withInput();
         }
 
@@ -142,11 +144,11 @@ class BukuController extends Controller
             return back()->withErrors(['id_kategori' => 'Kategori wajib diisi untuk Buku Perpus'])->withInput();
         }
 
-        // Validasi format kode_buku: BP- untuk perpus, BOS- untuk BOS (tidak boleh diubah atau dihapus)
-        $prefix = ($buku->sumber_buku === 'bos') ? 'BOS-' : 'BP-';
-        if (!str_starts_with($request->kode_buku, $prefix)) {
+        // Validasi format kode_buku: dinamis (tidak boleh diubah melenceng dari aturannya)
+        $expectedPrefix = Buku::getPrefix($buku->sumber_buku, $request->id_kategori);
+        if (!str_starts_with($request->kode_buku, $expectedPrefix)) {
             return back()->withErrors([
-                'kode_buku' => "Prefix kode buku '{$prefix}' tidak boleh diubah atau dihapus."
+                'kode_buku' => "Prefix kode buku harus '{$expectedPrefix}' sesuai kategori, dan tidak boleh dihapus."
             ])->withInput();
         }
 

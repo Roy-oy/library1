@@ -66,6 +66,27 @@ class DashboardController extends Controller
             ->paginate(10, ['*'], 'fines_page')
             ->withQueryString();
 
-        return view('pperpus.dashboard', compact('stats', 'borrowingsLast7Days', 'fines'));
+        // ── 7. Data Siswa Rajin Meminjam (Buku Perpus) ────────────
+        $topStudents = \App\Models\Siswa::select('siswa.id_siswa', 'siswa.nis', 'siswa.nama_siswa', 'siswa.kelas')
+            ->join('peminjaman', 'siswa.id_siswa', '=', 'peminjaman.id_siswa')
+            ->join('detail_peminjaman', 'peminjaman.id_peminjaman', '=', 'detail_peminjaman.id_peminjaman')
+            ->where('detail_peminjaman.sumber_buku', 'buku perpus')
+            ->selectRaw('count(detail_peminjaman.id_detail) as total_buku_dipinjam')
+            ->groupBy('siswa.id_siswa', 'siswa.nis', 'siswa.nama_siswa', 'siswa.kelas')
+            ->orderByDesc('total_buku_dipinjam')
+            ->take(5)
+            ->get();
+
+        // ── 8. Data Buku Terpopuler (Buku Perpus) ─────────────────
+        $topBooks = \App\Models\Buku::select('buku.id_buku', 'buku.judul_buku', 'buku.gambar', 'buku.pengarang')
+            ->join('detail_peminjaman', 'buku.id_buku', '=', 'detail_peminjaman.id_buku')
+            ->where('detail_peminjaman.sumber_buku', 'buku perpus')
+            ->selectRaw('count(detail_peminjaman.id_detail) as total_dipinjam')
+            ->groupBy('buku.id_buku', 'buku.judul_buku', 'buku.gambar', 'buku.pengarang')
+            ->orderByDesc('total_dipinjam')
+            ->take(10)
+            ->get();
+
+        return view('pperpus.dashboard', compact('stats', 'borrowingsLast7Days', 'fines', 'topStudents', 'topBooks'));
     }
 }

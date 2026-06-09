@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kperpus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
@@ -29,6 +30,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'password' => ['nullable', 'confirmed', Password::defaults()],
+            'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user->name = $request->name;
@@ -36,6 +38,17 @@ class ProfileController extends Controller
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('foto_profile')) {
+            // Delete old photo if exists
+            if ($user->foto_profile && Storage::disk('public')->exists($user->foto_profile)) {
+                Storage::disk('public')->delete($user->foto_profile);
+            }
+            
+            // Store new photo
+            $path = $request->file('foto_profile')->store('profile_photos', 'public');
+            $user->foto_profile = $path;
         }
 
         $user->save();

@@ -51,7 +51,13 @@
 
 <div class="profile-card">
     <div class="profile-header">
-        <div class="profile-avatar">{{ substr($user->name, 0, 1) }}</div>
+        <div class="profile-avatar">
+            @if($user->foto_profile)
+                <img src="{{ asset('storage/' . $user->foto_profile) }}" alt="Foto Profil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
+            @else
+                {{ substr($user->name, 0, 1) }}
+            @endif
+        </div>
         <h2>{{ $user->name }}</h2>
         <p>{{ $user->getRoleLabel() }}</p>
     </div>
@@ -63,7 +69,7 @@
             </div>
         @endif
 
-        <form action="{{ route('kperpus.profile.update') }}" method="POST">
+        <form action="{{ route('kperpus.profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -71,6 +77,12 @@
                 <label for="name">Nama Lengkap</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
                 @error('name') <span class="error-text">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="foto_profile">Foto Profil (Opsional)</label>
+                <input type="file" name="foto_profile" id="foto_profile" class="form-control" accept="image/*">
+                @error('foto_profile') <span class="error-text">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">

@@ -29,10 +29,18 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'password' => ['nullable', 'confirmed', Password::defaults()],
+            'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user->name = $request->name;
         $user->username = $request->username;
+
+        if ($request->hasFile('foto_profile')) {
+            if ($user->foto_profile) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto_profile);
+            }
+            $user->foto_profile = $request->file('foto_profile')->store('profiles', 'public');
+        }
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);

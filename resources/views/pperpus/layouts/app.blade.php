@@ -14,62 +14,67 @@
             --sidebar-w:        260px;
             --header-h:         70px;
 
-            /* ── Palet Utama: Purple Soft + Slate ── */
-            --purple-900:         #4c1d95;
-            --purple-800:         #5b21b6;
-            --purple-700:         #6d28d9;
-            --purple-600:         #7c3aed;
-            --purple-500:         #8b5cf6;
-            --purple-400:         #a78bfa;
-            --purple-100:         #ede9fe;
-            --purple-50:          #f5f3ff;
+            /* ── Palette Baru: Modern Cool Slate & Clean Emerald ── */
+            --slate-950:        #0f172a;
+            --slate-900:        #1e293b;
+            --slate-800:        #334155;
+            --slate-700:        #475569;
+            --slate-600:        #64748b;
+            --teal-600:         #0d9488;
+            --teal-500:         #14b8a6;
+            --teal-400:         #2dd4bf;
+            --teal-100:         #ccfbf1;
+            --teal-50:          #f0fdfa;
+            --indigo-600:       #4f46e5;
+            --indigo-100:       #e0e7ff;
+            --indigo-50:        #e0e7ff;
 
-            /* Sidebar: purple navy yang elegan */
-            --sidebar-bg:       #4c1d95;
-            --sidebar-surface:  #5b21b6;
-            --sidebar-active:   #7c3aed;
-            --sidebar-hover:    #6d28d9;
-            --sidebar-text:     rgba(237, 233, 254, 0.85);
-            --sidebar-text-dim: rgba(167, 139, 250, 0.55);
-            --sidebar-border:   rgba(167, 139, 250, 0.12);
-            --sidebar-accent:   #c4b5fd;
+            /* Sidebar: Dark Slate yang sejuk dan profesional */
+            --sidebar-bg:       #1e293b;
+            --sidebar-surface:  #0f172a;
+            --sidebar-active:   #0d9488;
+            --sidebar-hover:    #334155;
+            --sidebar-text:     #f1f5f9;
+            --sidebar-text-dim: #94a3b8;
+            --sidebar-border:   rgba(255, 255, 255, 0.06);
+            --sidebar-accent:   #2dd4bf;
 
-            /* Layout */
-            --primary:          #7c3aed;
-            --primary-dark:     #6d28d9;
-            --primary-soft:     #f5f3ff;
-            --accent:           #f472b6;   /* pink-400 — aksen segar */
-            --accent-warm:      #f59e0b;   /* amber — hanya untuk badge denda */
+            /* Layout Global */
+            --primary:          #0d9488;
+            --primary-dark:     #0f766e;
+            --primary-soft:     #f0fdfa;
+            --accent:           #6366f1;
+            --accent-warm:      #f43f5e;
 
-            /* Background & Surface */
-            --bg:               #f0f4f8;   /* slate-100 warm — tidak terlalu putih, tidak mencolok */
+            /* Background & Surface Konten */
+            --bg:               #f8fafc;
             --surface:          #ffffff;
-            --surface-2:        #f8fafc;
+            --surface-2:        #f1f5f9;
 
             /* Teks */
             --text:             #0f172a;
-            --text-muted:       #64748b;
+            --text-muted:       #475569;
             --text-light:       #94a3b8;
 
             /* Border */
             --border:           #e2e8f0;
             --border-soft:      #f1f5f9;
 
-            /* Status */
-            --success:          #059669;
+            /* Status Alert & Badge */
+            --success:          #10b981;
             --success-bg:       #ecfdf5;
-            --warning:          #d97706;
+            --warning:          #f59e0b;
             --warning-bg:       #fffbeb;
-            --danger:           #dc2626;
+            --danger:           #ef4444;
             --danger-bg:        #fef2f2;
-            --info:             #0284c7;
-            --info-bg:          #e0f2fe;
+            --info:             #3b82f6;
+            --info-bg:          #eff6ff;
 
             --radius:           14px;
             --radius-sm:        8px;
-            --shadow-sm:        0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
-            --shadow:           0 4px 16px rgba(15,23,42,.07), 0 2px 6px rgba(15,23,42,.04);
-            --shadow-md:        0 8px 24px rgba(15,23,42,.09), 0 4px 10px rgba(15,23,42,.05);
+            --shadow-sm:        0 1px 3px rgba(15,23,42,.03), 0 1px 2px rgba(15,23,42,.02);
+            --shadow:           0 4px 16px rgba(15,23,42,.04), 0 2px 6px rgba(15,23,42,.02);
+            --shadow-md:        0 8px 24px rgba(15,23,42,.06), 0 4px 10px rgba(15,23,42,.03);
         }
 
         body {
@@ -88,15 +93,14 @@
             display: flex; flex-direction: column;
             transition: transform .3s cubic-bezier(.4,0,.2,1);
             z-index: 100;
-            box-shadow: 4px 0 24px rgba(76,29,149,.18);
+            box-shadow: 4px 0 24px rgba(15,23,42,.08);
         }
 
-        /* Subtle gradient overlay */
         .sidebar::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(124,58,237,.15) 0%, transparent 40%);
+            background: linear-gradient(180deg, rgba(13,148,136,.1) 0%, transparent 40%);
             pointer-events: none;
         }
 
@@ -114,7 +118,7 @@
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
-        .brand-logo img { width: 28px; height: 28px; object-fit: contain; filter: brightness(1.1); }
+        .brand-logo img { width: 28px; height: 28px; object-fit: contain; }
         .brand-text .title { font-size: .8rem; font-weight: 700; color: #ffffff; line-height: 1.3; }
 
         .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; position: relative; }
@@ -140,8 +144,8 @@
         }
         .nav-link i {
             width: 20px; text-align: center; font-size: .88rem;
-            color: var(--sidebar-accent);
-            opacity: .7;
+            color: var(--sidebar-text-dim);
+            opacity: .8;
             transition: all .2s;
             flex-shrink: 0;
         }
@@ -149,13 +153,13 @@
             background: var(--sidebar-hover);
             color: #ffffff;
         }
-        .nav-link:hover i { opacity: 1; color: #ffffff; }
+        .nav-link:hover i { opacity: 1; color: var(--sidebar-accent); }
 
         .nav-link.active {
             background: var(--sidebar-active);
             color: #ffffff;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(124,58,237,.35);
+            box-shadow: 0 4px 12px rgba(13,148,136,.30);
         }
         .nav-link.active i { opacity: 1; color: #ffffff; }
         .nav-badge {
@@ -174,13 +178,13 @@
         .user-card {
             display: flex; align-items: center; gap: .8rem;
             padding: .75rem;
-            background: rgba(167,139,250,.08);
+            background: rgba(255,255,255,.03);
             border: 1px solid var(--sidebar-border);
             border-radius: 11px;
         }
         .user-avatar {
             width: 36px; height: 36px;
-            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            background: linear-gradient(135deg, var(--teal-600), var(--teal-400));
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-weight: 800; font-size: .82rem; color: #ffffff;
@@ -260,22 +264,20 @@
         .btn-primary {
             display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
             padding: .65rem 1.4rem;
-            background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
+            background: linear-gradient(135deg, var(--teal-600), var(--teal-500));
             color: #ffffff;
             border: none; border-radius: var(--radius-sm);
             font-family: inherit; font-size: .88rem; font-weight: 700;
             cursor: pointer; text-decoration: none;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+            box-shadow: 0 4px 12px rgba(13,148,136,.2);
             transition: all .25s ease;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+            box-shadow: 0 6px 16px rgba(13,148,136,.3);
             color: #ffffff;
         }
-        .btn-primary:active {
-            transform: translateY(0);
-        }
+        .btn-primary:active { transform: translateY(0); }
 
         /* ── CONTENT ───────────────────────────── */
         .content { padding: 1.6rem; flex: 1; }
@@ -294,14 +296,14 @@
         /* ── SIDEBAR OVERLAY ───────────────────── */
         .sidebar-overlay {
             display: none; position: fixed; inset: 0;
-            background: rgba(15,23,42,.45); z-index: 90;
+            background: rgba(15,23,42,.3); z-index: 90;
             opacity: 0; transition: opacity .3s ease;
         }
         .sidebar-overlay.show { display: block; opacity: 1; }
 
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.1); border-radius: 10px; }
 
         @media (max-width: 900px) {
             .sidebar { transform: translateX(-100%); }
@@ -315,7 +317,7 @@
 <body>
 
 @include('pperpus.layouts.partials.sidebar')
-<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar-overlay" onclick=\"toggleSidebar()\"></div>
 
 <div class="main-wrapper">
     @include('pperpus.layouts.partials.header')
@@ -342,8 +344,10 @@
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('show');
+    if(sidebar && overlay) {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+    }
 }
 </script>
 @stack('scripts')

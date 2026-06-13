@@ -100,7 +100,7 @@
 
 <div class="page-header">
     <div>
-        <h1><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:.45rem"></i>Peminjaman</h1>
+        <h1><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:.45rem"></i>Peminjaman Buku Perpustakaan</h1>
         <p>Riwayat transaksi Peminjaman Buku Perpustakaan perpustakaan</p>
     </div>
     <a href="{{ route('pperpus.peminjaman.perpustakaan.create') }}" class="btn-primary">

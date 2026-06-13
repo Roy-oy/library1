@@ -1,4 +1,5 @@
 <aside class="sidebar" id="sidebar">
+
     <div class="sidebar-brand">
         <div class="brand-logo"><img src="{{ asset('images/logos.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
         <div class="brand-text">
@@ -8,10 +9,11 @@
 
     <nav class="sidebar-nav">
         <div class="nav-section-label">Menu Utama</div>
+
         <div class="nav-item">
             <a href="{{ route('pperpus.dashboard') }}"
                class="nav-link {{ request()->routeIs('pperpus.dashboard') ? 'active' : '' }}">
-                <i class="fas fa-home"></i> Dashboard
+                <i class="fas fa-building-columns"></i> Dashboard
             </a>
         </div>
 
@@ -25,10 +27,10 @@
             <div class="nav-dropdown-menu">
                 <a href="{{ route('pperpus.peminjaman.perpustakaan.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.peminjaman.perpustakaan.*') ? 'active' : '' }}">
-                    <i class="fas fa-book"></i> Buku Perpustakaan
+                   <i class="fas fa-book"></i> Buku Perpustakaan
                 </a>
                 <a href="{{ route('pperpus.peminjaman.bos.index') }}" class="nav-link nav-child {{ request()->routeIs('pperpus.peminjaman.bos.*') ? 'active' : '' }}">
-                    <i class="fas fa-book-open"></i> Buku BOS
+                   <i class="fas fa-book-open"></i> Buku BOS
                 </a>
             </div>
         </div>
@@ -42,11 +44,11 @@
             <div class="nav-dropdown-menu">
                 <a href="{{ route('pperpus.pengembalian.perpustakaan.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.pengembalian.perpustakaan.*') ? 'active' : '' }}">
-                    <i class="fas fa-book"></i> Pengembalian Buku Perpustakaan
+                   <i class="fas fa-book"></i>Buku Perpustakaan
                 </a>
                 <a href="{{ route('pperpus.pengembalian.bos.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.pengembalian.bos.*') ? 'active' : '' }}">
-                    <i class="fas fa-book-open"></i> Pengembalian Buku BOS
+                   <i class="fas fa-book-open"></i>Buku BOS
                 </a>
             </div>
         </div>
@@ -61,11 +63,11 @@
             <div class="nav-dropdown-menu">
                 <a href="{{ route('pperpus.report.aktivitas.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.report.aktivitas.*') ? 'active' : '' }}">
-                    <i class="fas fa-history"></i> Aktivitas
+                   <i class="fas fa-history"></i> Aktivitas
                 </a>
                 <a href="{{ route('pperpus.report.denda.index') }}" 
                    class="nav-link nav-child {{ request()->routeIs('pperpus.report.denda.*') ? 'active' : '' }}">
-                    <i class="fas fa-file-invoice-dollar"></i> Denda
+                   <i class="fas fa-file-invoice-dollar"></i> Denda
                 </a>
             </div>
         </div>
@@ -103,15 +105,15 @@
     </div>
 </aside>
 
-{{-- ===== CSS Tambahan untuk Dropdown ===== --}}
+{{-- ===== CSS Dropdown Disesuaikan dengan Palet Baru ===== --}}
 <style>
 .nav-dropdown-menu {
     display: none;
     overflow: hidden;
-    background: rgba(0,0,0,0.1);
+    background: rgba(15, 23, 42, 0.38); /* Menggunakan alpha slate sejuk agar menyatu sempurna */
     border-radius: 8px;
     margin: 4px 1.2rem 8px 1.2rem;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
     padding: 6px 4px;
 }
 .nav-dropdown.open .nav-dropdown-menu {
@@ -120,7 +122,7 @@
 }
 @keyframes fadeInDropdown {
     from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 .nav-dropdown.open .nav-arrow {
     transform: rotate(90deg);
@@ -148,22 +150,34 @@
     transition: all 0.2s;
     text-decoration: none;
     display: block;
+    position: relative;
 }
 .nav-child i {
     font-size: 0.8rem;
-    opacity: 0.8;
+    opacity: 0.7;
     position: absolute;
     left: 1.2rem;
-    color: var(--sidebar-accent) !important;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sidebar-text-dim) !important;
+    transition: all 0.2s;
 }
 .nav-child:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
     color: #ffffff;
 }
+.nav-child:hover i {
+    color: var(--sidebar-accent) !important;
+    opacity: 1;
+}
 .nav-child.active {
-    background: rgba(255,255,255,0.15);
-    color: #ffffff;
+    background: rgba(13, 148, 136, 0.2); /* Aksen Teal emerald lembut saat aktif */
+    color: #2dd4bf;
     font-weight: 700;
+}
+.nav-child.active i {
+    color: #2dd4bf !important;
+    opacity: 1;
 }
 </style>
 

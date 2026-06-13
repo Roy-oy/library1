@@ -1,7 +1,7 @@
-<div class="modal-overlay form-overlay-modal" id="create-modal">
+<div class="modal-overlay form-overlay-modal edit-active" id="create-modal">
     <div class="modal-box">
         <div class="form-card">
-            <div class="form-card-header">
+            <div class="form-card-header edit-mode">
                 <div class="hdr-icon"><i class="fas fa-plus"></i></div>
                 <div>
                     <h2>Formulir Tambah Kategori</h2>

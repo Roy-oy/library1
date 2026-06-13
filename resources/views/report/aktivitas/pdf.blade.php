@@ -230,17 +230,18 @@
             <thead>
                 <tr>
                     <th style="width: 3%;">No</th>
-                    <th style="width: 10%;">Kode Peminjaman</th>
-                    <th style="width: 7%;">NIS</th>
-                    <th style="width: 13%;">Nama Siswa</th>
+                    <th style="width: 9%;">Kode Peminjaman</th>
+                    <th style="width: 6%;">NIS</th>
+                    <th style="width: 12%;">Nama Siswa</th>
                     <th style="width: 5%;">Kelas</th>
-                    <th style="width: 9%;">Tanggal Pinjam</th>
-                    <th style="width: 10%;">Tanggal Harus Kembali</th>
-                    <th style="width: 9%;">Tanggal Kembali</th>
-                    <th style="width: 18%;">Judul Buku</th>
-                    <th style="width: 6%;">Telat(Hari)</th>
-                    <th style="width: 5%;">Denda(Rp)</th>
-                    <th style="width: 5%;">Status</th>
+                    <th style="width: 8%;">Tgl Pinjam</th>
+                    <th style="width: 8%;">Harus Kembali</th>
+                    <th style="width: 8%;">Tgl Kembali</th>
+                    <th style="width: 8%;">Kode Buku</th>
+                    <th style="width: 14%;">Judul Buku</th>
+                    <th style="width: 5%;">Telat</th>
+                    <th style="width: 7%;">Denda</th>
+                    <th style="width: 7%;">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -276,7 +277,11 @@
                     <td style="text-align: center;">
                         {{ $item->tanggal_kembali !== '-' ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d/m/Y') : '-' }}
                     </td>
-                    <td>{{ $item->buku }}</td>
+                    <td style="text-align: center;">{{ $item->kode_buku }}</td>
+                    <td>
+                        {{ $item->buku }} <br>
+                        <small style="color: #2563eb;">({{ $item->kategori }})</small>
+                    </td>
                     <td style="text-align: center;">{{ $item->telat > 0 ? $item->telat : '0' }}</td>
                     <td style="text-align: right;">
                         {{ $item->denda > 0 ? number_format($item->denda, 0, ',', '.') : '0' }}
@@ -293,7 +298,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="10" style="text-align: right; letter-spacing: 0.3px;">TOTAL DENDA :</th>
+                    <th colspan="11" style="text-align: right; letter-spacing: 0.3px;">TOTAL DENDA :</th>
                     <th style="text-align: right; color: #ffd700; font-size: 10pt;">
                         Rp {{ number_format($totalDenda, 0, ',', '.') }}
                     </th>

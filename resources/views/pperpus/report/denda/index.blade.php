@@ -142,11 +142,17 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Peminjam</th>
-                    <th>Buku</th>
-                    <th>Tgl Kembali</th>
-                    <th>Terlambat</th>
-                    <th>Nominal</th>
+                    <th>Kode Peminjaman</th>
+                    <th>NIS</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Harus Kembali</th>
+                    <th>Tanggal Kembali</th>
+                    <th>Kode Buku</th>
+                    <th>Judul Buku (Kategori)</th>
+                    <th>Telat</th>
+                    <th>Denda</th>
                     <th>Status</th>
                     <th>Keterangan</th>
                 </tr>
@@ -155,16 +161,20 @@
                 @forelse($reports as $report)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>
-                        <div style="font-weight:700">{{ $report->peminjaman->siswa->nama_siswa }}</div>
-                        <div style="font-size:.75rem;color:var(--text-muted)">{{ $report->peminjaman->kode_peminjaman }}</div>
-                    </td>
-                    <td>
-                        <div style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $report->buku->judul_buku }}">
-                            {{ $report->buku->judul_buku }}
+                    <td><span class="code-badge">{{ $report->peminjaman->kode_peminjaman ?? '-' }}</span></td>
+                    <td>{{ $report->peminjaman->siswa->nis ?? '-' }}</td>
+                    <td><div style="font-weight:700">{{ $report->peminjaman->siswa->nama_siswa ?? '-' }}</div></td>
+                    <td>{{ $report->peminjaman->siswa->kelas ?? '-' }}</td>
+                    <td>{{ $report->peminjaman->tanggal_pinjam ? $report->peminjaman->tanggal_pinjam->format('d/m/Y') : '-' }}</td>
+                    <td>{{ $report->tanggal_jatuh_tempo ? $report->tanggal_jatuh_tempo->format('d/m/Y') : '-' }}</td>
+                    <td>{{ $report->tanggal_kembali ? $report->tanggal_kembali->format('d/m/Y') : '-' }}</td>
+                    <td><span class="code-badge">{{ $report->buku->kode_buku ?? '-' }}</span></td>
+                    <td style="max-width: 240px; font-weight: 500; color: var(--text); line-height: 1.4; white-space: normal; word-wrap: break-word;">
+                        <div>{{ $report->buku->judul_buku ?? '-' }}</div>
+                        <div style="font-size: .75rem; color: var(--primary); background: var(--theme-primary-light, #eff6ff); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600;">
+                            {{ optional($report->buku->kategoriBuku)->nama_kategori ?? 'Tanpa Kategori' }}
                         </div>
                     </td>
-                    <td>{{ $report->tanggal_kembali ? $report->tanggal_kembali->format('d/m/Y') : '-' }}</td>
                     <td>
                         <span class="pill pill-warning">
                             {{ $report->jumlah_hari_terlambat }} Hari
@@ -188,13 +198,24 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" style="text-align:center; padding:3rem; color:var(--text-muted)">
+                    <td colspan="14" style="text-align:center; padding:3rem; color:var(--text-muted)">
                         <i class="fas fa-file-invoice-dollar" style="font-size:2rem; opacity:.2; display:block; margin-bottom:.5rem"></i>
                         Belum ada data denda ditemukan.
                     </td>
                 </tr>
                 @endforelse
             </tbody>
+            @if($reports->count() > 0)
+            <tfoot>
+                <tr>
+                    <th colspan="11" style="text-align: right; background: #f8fafc; font-weight: 800; font-size: 0.88rem; padding: 1.1rem;">TOTAL DENDA:</th>
+                    <th style="background: #f8fafc; font-weight: 800; font-size: 0.95rem; padding: 1.1rem; color: #dc2626; border-left: 1px solid var(--border);">
+                        Rp{{ number_format($reports->sum('jumlah_denda'), 0, ',', '.') }}
+                    </th>
+                    <th colspan="2" style="background: #f8fafc;"></th>
+                </tr>
+            </tfoot>
+            @endif
         </table>
     </div>
 </div>

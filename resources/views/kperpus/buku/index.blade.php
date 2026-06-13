@@ -27,7 +27,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 2rem;
         margin-bottom: 2rem;
         flex-wrap: wrap;
         gap: 1rem;

@@ -22,6 +22,7 @@
             <th>Tanggal Pinjam</th>
             <th>Tanggal Harus Kembali</th>
             <th>Tanggal Kembali</th>
+            <th>Kode Buku</th>
             <th>Judul Buku</th>
             <th>Telat(Hari)</th>
             <th>Denda(Rp)</th>
@@ -57,7 +58,8 @@
             <td style="text-align: center;">
                 {{ $item->tanggal_kembali !== '-' ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d/m/Y') : '-' }}
             </td>
-            <td>{{ $item->buku }}</td>
+            <td style="text-align: center;">{{ $item->kode_buku }}</td>
+            <td>{{ $item->buku }} ({{ $item->kategori }})</td>
             <td style="text-align: center;">{{ $item->telat > 0 ? $item->telat : '0' }}</td>
             <td style="text-align: right;">{{ $item->denda > 0 ? $item->denda : '0' }}</td>
             <td style="text-align: center;">{{ $statusLabel }}</td>

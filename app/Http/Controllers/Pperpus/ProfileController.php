@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Pperpus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
     /**
-     * Tampilkan halaman profil penjaga perpustakaan.
+     * Tampilkan halaman profil kepala perpustakaan.
      */
     public function index()
     {
@@ -35,15 +36,19 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
 
-        if ($request->hasFile('foto_profile')) {
-            if ($user->foto_profile) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto_profile);
-            }
-            $user->foto_profile = $request->file('foto_profile')->store('profiles', 'public');
-        }
-
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('foto_profile')) {
+            // Delete old photo if exists
+            if ($user->foto_profile && Storage::disk('public')->exists($user->foto_profile)) {
+                Storage::disk('public')->delete($user->foto_profile);
+            }
+            
+            // Store new photo
+            $path = $request->file('foto_profile')->store('profile_photos', 'public');
+            $user->foto_profile = $path;
         }
 
         $user->save();

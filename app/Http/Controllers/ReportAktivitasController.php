@@ -43,7 +43,6 @@ class ReportAktivitasController extends Controller
         $aktivitas = $detailPeminjaman->map(function($d) {
             $kategoriNama = optional($d->buku->kategoriBuku)->nama_kategori ?? '-';
             $judulBuku = $d->buku->judul_buku ?? '-';
-            $judulDenganKategori = $judulBuku . ' (' . $kategoriNama . ')';
 
             return (object)[
                 'kode' => $d->peminjaman->kode_peminjaman ?? '-',
@@ -53,7 +52,8 @@ class ReportAktivitasController extends Controller
                 'tanggal_pinjam' => optional($d->peminjaman->tanggal_pinjam)->format('Y-m-d') ?? '-',
                 'tanggal_jatuh_tempo' => optional($d->tanggal_jatuh_tempo)->format('Y-m-d') ?? '-',
                 'tanggal_kembali' => optional($d->tanggal_kembali)->format('Y-m-d') ?? '-',
-                'buku' => $judulDenganKategori,
+                'kode_buku' => $d->buku->kode_buku ?? '-',
+                'buku' => $judulBuku,
                 'kategori' => $kategoriNama,
                 'telat' => $d->tanggal_kembali ? max(0, $d->jumlah_hari_terlambat) : $d->hari_terlambat_realtime,
                 'denda' => $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0),

@@ -14,7 +14,7 @@ class ReportDendaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
+        $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku.kategoriBuku'])
             ->where('jumlah_denda', '>', 0);
 
         // Filter Rentang Tanggal (berdasarkan tanggal kembali/transaksi denda muncul)
@@ -41,7 +41,7 @@ class ReportDendaController extends Controller
      */
     public function exportPdf(Request $request)
     {
-        $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
+        $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku.kategoriBuku'])
             ->where('jumlah_denda', '>', 0);
 
         if ($request->filled('start_date')) {

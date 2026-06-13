@@ -3,20 +3,29 @@
 @section('title', 'Catat Peminjaman Buku Perpustakaan')
 
 @push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
-    /* Global Variables fallback if not defined in app layout */
-    :root {
-        --primary: #9b59b6;
-        --primary-dark: #8e44ad;
-        --surface: #ffffff;
-        --background: #f8fafc;
-        --border: #e2e8f0;
-        --text: #334155;
-        --text-muted: #64748b;
-        --success: #22c55e;
-        --danger: #ef4444;
-        --radius: 12px;
-        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* Select2 Customization */
+    .select2-container .select2-selection--single {
+        height: 42px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: var(--text);
+        font-size: .9rem;
+        line-height: normal;
+        padding-left: 1rem;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px;
+        right: 10px;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--single {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
     }
 
     .container-peminjaman {
@@ -170,10 +179,10 @@
         font-size: .85rem; 
         font-weight: 800; 
         color: var(--primary); 
-        background: #f5e6fa; 
+        background: #f0fdfa; 
         padding: .5rem 1rem; 
         border-radius: 30px;
-        border: 1px solid rgba(155, 89, 182, 0.1);
+        border: 1px solid rgba(13, 148, 136, 0.1);
     }
 
     /* Accordion Custom */
@@ -219,79 +228,58 @@
         color: var(--primary);
     }
 
-    /* Books Grid UI */
-    .buku-grid {
-        display: grid; 
-        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
-        gap: 1rem;
-    }
-    .buku-item {
-        border: 1.5px solid var(--border); 
-        border-radius: 12px; 
-        padding: 1.25rem;
-        cursor: pointer; 
-        transition: all .25s ease; 
-        position: relative;
-        background: #fff; 
-        display: flex; 
-        flex-direction: column; 
+    /* Books List UI */
+    .buku-list {
+        display: flex;
+        flex-direction: column;
         gap: 0.5rem;
     }
-    .buku-item:hover { 
-        border-color: var(--primary); 
-        background: #faf5ff; 
-        transform: translateY(-2px); 
-        box-shadow: 0 6px 12px rgba(155, 89, 182, 0.05);
+    .buku-list-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.6rem 0.8rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        background: #fff;
+        transition: all 0.2s;
     }
-    .buku-item.selected { 
-        border-color: var(--primary); 
-        background: rgba(155, 89, 182, 0.05); 
-        box-shadow: 0 0 0 2px var(--primary); 
-        transform: translateY(-2px); 
+    .buku-list-item:hover {
+        background: #f8fafc;
+        border-color: var(--primary);
     }
-    .buku-item.disabled {
+    .buku-list-item.selected {
+        background: #f0fdfa;
+        border-color: var(--primary);
+    }
+    .buku-list-item.disabled {
         opacity: 0.6;
         cursor: not-allowed;
-        background: #f8fafc;
+        background: #f1f5f9;
         pointer-events: none;
     }
-    
-    .buku-item .check-mark {
-        position: absolute; 
-        top: 1rem; 
-        right: 1rem; 
-        color: var(--primary); 
-        display: none; 
-        font-size: 1.2rem;
+    .buku-checkbox {
+        width: 1.1rem;
+        height: 1.1rem;
+        accent-color: var(--primary);
+        cursor: pointer;
     }
-    .buku-item.selected .check-mark { 
-        display: block; 
+    .buku-text {
+        font-size: 0.9rem;
+        color: var(--text);
     }
-
-    .buku-item .judul { 
-        font-weight: 700; 
-        font-size: .95rem; 
-        color: var(--text); 
-        padding-right: 1.75rem; 
-        line-height: 1.4;
-    }
-    .buku-item .meta { 
-        font-size: .8rem; 
-        color: var(--text-muted); 
-        display: flex; 
-        align-items: center; 
-        gap: .4rem; 
+    .buku-text strong {
+        font-weight: 700;
     }
     .stok-badge {
         display: inline-flex; 
         align-items: center;
-        gap: 0.3rem;
-        padding: 0.25rem 0.75rem; 
+        padding: 0.2rem 0.5rem; 
         border-radius: 20px;
         font-size: 0.75rem; 
         font-weight: 700; 
-        margin-top: auto; 
-        width: max-content;
+        margin-left: auto;
     }
     .stok-tersedia { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .stok-habis { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
@@ -364,12 +352,12 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        box-shadow: 0 4px 6px rgba(155, 89, 182, 0.2);
+        box-shadow: 0 4px 6px rgba(13, 148, 136, 0.2);
     }
     .btn-submit:hover { 
         background: var(--primary-dark); 
         transform: translateY(-1px);
-        box-shadow: 0 6px 12px rgba(155, 89, 182, 0.3);
+        box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3);
     }
     .btn-submit:active {
         transform: translateY(0);
@@ -420,25 +408,19 @@
                         <label>Pilih Kelas <span class="required-star">*</span></label>
                         <select id="select-kelas" class="form-control" required>
                             <option value="">— Pilih Kelas —</option>
-                            <option value="VII">VII</option>
-                            <option value="VIII">VIII</option>
-                            <option value="IX">IX</option>
+                            <option value="VII-A">VII-A</option>
+                            <option value="VII-B">VII-B</option>
+                            <option value="VIII-A">VIII-A</option>
+                            <option value="VIII-B">VIII-B</option>
+                            <option value="IX-A">IX-A</option>
+                            <option value="IX-B">IX-B</option>
                         </select>
                     </div>
                     <div class="form-group flex-lg">
                         <label>Nama Siswa <span class="required-star">*</span></label>
-                        <select id="select-siswa" class="form-control" required disabled>
+                        <select id="select-siswa" class="form-control" required disabled style="width: 100%;">
                             <option value="">— Pilih Kelas Terlebih Dahulu —</option>
                         </select>
-                    </div>
-                </div>
-
-                <div class="form-row" style="margin-top: -0.5rem;">
-                    <div class="form-group">
-                        <input type="text" id="input-nis" class="form-control" placeholder="NIS Otomatis" disabled style="font-size: .85rem;">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="input-kelas" class="form-control" placeholder="Kelas Detail" disabled style="font-size: .85rem;">
                     </div>
                 </div>
 
@@ -467,20 +449,17 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="accordion-body">
-                            <div class="buku-grid">
+                            <div class="buku-list">
                                 @foreach($books as $b)
-                                <div class="buku-item {{ $b->stok <= 0 ? 'disabled' : '' }}" data-id="{{ $b->id_buku }}" data-judul="{{ $b->judul_buku }}">
-                                    <i class="fas fa-check-circle check-mark"></i>
-                                    <div class="judul">{{ $b->judul_buku }}</div>
-                                    <div class="meta">
-                                        <i class="fas fa-user-edit"></i> 
-                                        <span>{{ $b->pengarang ?? 'Tanpa Pengarang' }} {{ $b->tahun_terbit ? '('.$b->tahun_terbit.')' : '' }}</span>
-                                    </div>
+                                <label class="buku-list-item {{ $b->stok <= 0 ? 'disabled' : '' }}" data-id="{{ $b->id_buku }}" data-judul="{{ $b->judul_buku }}">
+                                    <input type="checkbox" class="buku-checkbox" value="{{ $b->id_buku }}" {{ $b->stok <= 0 ? 'disabled' : '' }}>
+                                    <span class="buku-text">
+                                        <strong>{{ $b->judul_buku }}</strong>, Cipt Oleh {{ $b->pengarang ?? 'Tanpa Pengarang' }} {{ $b->tahun_terbit ? '('.$b->tahun_terbit.')' : '' }}
+                                    </span>
                                     <div class="stok-badge {{ $b->stok > 0 ? 'stok-tersedia' : 'stok-habis' }}">
-                                        <i class="fas fa-layer-group"></i> 
-                                        <span>Stok: {{ $b->stok }}</span>
+                                        <span>{{ $b->stok > 0 ? 'Stok: '.$b->stok : 'Habis' }}</span>
                                     </div>
-                                </div>
+                                </label>
                                 @endforeach
                             </div>
                         </div>
@@ -509,13 +488,20 @@
 @endsection
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('#select-siswa').select2({
+            placeholder: "— Pilih Kelas Terlebih Dahulu —",
+            allowClear: true
+        });
+    });
+
     const selectKelas = document.getElementById('select-kelas');
-    const selectSiswa = document.getElementById('select-siswa');
+    const selectSiswa = $('#select-siswa');
     
     const hiddenIdSiswa = document.getElementById('hidden-id-siswa');
-    const inputNis = document.getElementById('input-nis');
-    const inputKelas = document.getElementById('input-kelas');
 
     const allSiswas = @json($siswas);
 
@@ -523,65 +509,55 @@
     selectKelas.addEventListener('change', function() {
         const kelas = this.value;
         
-        selectSiswa.innerHTML = '<option value="">— Pilih Siswa —</option>';
+        selectSiswa.empty();
+        selectSiswa.append(new Option("— Pilih Siswa —", "", false, false));
         hiddenIdSiswa.value = '';
-        inputNis.value = '';
-        inputKelas.value = '';
 
         if (!kelas) {
-            selectSiswa.disabled = true;
-            selectSiswa.innerHTML = '<option value="">— Pilih Kelas Terlebih Dahulu —</option>';
+            selectSiswa.prop('disabled', true);
+            selectSiswa.empty().append(new Option("— Pilih Kelas Terlebih Dahulu —", "", false, false));
+            selectSiswa.trigger('change');
             return;
         }
 
-        selectSiswa.disabled = false;
+        selectSiswa.prop('disabled', false);
         
         const filteredSiswas = allSiswas.filter(s => {
-            const baseClass = s.kelas.split(/[- .]/)[0];
-            return baseClass === kelas;
+            return s.kelas === kelas;
         });
         
         filteredSiswas.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = s.id_siswa;
-            opt.dataset.nis = s.nis;
-            opt.dataset.kelas = s.kelas;
-            opt.textContent = `${s.nama_siswa} (NIS: ${s.nis})`;
-            selectSiswa.appendChild(opt);
+            selectSiswa.append(new Option(`${s.nama_siswa} (NIS: ${s.nis})`, s.id_siswa, false, false));
         });
+        
+        selectSiswa.trigger('change');
     });
 
     // Event saat Siswa dipilih
-    selectSiswa.addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        
+    selectSiswa.on('change', function() {
         if (this.value) {
             hiddenIdSiswa.value = this.value;
-            inputNis.value = selectedOption.dataset.nis;
-            inputKelas.value = selectedOption.dataset.kelas;
         } else {
             hiddenIdSiswa.value = '';
-            inputNis.value = '';
-            inputKelas.value = '';
         }
     });
 
     // Map Buku Terpilih
     const selectedBooks = new Map();
 
-    document.querySelectorAll('.buku-item:not(.disabled)').forEach(item => {
-        item.addEventListener('click', function() {
-            const id = this.dataset.id;
-            const judul = this.dataset.judul;
-
-            if (selectedBooks.has(id)) {
-                selectedBooks.delete(id);
-                this.classList.remove('selected');
-            } else {
+    document.querySelectorAll('.buku-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const item = this.closest('.buku-list-item');
+            const id = item.dataset.id;
+            const judul = item.dataset.judul;
+            
+            if (this.checked) {
                 selectedBooks.set(id, judul);
-                this.classList.add('selected');
+                item.classList.add('selected');
+            } else {
+                selectedBooks.delete(id);
+                item.classList.remove('selected');
             }
-
             renderSelectedList();
         });
     });
@@ -633,8 +609,12 @@
     // Fungsi menghapus buku lewat list keranjang bawah
     window.removeBook = function(id) {
         selectedBooks.delete(id);
-        const el = document.querySelector(`.buku-item[data-id="${id}"]`);
-        if (el) el.classList.remove('selected');
+        const el = document.querySelector(`.buku-list-item[data-id="${id}"]`);
+        if (el) {
+            el.classList.remove('selected');
+            const checkbox = el.querySelector('.buku-checkbox');
+            if (checkbox) checkbox.checked = false;
+        }
         renderSelectedList();
     }
 

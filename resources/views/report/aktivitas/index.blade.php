@@ -420,6 +420,7 @@
                     <th>Tgl Pinjam</th>
                     <th>Harus Kembali</th>
                     <th>Tgl Kembali</th>
+                    <th>Kode Buku</th>
                     <th>Judul Buku</th>
                     <th style="text-align: center;">Telat</th>
                     <th style="text-align: right;">Denda</th>
@@ -443,8 +444,12 @@
                     <td>
                         {{ $item->tanggal_kembali !== '-' ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d/m/Y') : '-' }}
                     </td>
+                    <td><span class="code-badge">{{ $item->kode_buku }}</span></td>
                     <td style="max-width: 240px; font-weight: 500; color: var(--text); line-height: 1.4; white-space: normal; word-wrap: break-word;">
-                        {{ $item->buku }}
+                        <div>{{ $item->buku }}</div>
+                        <div style="font-size: .75rem; color: var(--primary); background: var(--theme-primary-light); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600;">
+                            {{ $item->kategori }}
+                        </div>
                     </td>
                     <td style="text-align: center;">
                         @if($item->telat > 0)

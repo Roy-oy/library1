@@ -5,137 +5,213 @@
 
 @push('styles')
 <style>
-    /* ── Stat Cards ─── */
+    /* ─── Base Tokens Perbaikan ─────────────────────────── */
+    :root {
+        --slate-50:   #f8fafc;
+        --slate-100:  #f1f5f9;
+        --slate-200:  #e2e8f0;
+        --blue-50:    #fffbeb;
+        --blue-100:   #fef3c7;
+        --blue-200:   #fde68a;
+        --blue-600:   #d97706;
+        --blue-700:   #b45309;
+        --indigo-50:  #f8fafc;
+        --indigo-100: #e2e8f0;
+        --indigo-600: #4b5563;
+        --rose-50:    #fff1f2;
+        --rose-100:   #ffe4e6;
+        --rose-600:   #e11d48;
+        --amber-50:   #fffbeb;
+        --amber-100:  #fef3c7;
+        --amber-600:  #d97706;
+    }
+
+    /* ─── Section Label ───────────────────────────────── */
+    .section-label {
+        font-size: .68rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1.6px;
+        color: var(--text-light);
+        margin-bottom: 1.1rem;
+        margin-top: 1.5rem;
+        display: flex; align-items: center; gap: .5rem;
+    }
+    .section-label i { color: var(--blue-600); font-size: .75rem; }
+    .section-label::after {
+        content: ''; flex: 1; height: 1px;
+        background: var(--border);
+    }
+
+    /* ─── Welcome Banner ──────────────────────────────── */
+    .welcome-banner {
+        background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
+        border-radius: 20px;
+        padding: 1.75rem 2rem;
+        color: #fff;
+        margin-bottom: 2rem;
+        display: flex; align-items: center; justify-content: space-between;
+        box-shadow: 0 10px 32px rgba(217, 119, 6, 0.15);
+        position: relative; overflow: hidden;
+    }
+    .welcome-banner::before {
+        content: ''; position: absolute;
+        width: 240px; height: 240px; border-radius: 50%;
+        background: rgba(255,255,255,.04);
+        right: -70px; top: -90px;
+    }
+    .welcome-banner::after {
+        content: ''; position: absolute;
+        width: 150px; height: 150px; border-radius: 50%;
+        background: rgba(255,255,255,.06);
+        right: 130px; bottom: -65px;
+    }
+    .welcome-banner > div { z-index: 1; }
+    .welcome-banner h2 {
+        font-size: 1.5rem; font-weight: 800;
+        margin-bottom: .35rem; letter-spacing: -.5px;
+    }
+    .welcome-banner p { font-size: .88rem; opacity: .85; font-weight: 500; }
+
+    .banner-badge-role {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: .7rem 1.2rem;
+        text-align: center;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 1; flex-shrink: 0;
+    }
+
+    .banner-bg-icon {
+        position: absolute; right: -30px; bottom: -35px;
+        font-size: 11rem; color: rgba(255,255,255,.03);
+        transform: rotate(-18deg); pointer-events: none; z-index: 0;
+    }
+
+    /* ─── Stats Grid ──────────────────────────────────── */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 1.2rem;
-        margin-bottom: 2rem;
+        gap: 1rem; margin-bottom: 2rem;
     }
     .stat-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(32, 201, 151, 0.05);
-        display: flex; align-items: center; gap: 1.2rem;
-        border: 1px solid rgba(32, 201, 151, 0.08);
-        transition: all .3s ease;
-        position: relative;
-        overflow: hidden;
+        background: var(--surface);
+        border-radius: 18px;
+        padding: 1.4rem;
+        box-shadow: var(--shadow-sm);
+        display: flex; flex-direction: column; gap: .9rem;
+        border: 1px solid var(--border);
+        transition: all .22s ease;
+        position: relative; overflow: hidden;
+    }
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(217, 119, 6, 0.2);
     }
     .stat-card::before {
-        content: '';
-        position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-        opacity: 0; transition: opacity .3s ease;
+        content: ''; position: absolute;
+        top: 0; left: 0; right: 0; height: 3px;
+        border-radius: 18px 18px 0 0;
     }
-    .stat-card.blue::before   { background: linear-gradient(90deg, #0284c7, #3b82f6); }
-    .stat-card.teal::before   { background: linear-gradient(90deg, #0d9488, #10b981); }
-    .stat-card.sky::before    { background: linear-gradient(90deg, #0369a1, #0ea5e9); }
-    .stat-card.indigo::before { background: linear-gradient(90deg, #4f46e5, #6366f1); }
-    .stat-card.cyan::before   { background: linear-gradient(90deg, #0891b2, #06b6d4); }
-    .stat-card.red::before    { background: linear-gradient(90deg, #dc2626, #ef4444); }
-    .stat-card.orange::before { background: linear-gradient(90deg, #ea580c, #f97316); }
-    .stat-card.purple::before { background: linear-gradient(90deg, #7e22ce, #a855f7); }
-    .stat-card.green::before  { background: linear-gradient(90deg, #15803d, #22c55e); }
-
-    .stat-card:hover { 
-        transform: translateY(-5px); 
-        box-shadow: 0 12px 30px rgba(32, 201, 151, 0.12); 
-        border-color: rgba(32, 201, 151, 0.2); 
-    }
-    .stat-card:hover::before { opacity: 1; }
+    .stat-card.blue::before   { background: linear-gradient(90deg, #d97706, #fbbf24); }
+    .stat-card.indigo::before { background: linear-gradient(90deg, #4b5563, #9ca3af); }
+    .stat-card.amber::before  { background: linear-gradient(90deg, #d97706, #fbbf24); }
+    .stat-card.rose::before   { background: linear-gradient(90deg, #e11d48, #fb7185); }
 
     .stat-icon {
-        width: 54px; height: 54px; border-radius: 14px;
+        width: 46px; height: 46px; border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; flex-shrink: 0;
+        font-size: 1.1rem; flex-shrink: 0;
     }
-    .stat-card.blue   .stat-icon { background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0284c7; }
-    .stat-card.indigo .stat-icon { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); color: #4f46e5; }
-    .stat-card.cyan   .stat-icon { background: linear-gradient(135deg, #cffafe, #a5f3fc); color: #0891b2; }
-    .stat-card.teal   .stat-icon { background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: #0d9488; }
-    .stat-card.sky    .stat-icon { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); color: #0369a1; }
-    .stat-card.red    .stat-icon { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #dc2626; }
-    .stat-card.orange .stat-icon { background: linear-gradient(135deg, #ffedd5, #fed7aa); color: #ea580c; }
-    .stat-card.purple .stat-icon { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #7e22ce; }
-    .stat-card.green  .stat-icon { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #15803d; }
+    .stat-card.blue   .stat-icon { background: var(--blue-50);   color: var(--blue-600); }
+    .stat-card.indigo .stat-icon { background: var(--indigo-50); color: var(--indigo-600); }
+    .stat-card.amber  .stat-icon { background: var(--amber-50);  color: var(--amber-600); }
+    .stat-card.rose   .stat-icon { background: var(--rose-50);   color: var(--rose-600); }
 
-    .stat-body { width: 100%; }
-    .stat-body .value { font-size: 1.8rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: .3rem;}
-    .stat-body .label { font-size: .85rem; font-weight: 500; color: #64748b; }
+    .stat-card-top {
+        display: flex; align-items: flex-start; justify-content: space-between;
+    }
+    .stat-tag {
+        font-size: .63rem; font-weight: 700;
+        padding: .22rem .55rem; border-radius: 20px; letter-spacing: .2px;
+    }
+    .tag-blue   { background: var(--blue-100);   color: var(--blue-700); }
+    .tag-indigo { background: var(--indigo-100); color: var(--indigo-600); }
+    .tag-amber  { background: var(--amber-100);  color: var(--amber-600); }
+    .tag-rose   { background: var(--rose-100);   color: var(--rose-600); }
 
-    .panels-row {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-        align-items: stretch;
+    .stat-val { font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1; }
+    .stat-lbl { font-size: .83rem; font-weight: 700; color: var(--text-muted); margin-top: .3rem; }
+
+    /* ─── Panel & Tables ─────────────────────────────── */
+    .panels-grid {
+        display: grid; grid-template-columns: 1.5fr 1.2fr;
+        gap: 1.25rem; margin-bottom: 2rem;
     }
     .panel {
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(32, 201, 151, 0.05);
-        border: 1px solid rgba(32, 201, 151, 0.08);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
+        background: var(--surface); border-radius: 18px;
+        box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+        overflow: hidden; display: flex; flex-direction: column;
     }
     .panel-header {
-        padding: 1.2rem 1.5rem;
-        border-bottom: 1px solid rgba(32, 201, 151, 0.08);
+        padding: 1rem 1.4rem;
+        border-bottom: 1px solid var(--border-soft);
         display: flex; align-items: center; justify-content: space-between;
-        background: #fafcff;
+        background: var(--surface-2);
     }
-    .panel-header h3 { font-size: .92rem; font-weight: 700; color: var(--text); }
-    .badge {
-        font-size: .72rem; font-weight: 700;
-        padding: .25rem .65rem;
-        border-radius: 20px;
+    .panel-header h3 {
+        font-size: .87rem; font-weight: 700; color: var(--text);
+        display: flex; align-items: center; gap: .65rem; margin: 0;
     }
-    .badge-blue   { background: #eaf0f8; color: var(--primary); }
-    .badge-orange { background: #fef9ec; color: var(--warning); }
-    .badge-green  { background: #eafaf1; color: var(--success); }
+    .ph-icon {
+        width: 28px; height: 28px; border-radius: 8px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: .8rem; flex-shrink: 0;
+    }
+    .panel-badge {
+        font-size: .63rem; font-weight: 700;
+        padding: .22rem .65rem; border-radius: 20px;
+        text-decoration: none;
+    }
+    .pb-blue   { background: var(--blue-100);   color: var(--blue-700); }
+    .pb-indigo { background: var(--indigo-100); color: var(--indigo-600); }
 
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th {
-        font-size: .75rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: .5px;
-        color: var(--text-muted);
-        padding: .7rem 1.4rem;
-        background: #f8fafc;
-        border-bottom: 1px solid var(--border);
-        text-align: left;
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th {
+        text-align: left; padding: .65rem 1rem;
+        border-bottom: 1px solid var(--border-soft);
+        font-size: .68rem; text-transform: uppercase;
+        letter-spacing: .8px; color: var(--text-light); font-weight: 700;
+        background: var(--slate-50);
     }
-    .data-table td {
-        padding: .75rem 1.4rem;
-        font-size: .86rem;
-        border-bottom: 1px solid #f0f4f8;
-        color: var(--text);
-    }
-    .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover td { background: #f8fafc; }
+    .table td { padding: .8rem 1rem; border-bottom: 1px solid var(--border-soft); }
+    .table tr:last-child td { border-bottom: none; }
+    .table tbody tr:hover td { background: var(--slate-50); }
 
-    .pill {
-        display: inline-flex; align-items: center; gap: .3rem;
-        padding: .25rem .7rem;
-        border-radius: 20px;
-        font-size: .75rem; font-weight: 600;
+    .code-badge {
+        font-family: monospace; font-size: .78rem;
+        background: var(--slate-100); color: var(--blue-700);
+        padding: .2rem .45rem; border-radius: 6px; font-weight: 700;
+        border: 1px solid var(--slate-200);
     }
-    .pill-success { background: #eafaf1; color: var(--success); }
-    .pill-danger  { background: #fdf0ef; color: var(--danger); }
-    .pill-info    { background: #ebf5fb; color: var(--info); }
-    .pill-warning { background: #fef9ec; color: var(--warning); }
+
+    .pill { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .7rem; border-radius: 20px; font-size: .7rem; font-weight: 700; }
+    .pill-success { background: #dcfce7; color: #15803d; }
+    .pill-danger  { background: #fee2e2; color: #b91c1c; }
+    .pill-info    { background: #eff6ff; color: #1e40af; }
+    .pill-warning { background: #fef3c7; color: #b45309; }
 
     .empty-state {
-        padding: 2.5rem;
-        text-align: center;
-        color: var(--text-muted);
-        font-size: .88rem;
+        padding: 2.5rem; text-align: center;
+        color: var(--text-light); font-size: .84rem;
     }
-    .empty-state i { font-size: 2rem; display: block; margin-bottom: .6rem; opacity: .4; }
+    .empty-state i { font-size: 2rem; display: block; margin-bottom: .6rem; opacity: .35; }
 
     @media (max-width: 1024px) {
         .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .panels-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
         .stats-grid { grid-template-columns: 1fr; }
@@ -145,116 +221,147 @@
 
 @section('content')
 
-<div class="welcome-banner" style="background: linear-gradient(135deg, #0f766e, #14b8a6); border-radius: 16px; padding: 2rem; color: #ffffff; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(20, 184, 166, 0.15); position: relative; overflow: hidden;">
-    <div style="position: absolute; right: -50px; bottom: -50px; font-size: 15rem; color: rgba(255, 255, 255, 0.05); transform: rotate(-15deg); pointer-events: none;">
-        <i class="fas fa-school"></i>
+{{-- ─────────────────── WELCOME BANNER ─────────────────── --}}
+<div class="welcome-banner">
+    <div class="banner-bg-icon"><i class="fas fa-school"></i></div>
+    <div>
+        <h2>Halo, {{ auth()->user()->name ?? 'Kepala Sekolah' }}! 👋</h2>
+        <p>Ringkasan laporan perpustakaan sekolah &mdash; {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
-    <div style="z-index: 1;">
-        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Halo, {{ auth()->user()->name ?? 'Kepala Sekolah' }}! 👋</h2>
-        <p style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; max-width: 600px; line-height: 1.5;">Ringkasan laporan perpustakaan sekolah &mdash; {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
-    </div>
-    <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1rem 1.5rem; text-align: center; backdrop-filter: blur(10px); z-index: 1; flex-shrink: 0;">
-        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 700; margin-bottom: 0.3rem;">Hak Akses</div>
-        <div style="font-size: 1.05rem; font-weight: 800; color: #f1c40f;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Administrator' }}</div>
+    <div class="banner-badge-role">
+        <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.8; font-weight: 700; margin-bottom: 0.15rem;">Hak Akses</div>
+        <div style="font-size: 0.9rem; font-weight: 800; color: #fbbf24;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Kepala Sekolah' }}</div>
     </div>
 </div>
 
+{{-- ─────────────────── STATS GRID ─────────────────────── --}}
+<div class="section-label">
+    <i class="fas fa-chart-pie"></i> Statistik Ringkasan Koleksi & Siswa
+</div>
 <div class="stats-grid">
-    <div class="stat-card purple">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_siswa']) }}</div>
-            <div class="label">Jumlah Siswa</div>
-        </div>
-    </div>
     <div class="stat-card blue">
-        <div class="stat-icon"><i class="fas fa-book"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_buku']) }}</div>
-            <div class="label">Total Buku</div>
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+            <span class="stat-tag tag-blue">Siswa</span>
         </div>
-    </div>
-    <div class="stat-card sky">
-        <div class="stat-icon"><i class="fas fa-book-reader"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_buku_perpus']) }}</div>
-            <div class="label">Buku Perpustakaan</div>
-        </div>
-    </div>
-    <div class="stat-card orange">
-        <div class="stat-icon"><i class="fas fa-gift"></i></div>
-        <div class="stat-body">
-            <div class="value">{{ number_format($stats['total_buku_bos']) }}</div>
-            <div class="label">Buku BOS</div>
-        </div>
-    </div>
-</div>
-
-<div class="panels-row">
-    <!-- Chart Panel -->
-    <div class="panel">
-        <div class="panel-header">
-            <h3><i class="fas fa-chart-line" style="color:var(--primary);margin-right:.45rem"></i>Grafik Peminjaman Buku (7 Hari Terakhir)</h3>
-            <span class="badge badge-green">Tren Harian</span>
-        </div>
-        <div style="padding: 1.4rem; position: relative; height: 320px;">
-            <canvas id="borrowingsChart" style="width: 100%; height: 100%;"></canvas>
+        <div>
+            <div class="stat-val">{{ number_format($stats['total_siswa']) }}</div>
+            <div class="stat-lbl">Jumlah Siswa</div>
         </div>
     </div>
     
-    <!-- Table Panel -->
+    <div class="stat-card indigo">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-book"></i></div>
+            <span class="stat-tag tag-indigo">Semua Buku</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['total_buku']) }}</div>
+            <div class="stat-lbl">Total Judul Buku</div>
+        </div>
+    </div>
+
+    <div class="stat-card amber">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-university"></i></div>
+            <span class="stat-tag tag-amber">Perpus</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['total_buku_perpus']) }}</div>
+            <div class="stat-lbl">Buku Perpustakaan</div>
+        </div>
+    </div>
+
+    <div class="stat-card rose">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
+            <span class="stat-tag tag-rose">BOS</span>
+        </div>
+        <div>
+            <div class="stat-val">{{ number_format($stats['total_buku_bos']) }}</div>
+            <div class="stat-lbl">Koleksi Buku BOS</div>
+        </div>
+    </div>
+</div>
+
+{{-- ─────────────────── CHARTS & TABLES ─────────────────── --}}
+<div class="section-label">
+    <i class="fas fa-sync-alt"></i> Analisis Grafik & Aktivitas Terbaru Perpustakaan
+</div>
+<div class="panels-grid">
+    
+    {{-- Chart Panel --}}
     <div class="panel">
         <div class="panel-header">
-            <h3><i class="fas fa-list-alt" style="color:var(--primary);margin-right:.45rem"></i>Aktivitas Terbaru</h3>
-            <a href="{{ route('ksekolah.report.aktivitas.index') }}" class="badge badge-blue" style="text-decoration: none; display: inline-flex; align-items: center; gap: .3rem;">Lihat Laporan Lengkap <i class="fas fa-arrow-right"></i></a>
+            <h3>
+                <span class="ph-icon" style="background:var(--blue-50);">
+                    <i class="fas fa-chart-area" style="color:var(--blue-600);"></i>
+                </span>
+                Grafik Peminjaman Buku (7 Hari Terakhir)
+            </h3>
+            <span class="panel-badge pb-blue">Tren Real-time</span>
         </div>
-        <div style="overflow-x: auto;">
-            <table class="data-table">
+        <div style="padding: 1.4rem; flex-grow: 1; min-height: 310px; position: relative;">
+            <canvas id="borrowingsChart" style="width:100%; height:100%;"></canvas>
+        </div>
+    </div>
+
+    {{-- Table Panel --}}
+    <div class="panel">
+        <div class="panel-header">
+            <h3>
+                <span class="ph-icon" style="background:var(--indigo-50);">
+                    <i class="fas fa-history" style="color:var(--indigo-600);"></i>
+                </span>
+                Aktivitas Terbaru
+            </h3>
+            <a href="{{ route('ksekolah.report.aktivitas.index') }}" class="panel-badge pb-indigo">
+                Semua Laporan <i class="fas fa-arrow-right" style="font-size: .65rem; margin-left: 2px;"></i>
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Kode Peminjaman</th>
+                        <th>Kode</th>
                         <th>Siswa</th>
-                        <th>Buku</th>
                         <th>Status</th>
-                        <th>Waktu Aktivitas</th>
+                        <th>Waktu</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($recent_activities as $activity)
                     <tr>
-                        <td style="font-family: monospace; font-weight: 700; color: var(--primary);">
-                            {{ $activity->peminjaman->kode_peminjaman }}
+                        <td>
+                            <span class="code-badge">{{ $activity->peminjaman->kode_peminjaman }}</span>
                         </td>
                         <td>
-                            <div style="font-weight: 700">{{ $activity->peminjaman->siswa->nama_siswa ?? '-' }}</div>
-                            <div style="font-size: .75rem; color: var(--text-muted)">{{ $activity->peminjaman->siswa->kelas ?? '-' }}</div>
-                        </td>
-                        <td>
-                            <div style="font-weight: 600">{{ $activity->buku->judul_buku ?? '-' }}</div>
+                            <div style="font-weight: 700; font-size: .82rem;">{{ $activity->peminjaman->siswa->nama_siswa ?? '-' }}</div>
+                            <div style="font-size: .7rem; color: var(--text-light)">{{ $activity->peminjaman->siswa->kelas ?? '-' }}</div>
                         </td>
                         <td>
                             @if($activity->status_detail === 'dipinjam')
                                 <span class="pill pill-info"><i class="fas fa-book-reader"></i> Dipinjam</span>
                             @elseif($activity->status_detail === 'dikembalikan')
-                                <span class="pill pill-success"><i class="fas fa-check"></i> Dikembalikan</span>
+                                <span class="pill pill-success"><i class="fas fa-check"></i> Kembali</span>
                             @elseif($activity->status_detail === 'terlambat')
-                                <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Terlambat</span>
+                                <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Lambat</span>
                             @elseif($activity->status_detail === 'hilang')
                                 <span class="pill pill-warning"><i class="fas fa-times-circle"></i> Hilang</span>
                             @else
                                 <span class="pill pill-info">{{ ucfirst($activity->status_detail) }}</span>
                             @endif
                         </td>
-                        <td style="font-size: .8rem; color: var(--text-muted);">
+                        <td style="font-size: .72rem; color: var(--text-muted);">
                             {{ $activity->updated_at->diffForHumans() }}
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5">
+                        <td colspan="4">
                             <div class="empty-state">
                                 <i class="fas fa-inbox"></i>
-                                Belum ada aktivitas terbaru.
+                                Belum ada aktivitas terbaru terdeteksi.
                             </div>
                         </td>
                     </tr>
@@ -263,6 +370,7 @@
             </table>
         </div>
     </div>
+
 </div>
 
 @endsection
@@ -273,15 +381,14 @@
     document.addEventListener("DOMContentLoaded", function() {
         const ctx = document.getElementById('borrowingsChart').getContext('2d');
         
-        // Extract chart data from Blade variables
         const chartData = @json(array_values($borrowingsLast7Days));
         const labels = chartData.map(item => item.label);
         const dataValues = chartData.map(item => item.count);
 
-        // Gradient color for dataset
-        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(32, 201, 151, 0.45)'); // primary teal color
-        gradient.addColorStop(1, 'rgba(32, 201, 151, 0.01)');
+        /* Gradien Baru Menggunakan Warna Amber Gold Mewah */
+        const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+        gradient.addColorStop(0, 'rgba(217, 119, 6, 0.25)'); 
+        gradient.addColorStop(1, 'rgba(217, 119, 6, 0.01)');
 
         new Chart(ctx, {
             type: 'line',
@@ -290,17 +397,17 @@
                 datasets: [{
                     label: 'Aktivitas Peminjaman',
                     data: dataValues,
-                    borderColor: '#20c997', // primary teal color
-                    borderWidth: 3,
+                    borderColor: '#d97706', 
+                    borderWidth: 2.5,
                     backgroundColor: gradient,
                     fill: true,
-                    tension: 0.35,
-                    pointBackgroundColor: '#20c997',
-                    pointBorderColor: '#ffffff',
+                    tension: 0.4,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#d97706',
                     pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointHoverBackgroundColor: '#1aa179',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: '#b45309',
                     pointHoverBorderColor: '#ffffff',
                     pointHoverBorderWidth: 2,
                 }]
@@ -309,12 +416,10 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#2c3e50',
-                        titleColor: '#ffffff',
+                        backgroundColor: '#111827',
+                        titleColor: '#9ca3af',
                         bodyColor: '#ffffff',
                         cornerRadius: 8,
                         padding: 10,
@@ -328,32 +433,19 @@
                 },
                 scales: {
                     x: {
-                        grid: {
-                            display: false
-                        },
+                        grid: { display: false },
                         ticks: {
-                            color: '#7f8c8d',
-                            font: {
-                                family: "'Nunito', sans-serif",
-                                size: 11,
-                                weight: 600
-                            }
+                            color: '#4b5563',
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: 600 }
                         }
                     },
                     y: {
                         beginAtZero: true,
-                        grid: {
-                            color: '#e2e8f0',
-                            drawTicks: false
-                        },
+                        grid: { color: '#f1f5f9', drawTicks: false },
                         ticks: {
                             precision: 0,
-                            color: '#7f8c8d',
-                            font: {
-                                family: "'Nunito', sans-serif",
-                                size: 11,
-                                weight: 600
-                            },
+                            color: '#4b5563',
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: 600 },
                             stepSize: 1
                         }
                     }

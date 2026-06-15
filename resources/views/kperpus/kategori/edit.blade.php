@@ -35,11 +35,11 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn-submit">
-                        <i class="fas fa-save"></i> Perbarui Kategori
-                    </button>
                     <button type="button" class="btn-cancel-modal" onclick="closeModal('edit-modal')">
                         <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Perbarui Kategori
                     </button>
                 </div>
             </form>

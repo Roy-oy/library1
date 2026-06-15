@@ -1,15 +1,15 @@
 @extends('kperpus.layouts.app')
 
-@section('title', 'Data Siswa')
-@section('page-title', 'Data Siswa')
+@section('title', 'Siswa')
+@section('page-title', 'Manajemen Data Siswa')
 
 @push('styles')
 <style>
     /* ── Theme variables for this view ── */
     :root {
-        --theme-primary: #2563eb;
+        --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
-        --theme-primary-hover: #1d4ed8;
+        --theme-primary-hover: #172554;
         --theme-info: #0ea5e9;
         --theme-info-light: #f0f9ff;
         --theme-success: #10b981;
@@ -143,119 +143,35 @@
         width: 100%;
     }
 
-    /* ── MODERN TABLE DESIGN ── */
-    .table-wrap {
-        overflow-x: auto;
-    }
-    table.siswa-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0;
-    }
-    table.siswa-table thead th {
-        background: #f8fafc;
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #64748b;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #e2e8f0;
-        white-space: nowrap;
-        text-align: left;
-    }
-    table.siswa-table tbody td {
-        padding: 1rem 1.25rem;
-        font-size: 0.9rem;
-        border-bottom: 1px solid #f1f5f9;
-        color: #334155;
-        vertical-align: middle;
-        text-align: left;
-    }
-    table.siswa-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-    table.siswa-table tbody tr {
-        transition: background-color var(--transition-speed) ease;
-    }
-    table.siswa-table tbody tr:hover td {
-        background-color: #f8fafc !important;
-    }
-
-    .nis-code {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.82rem;
-        background: #f1f5f9;
-        color: #475569;
-        padding: 0.25rem 0.5rem;
-        border-radius: 6px;
-        font-weight: 600;
-        border: 1px solid #e2e8f0;
-    }
-
-    .student-name {
-        font-weight: 600;
-        color: #1e293b;
-    }
-
     .address-col {
         max-width: 280px;
-        color: #64748b;
+        color: var(--text-muted);
         line-height: 1.5;
-        font-size: 0.85rem;
+        font-size: 0.88rem;
     }
-
-    /* ── Badges / Pills ── */
-    .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    .pill-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-    .pill-accent { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
 
     .kelas-badge {
         display: inline-block;
-        background: var(--theme-primary-light);
-        color: var(--primary);
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 0.25rem 0.5rem;
-        border-radius: 6px;
-        border: 1px solid rgba(37, 99, 235, 0.12);
+        background: var(--theme-warning-light);
+        color: #b45309;
+        font-size: 0.8rem;
+        font-weight: 800;
+        padding: 0.3rem 0.7rem;
+        border-radius: 8px;
+        border: 1px solid rgba(245, 158, 11, 0.2);
     }
 
     .gender-badge {
         display: inline-flex;
         align-items: center;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: #334155;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-muted);
     }
+    
 
-    /* Action Buttons */
-    .actions { display: flex; gap: 0.35rem; }
-    .btn-icon {
-        width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
-        border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-size: 0.85rem;
-        transition: all var(--transition-speed) ease; background: #fff;
-    }
-    .btn-edit { border-color: #cbd5e1; color: #475569; }
-    .btn-edit:hover { background: #f1f5f9; color: #1e293b; border-color: #94a3b8; }
-    .btn-del { border-color: #fee2e2; color: #ef4444; background: #fff5f5; }
-    .btn-del:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-    .empty-state {
-        padding: 4rem 2rem; text-align: center; color: var(--text-muted);
-    }
-    .empty-state i { font-size: 2.5rem; color: #cbd5e1; margin-bottom: 1rem; display: block; }
-    .empty-state p { font-size: 0.9rem; font-weight: 600; color: #64748b; }
-
-    /* Modal styles */
+    /* ── Pop-Up Form Modal Shared Styling ── */
     .modal-overlay {
         display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45);
         backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center;
@@ -263,21 +179,71 @@
     }
     .modal-overlay.show { display: flex; opacity: 1; }
     .modal-box {
-        background: var(--surface); border-radius: var(--card-radius); padding: 2rem;
-        width: 90%; max-width: 420px; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
-        transform: scale(0.9); transition: transform var(--transition-speed) ease;
+        background: var(--surface); border-radius: var(--card-radius); padding: 0;
+        width: 90%; max-width: 650px; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+        transform: scale(0.9); transition: transform var(--transition-speed) ease; overflow: hidden;
     }
     .modal-overlay.show .modal-box { transform: scale(1); }
-    .modal-box .modal-icon {
-        width: 56px; height: 56px; border-radius: 50%; background: var(--theme-danger-light); color: var(--theme-danger);
-        display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 1.25rem;
+    .form-card { background: transparent; border: none; }
+    .form-card-header {
+        padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; background: #fafbfc;
     }
-    .modal-box h3 { font-size: 1.15rem; font-weight: 800; text-align: center; color: var(--text); }
-    .modal-box p { font-size: 0.88rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
-    .modal-actions .btn-cancel {
-        flex: 1; padding: 0.65rem; background: var(--bg); border: 1.5px solid var(--border);
-        border-radius: 10px; font-family: inherit; font-size: 0.88rem; font-weight: 700; color: var(--text-muted); cursor: pointer;
+    .form-card-header .hdr-icon {
+        width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
+        display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+    .form-card-header h2 { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .form-card-header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .form-body { padding: 1.8rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.82rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 0.3rem; }
+    .form-group label .req { color: var(--danger); }
+    .form-control-wrap { position: relative; display: flex; align-items: center; }
+    .form-control-wrap i.input-icon { position: absolute; left: 1rem; color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
+    .form-control {
+        width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+        font-family: inherit; font-size: 0.9rem; color: var(--text); background: #fff; transition: all var(--transition-speed) ease; outline: none;
+    }
+    .form-control-wrap i.input-icon + .form-control { padding-left: 2.5rem; }
+    .form-control:focus { border-color: var(--theme-primary); box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.15); }
+    .form-control.is-invalid { border-color: var(--theme-danger); }
+    .invalid-feedback { font-size: 0.78rem; color: var(--theme-danger); display: flex; align-items: center; gap: 0.3rem; margin-top: 0.2rem; font-weight: 700; }
+    .form-actions { display: flex; align-items: center; justify-content: flex-end; gap: 0.8rem; padding: 1.25rem 1.8rem; border-top: 1px solid var(--border); background: #fafbfc; }
+    .btn-submit {
+        display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8); color: #fff; border: none; border-radius: 10px;
+        font-family: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all var(--transition-speed) ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    .btn-submit:hover { transform: translateY(-2px); }
+    .btn-cancel-modal {
+        display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.2rem; background: var(--bg); color: var(--text-muted);
+        border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all var(--transition-speed) ease;
+    }
+    .btn-cancel-modal:hover { background: #e2e8f0; color: var(--text); }
+
+    /* Delete Modal specifics style reset */
+    .modal-box-del { max-width: 420px; padding: 2rem; }
+    .modal-box-del .modal-icon {
+        width: 60px; height: 60px; border-radius: 50%; background: var(--theme-danger-light); color: var(--theme-danger);
+        display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 1.25rem; box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.1);
+    }
+    .modal-box-del h3 { font-size: 1.2rem; font-weight: 800; text-align: center; color: var(--text); }
+    .modal-box-del p { font-size: 0.88rem; color: var(--text-muted); text-align: center; margin-top: 0.6rem; line-height: 1.5; }
+    .modal-box-del .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.75rem; padding: 0; background: transparent; border: none; justify-content: center; }
+    .modal-box-del .modal-actions .btn-cancel {
+        flex: 1; padding: 0.75rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.88rem; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all var(--transition-speed) ease;
+    }
+    .modal-box-del .modal-actions .btn-cancel:hover { background: #e2e8f0; color: var(--text); }
+    .modal-box-del .modal-actions .btn-confirm {
+        flex: 1; padding: 0.75rem; background: var(--theme-danger); border: none; border-radius: 10px; font-family: inherit; font-size: 0.88rem; font-weight: 700; color: #fff; cursor: pointer; transition: background var(--transition-speed) ease; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+    .modal-box-del .modal-actions .btn-confirm:hover { background: #dc2626; }
+    
+    @media (max-width: 600px) {
+        .form-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 992px) {
@@ -308,65 +274,66 @@
         <div class="toolbar-upper">
             {{-- Bagian Kiri: Filter Kapsul Kelas --}}
             <div class="filter-inline-group">
-                <button type="button" class="btn-filter-pill active" onclick="filterClass('all', this)">
-                    Semua Kelas ({{ $siswa->count() }})
-                </button>
                 @foreach(['VII-A', 'VII-B', 'VIII-A', 'VIII-B', 'IX-A', 'IX-B'] as $kls)
-                    <button type="button" class="btn-filter-pill" onclick="filterClass('{{ $kls }}', this)">
-                        {{ $kls }} ({{ $siswa->where('kelas', $kls)->count() }})
-                    </button>
+                    <a href="{{ route('kperpus.siswa.index', ['kelas' => $kls, 'search' => request('search')]) }}" class="btn-filter-pill {{ $kelas === $kls ? 'active' : '' }}" style="text-decoration: none;">
+                        Kelas {{ $kls }}
+                    </a>
                 @endforeach
             </div>
 
             {{-- Bagian Kanan: Search Input Kontrol --}}
-            <div class="search-box">
+            <form action="{{ route('kperpus.siswa.index') }}" method="GET" class="search-box">
+                <input type="hidden" name="kelas" value="{{ $kelas }}">
                 <i class="fas fa-search"></i>
-                <input type="text" id="search-input" placeholder="Cari NIS atau Nama siswa…">
-            </div>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari NIS atau Nama siswa…">
+            </form>
         </div>
         
         {{-- Status Filter Saat ini --}}
-        <div class="total-label">
-            Menampilkan: <strong id="filter-counter">{{ $siswa->count() }} siswa</strong>
+        <div class="total-label" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Total data pada kelas {{ $kelas }}: <strong>{{ $siswa->total() }} siswa</strong></span>
+            @if(request('search'))
+                <a href="{{ route('kperpus.siswa.index', ['kelas' => $kelas]) }}" class="btn-cancel-modal" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; text-decoration: none;"><i class="fas fa-times"></i> Reset Pencarian</a>
+            @endif
         </div>
     </div>
 
     {{-- Tabel Data Utama Tunggal --}}
     <div class="table-wrap">
-        <table class="siswa-table" id="siswa-table-main">
+        <table class="kperpus-table" id="siswa-table-main">
             <thead>
                 <tr>
-                    <th style="width: 60px;">No</th>
-                    <th style="width: 120px;">NIS</th>
-                    <th>Nama Lengkap</th>
-                    <th style="width: 110px;">Kelas</th>
-                    <th style="width: 120px;">L/P</th>
-                    <th>Alamat Lengkap</th>
-                    <th style="width: 120px;">Status</th>
-                    <th style="width: 100px;">Aksi</th>
+                    <th style="width: 60px; text-align: center;">No</th>
+                    <th style="width: 120px; text-align: left;">NIS</th>
+                    <th style="text-align: left;">Nama Lengkap</th>
+                    <th style="width: 110px; text-align: center;">Kelas</th>
+                    <th style="width: 120px; text-align: center;">L/P</th>
+                    <th style="text-align: left;">Alamat Lengkap</th>
+                    <th style="width: 120px; text-align: center;">Status</th>
+                    <th style="width: 100px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($siswa as $index => $item)
-                <tr class="siswa-row" data-kelas="{{ $item->kelas }}">
-                    <td class="row-number" style="color: #94a3b8; font-weight: 500;">{{ $index + 1 }}</td>
-                    <td><span class="nis-code">{{ $item->nis }}</span></td>
-                    <td><span class="student-name">{{ $item->nama_siswa }}</span></td>
-                    <td><span class="kelas-badge">{{ $item->kelas }}</span></td>
-                    <td>
+                <tr>
+                    <td style="color: #94a3b8; font-weight: 500; text-align: center;">{{ $siswa->firstItem() + $index }}</td>
+                    <td style="text-align: left;"><span class="code-badge">{{ $item->nis }}</span></td>
+                    <td style="text-align: left;"><span style="font-weight: 700; color: var(--text); font-size: 0.95rem;">{{ $item->nama_siswa }}</span></td>
+                    <td style="text-align: center;"><span class="kelas-badge">{{ $item->kelas }}</span></td>
+                    <td style="text-align: center;">
                         <span class="gender-badge">
                             {{ $item->jenis_kelamin === 'Laki-laki' ? 'Laki-laki' : 'Perempuan' }}
                         </span>
                     </td>
-                    <td><div class="address-col">{{ $item->alamat }}</div></td>
-                    <td>
+                    <td style="text-align: left;"><div class="address-col">{{ $item->alamat }}</div></td>
+                    <td style="text-align: center;">
                         @if($item->status === 'aktif')
                             <span class="pill pill-success">Aktif</span>
                         @else
                             <span class="pill pill-accent">Nonaktif</span>
                         @endif
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <div class="actions">
                             <button type="button" class="btn-icon btn-edit" title="Edit Data Siswa"
                                 onclick="openEditModal({
@@ -397,24 +364,24 @@
                     </td>
                 </tr>
                 @endforelse
-
-                {{-- Baris Not Found ketika pencarian kosong --}}
-                <tr id="js-empty-state-row" style="display: none;">
-                    <td colspan="8">
-                        <div class="empty-state">
-                            <i class="fas fa-search-minus"></i>
-                            <p>Tidak ditemukan siswa yang cocok dengan filter atau pencarian tersebut.</p>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
+
+    {{-- Pagination --}}
+    @if($siswa->hasPages())
+    <div class="pagination-wrap">
+        <span class="info">
+            Menampilkan {{ $siswa->firstItem() }}–{{ $siswa->lastItem() }} dari {{ $siswa->total() }} data
+        </span>
+        {{ $siswa->links('pagination::bootstrap-4') }}
+    </div>
+    @endif
 </div>
 
 {{-- Modals Overlay Delete --}}
 <div class="modal-overlay" id="delete-modal">
-    <div class="modal-box">
+    <div class="modal-box modal-box-del">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
         <h3>Hapus Data Siswa?</h3>
         <p id="delete-modal-msg">Apakah Anda yakin ingin menghapus data siswa ini? Tindakan ini tidak dapat dibatalkan.</p>
@@ -423,7 +390,7 @@
             <form id="delete-form" method="POST" style="flex: 1;">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn-confirm" style="width: 100%; background: var(--theme-danger); border: none; border-radius: 10px; font-family: inherit; font-size: 0.88rem; font-weight: 700; color: #fff; cursor: pointer;">Hapus Permanen</button>
+                <button type="submit" class="btn-confirm" style="width: 100%;">Hapus Permanen</button>
             </form>
         </div>
     </div>
@@ -436,57 +403,6 @@
 
 @push('scripts')
 <script>
-    let activeClassFilter = 'all';
-
-    function filterClass(className, element) {
-        activeClassFilter = className;
-        
-        // Aktifkan style tombol kapsul filter yang diklik
-        document.querySelectorAll('.btn-filter-pill').forEach(btn => btn.classList.remove('active'));
-        element.classList.add('active');
-
-        // Jalankan sinkronisasi pencarian & filter
-        executeCombinedFilter();
-    }
-
-    // Input Event Listener untuk Search Box
-    document.getElementById('search-input').addEventListener('input', function () {
-        executeCombinedFilter();
-    });
-
-    function executeCombinedFilter() {
-        const keyword = document.getElementById('search-input').value.toLowerCase();
-        const rows = document.querySelectorAll('#siswa-table-main tbody .siswa-row');
-        let displayedCounter = 0;
-
-        rows.forEach(row => {
-            const currentKelas = row.getAttribute('data-kelas');
-            const rowContent = row.textContent.toLowerCase();
-
-            // Aturan filter gabungan (Tombol kelas DAN kata kunci pencarian)
-            const isClassMatched = (activeClassFilter === 'all' || currentKelas === activeClassFilter);
-            const isKeywordMatched = rowContent.includes(keyword);
-
-            if (isClassMatched && isKeywordMatched) {
-                row.style.display = '';
-                displayedCounter++;
-                // Mengurutkan ulang No tabel secara dinamis (1, 2, 3...)
-                row.querySelector('.row-number').textContent = displayedCounter;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        // Handle visibility dari state kosong (jika filter tidak menemukan hasil apapun)
-        const jsEmptyRow = document.getElementById('js-empty-state-row');
-        if (jsEmptyRow) {
-            jsEmptyRow.style.display = (displayedCounter === 0 && rows.length > 0) ? '' : 'none';
-        }
-
-        // Update counter angka siswa terfilter di toolbar
-        document.getElementById('filter-counter').textContent = displayedCounter + " siswa";
-    }
-
     // Modal Control Logic
     function confirmDelete(url, nama) {
         document.getElementById('delete-form').action = url;

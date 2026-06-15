@@ -1,107 +1,168 @@
 @extends('pperpus.layouts.app')
 
-@section('title', 'Riwayat Peminjaman')
-@section('page-title', 'Riwayat Peminjaman')
+@section('title', 'Riwayat Peminjaman Perpustakaan')
+@section('page-title', 'Peminjaman Perpustakaan')
 
 @push('styles')
 <style>
+    /* ── Theme variables for this view ── */
+    :root {
+        --theme-primary: #0d9488;
+        --theme-primary-light: #f0fdfa;
+        --theme-primary-hover: #0f766e;
+        --theme-info: #0ea5e9;
+        --theme-info-light: #f0f9ff;
+        --theme-success: #10b981;
+        --theme-success-light: #ecfdf5;
+        --theme-warning: #f59e0b;
+        --theme-warning-light: #fffbeb;
+        --theme-danger: #ef4444;
+        --theme-danger-light: #fef2f2;
+        --card-radius: 16px;
+        --transition-speed: 0.25s;
+    }
+
+    /* ── Page Header ── */
     .page-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 1.5rem; flex-wrap: wrap; gap: .8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
-    .page-header h1 { font-size: 1.25rem; font-weight: 800; color: var(--text); }
-    .page-header p { font-size: .84rem; color: var(--text-muted); margin-top: .2rem; }
+    .page-header-title h1 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .page-header-title p {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        margin-top: 0.25rem;
+    }
 
-    .btn-primary {
-        display: inline-flex; align-items: center; gap: .5rem;
-        padding: .55rem 1.1rem;
-        background: var(--primary); color: #fff;
-        border: none; border-radius: 8px;
-        font-family: inherit; font-size: .85rem; font-weight: 600;
-        cursor: pointer; text-decoration: none;
-        transition: background .2s, transform .15s;
-    }
-    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); color: #fff; }
-
-    /* Stats Grid */
-    .stats-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.2rem; margin-bottom: 1.5rem;
-    }
-    .stat-card {
-        background: var(--surface); padding: 1.2rem; border-radius: var(--radius);
-        box-shadow: var(--shadow); border-left: 4px solid var(--primary);
-    }
-    .stat-card.terlambat { border-left-color: var(--danger); }
-    .stat-card.denda { border-left-color: var(--warning); }
-    .stat-card.hari-ini { border-left-color: var(--success); }
-    
-    .stat-card .label { font-size: .75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
-    .stat-card .value { font-size: 1.4rem; font-weight: 800; color: var(--text); margin-top: .3rem; }
-
-    /* Card */
+    /* ── Card Container ── */
     .card {
-        background: var(--surface); border-radius: var(--radius);
-        box-shadow: var(--shadow); overflow: hidden;
+        background: var(--surface);
+        border-radius: var(--card-radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(228, 233, 240, 0.6);
+        overflow: hidden;
     }
     .card-toolbar {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 1rem 1.4rem; border-bottom: 1px solid var(--border);
-        flex-wrap: wrap; gap: .7rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+        gap: 1rem;
+        background: #fafbfc;
     }
-    .total-label { font-size: .83rem; color: var(--text-muted); }
-    .total-label strong { color: var(--text); }
+    .card-toolbar .total-label {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+    }
+    .card-toolbar .total-label strong {
+        color: var(--primary);
+        font-size: 1rem;
+        font-weight: 800;
+    }
 
+    /* ── Table Wrap ── */
+    .table-wrap { overflow-x: auto; width: 100%; }
+
+    /* ── Premium Table ── */
+    table.kperpus-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 1000px; }
+    table.kperpus-table thead th {
+        background: var(--primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #ffffff;
+        padding: 1.1rem 1.25rem;
+        border-bottom: 2px solid var(--primary-dark);
+        white-space: nowrap;
+    }
+    table.kperpus-table tbody td {
+        padding: 1rem 1.25rem;
+        font-size: 0.9rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+        vertical-align: middle;
+    }
+    table.kperpus-table tbody tr:nth-child(even) td { background: #f8fafc; }
+    table.kperpus-table tbody tr:last-child td { border-bottom: none; }
+    table.kperpus-table tbody tr { transition: background-color .2s ease; }
+    table.kperpus-table tbody tr:hover td { background-color: var(--primary-soft) !important; }
+
+    /* ── Badges & Pills ── */
+    .code-badge { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; background: var(--primary-soft); color: var(--primary); padding: 0.35rem 0.6rem; border-radius: 8px; font-weight: 800; border: 1px solid rgba(13, 148, 136, 0.15); display: inline-block; }
+    .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 30px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+    .pill-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .pill-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .pill-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+    .pill-info { background: var(--info-bg); color: var(--info); border: 1px solid rgba(14, 165, 233, 0.2); }
+
+    /* ── Search & Filter ── */
+    .filter-search-group { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
     .search-box {
         display: flex; align-items: center; gap: .5rem;
-        background: var(--bg); border: 1px solid var(--border);
-        border-radius: 8px; padding: .4rem .8rem;
+        background: #fff; border: 1.5px solid var(--border);
+        border-radius: 10px; padding: .5rem .85rem;
+        transition: all var(--transition-speed);
     }
-    .search-box i { color: var(--text-muted); font-size: .85rem; }
-    .search-box input {
-        border: none; background: transparent; outline: none;
-        font-family: inherit; font-size: .85rem; color: var(--text); width: 200px;
-    }
+    .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1); }
+    .search-box i { color: var(--text-muted); font-size: .875rem; }
+    .search-box input { border: none; background: transparent; outline: none; font-family: inherit; font-size: .85rem; color: var(--text); width: 220px; }
 
-    /* Table */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-        background: #f8fafc;
-        font-size: .73rem; font-weight: 700; text-transform: uppercase;
-        letter-spacing: .5px; color: var(--text-muted);
-        padding: .75rem 1.1rem; border-bottom: 1px solid var(--border);
-        white-space: nowrap; text-align: left;
+    .btn-action {
+        display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .9rem;
+        background: var(--primary-soft); color: var(--primary);
+        border-radius: 8px; font-size: .8rem; font-weight: 700;
+        text-decoration: none; transition: all .2s;
     }
-    tbody td {
-        padding: .75rem 1.1rem; font-size: .86rem;
-        border-bottom: 1px solid #f0f4f8; color: var(--text); vertical-align: middle;
-    }
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: #f8fafc; }
+    .btn-action:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }
 
-    .code-badge {
-        font-family: 'JetBrains Mono', monospace; font-size: .78rem;
-        background: #f0f4f8; color: var(--primary);
-        padding: .2rem .45rem; border-radius: 6px; font-weight: 600;
+    .empty-state {
+        text-align: center; padding: 3rem 1.5rem; color: var(--text-light);
     }
-    
-    .pill {
-        display: inline-flex; align-items: center; gap: .3rem;
-        padding: .22rem .65rem; border-radius: 20px; font-size: .74rem; font-weight: 600;
+    .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.4; display: block; }
+    .empty-state p { font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .empty-state span { font-size: 0.8rem; }
+
+    .pagination-wrap {
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fafbfc;
+        border-top: 1px solid var(--border);
     }
-    .pill-warning { background: #fef9ec; color: #b45309; }
-    .pill-success { background: #eafaf1; color: var(--success); }
-    .pill-info    { background: #ebf5fb; color: var(--info); }
+    .pagination-wrap .info { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+    @media (max-width: 768px) {
+        .page-header { flex-direction: column; align-items: flex-start; }
+        .card-toolbar { flex-direction: column; align-items: stretch; }
+        .filter-search-group { flex-direction: column; align-items: stretch; }
+        .search-box input { width: 100%; }
+        .pagination-wrap { flex-direction: column; gap: 1rem; text-align: center; }
+    }
 </style>
 @endpush
 
 @section('content')
 
 <div class="page-header">
-    <div>
-        <h1><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:.45rem"></i>Peminjaman Buku Perpustakaan</h1>
-        <p>Riwayat transaksi Peminjaman Buku Perpustakaan perpustakaan</p>
+    <div class="page-header-title">
+        <h1><i class="fas fa-exchange-alt" style="color:var(--primary)"></i> Peminjaman Perpustakaan</h1>
+        <p>Riwayat transaksi peminjaman buku koleksi umum perpustakaan</p>
     </div>
     <a href="{{ route('pperpus.peminjaman.perpustakaan.create') }}" class="btn-primary">
         <i class="fas fa-plus"></i> Catat Peminjaman
@@ -110,66 +171,74 @@
 
 <div class="card">
     <div class="card-toolbar">
-        <span class="total-label">Total: <strong>{{ $peminjamans->total() }} transaksi</strong></span>
-        <form action="{{ route('pperpus.peminjaman.perpustakaan.index') }}" method="GET" class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" name="q" placeholder="Cari NIS / Nama / Kode…" value="{{ request('q') }}">
+        <span class="total-label">Total ditemukan: <strong>{{ $peminjamans->total() }} transaksi</strong></span>
+        
+        <form action="{{ route('pperpus.peminjaman.perpustakaan.index') }}" method="GET" class="filter-search-group">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" name="q" placeholder="Cari NIS / Nama / Kode..." value="{{ request('q') }}">
+            </div>
         </form>
     </div>
 
     <div class="table-wrap">
-        <table>
+        <table class="kperpus-table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Kode</th>
-                    <th>Peminjam</th>
-                    <th>Tgl Pinjam</th>
-                    <th>Jml. Buku</th>
+                    <th style="width: 60px; text-align: center;">No</th>
+                    <th>Kode Transaksi</th>
+                    <th>Informasi Peminjam</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Jumlah Buku</th>
                     <th>Status</th>
-                    <th>Aksi</th>
+                    <th style="text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($peminjamans as $index => $pjm)
                 <tr>
-                    <td>{{ $peminjamans->firstItem() + $index }}</td>
+                    <td style="text-align: center; color: var(--text-muted); font-weight: 600;">{{ $peminjamans->firstItem() + $index }}</td>
                     <td><span class="code-badge">{{ $pjm->kode_peminjaman }}</span></td>
                     <td>
-                        <div style="font-weight:700">{{ $pjm->siswa->nama_siswa }}</div>
-                        <div style="font-size:.75rem;color:var(--text-muted)">NIS: {{ $pjm->siswa->nis }} — {{ $pjm->siswa->kelas }}</div>
+                        <div style="font-weight: 800; color: var(--text)">{{ strtoupper($pjm->siswa->nama_siswa) }}</div>
+                        <div style="font-size: .75rem; color: var(--text-muted); margin-top: 2px;">NIS: {{ $pjm->siswa->nis }} — {{ $pjm->siswa->kelas }}</div>
                     </td>
-                    <td>{{ $pjm->tanggal_pinjam->format('d/m/Y') }}</td>
+                    <td>
+                        <div style="font-weight: 600;"><i class="far fa-calendar-alt" style="color: var(--primary); margin-right: 0.3rem;"></i> {{ $pjm->tanggal_pinjam->format('d/m/Y') }}</div>
+                    </td>
                     <td>
                         <span class="pill pill-info">
-                            <i class="fas fa-book" style="font-size:.6rem"></i>
+                            <i class="fas fa-book"></i>
                             {{ $pjm->details->count() }} Buku
                         </span>
                     </td>
                     <td>
                         @if($pjm->status_peminjaman === 'dipinjam')
-                            <span class="pill pill-warning">Sedang Dipinjam</span>
+                            <span class="pill pill-warning"><i class="fas fa-clock"></i> Sedang Dipinjam</span>
                         @elseif($pjm->status_peminjaman === 'dikembalikan')
-                            <span class="pill pill-danger">Denda (Belum Lunas)</span>
+                            <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Denda (Belum Lunas)</span>
                         @else
                             @if($pjm->total_denda > 0)
-                                <span class="pill pill-success">Denda (Lunas)</span>
+                                <span class="pill pill-success"><i class="fas fa-check-circle"></i> Denda (Lunas)</span>
                             @else
-                                <span class="pill pill-success">Selesai</span>
+                                <span class="pill pill-success"><i class="fas fa-check-circle"></i> Selesai</span>
                             @endif
                         @endif
                     </td>
-                    <td>
-                        <a href="{{ route('pperpus.peminjaman.perpustakaan.show', $pjm->id_peminjaman) }}" class="btn-primary" style="padding:.3rem .7rem; font-size:.75rem">
+                    <td style="text-align: center;">
+                        <a href="{{ route('pperpus.peminjaman.perpustakaan.show', $pjm->id_peminjaman) }}" class="btn-action">
                             <i class="fas fa-eye"></i> Detail
                         </a>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" style="text-align:center; padding:3rem; color:var(--text-muted)">
-                        <i class="fas fa-inbox" style="font-size:2rem; opacity:.2; display:block; margin-bottom:.5rem"></i>
-                        Belum ada data peminjaman.
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>Belum ada data peminjaman.</p>
+                            <span>Rekaman transaksi peminjaman akan muncul di sini.</span>
+                        </div>
                     </td>
                 </tr>
                 @endforelse
@@ -178,8 +247,11 @@
     </div>
 
     @if($peminjamans->hasPages())
-    <div style="padding:1.2rem; border-top:1px solid var(--border)">
-        {{ $peminjamans->links() }}
+    <div class="pagination-wrap">
+        <span class="info">
+            Menampilkan {{ $peminjamans->firstItem() }}–{{ $peminjamans->lastItem() }} dari {{ $peminjamans->total() }} data
+        </span>
+        {{ $peminjamans->links('pagination::bootstrap-4') }}
     </div>
     @endif
 </div>

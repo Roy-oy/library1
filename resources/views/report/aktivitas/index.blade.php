@@ -224,60 +224,7 @@
     .total-label { font-size: 0.88rem; color: var(--text-muted); }
     .total-label strong { color: var(--primary); font-size: 1rem; font-weight: 800; }
 
-    /* ── Table & Visual Elements ── */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-        background: #f8fafc;
-        font-size: .75rem; 
-        font-weight: 700; 
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 1rem 1.1rem; 
-        border-bottom: 1px solid var(--border);
-        color: #64748b; 
-        text-align: left;
-    }
-    tbody tr {
-        transition: background-color var(--transition-speed);
-    }
-    tbody tr:hover {
-        background-color: #f8fafc;
-    }
-    tbody td {
-        padding: 0.9rem 1.1rem; 
-        font-size: .88rem;
-        border-bottom: 1px solid #f1f5f9; 
-        color: var(--text);
-        vertical-align: middle;
-    }
-    
-    /* Code formatting style for IDs */
-    .code-badge {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.8rem;
-        background: #f1f5f9;
-        color: #475569;
-        padding: 0.2rem 0.4rem;
-        border-radius: 6px;
-        font-weight: 700;
-        border: 1px solid #e2e8f0;
-    }
 
-    /* Badges/Pills for Statuses */
-    .pill {
-        display: inline-flex; 
-        align-items: center; 
-        gap: .3rem;
-        padding: .25rem .75rem; 
-        border-radius: 20px; 
-        font-size: .75rem; 
-        font-weight: 700;
-        letter-spacing: 0.2px;
-    }
-    .pill-info { background: var(--theme-info-light); color: var(--theme-info); }
-    .pill-success { background: var(--theme-success-light); color: var(--theme-success); }
-    .pill-danger { background: var(--theme-danger-light); color: var(--theme-danger); }
 
     /* Empty state */
     .empty-state-box {
@@ -291,6 +238,40 @@
         margin-bottom: 1rem; 
         display: block;
     }
+
+    /* ── UNIVERSAL PREMIUM TABLE ── */
+    .table-wrap { overflow-x: auto; width: 100%; border-radius: 0 0 var(--card-radius) var(--card-radius); }
+    table.kperpus-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 1400px; }
+    table.kperpus-table thead th {
+        background: var(--primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #ffffff;
+        padding: 1.1rem 1.25rem;
+        border-bottom: 2px solid var(--primary-dark);
+        white-space: nowrap;
+    }
+    table.kperpus-table tbody td {
+        padding: 1rem 1.25rem;
+        font-size: 0.9rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+        vertical-align: middle;
+    }
+    table.kperpus-table tbody tr:nth-child(even) td { background: #f8fafc; }
+    table.kperpus-table tbody tr:last-child td { border-bottom: none; }
+    table.kperpus-table tbody tr { transition: background-color .2s ease; }
+    table.kperpus-table tbody tr:hover td { background-color: var(--primary-soft) !important; }
+
+    /* ── UNIVERSAL BADGES ── */
+    .code-badge { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; background: var(--primary-soft); color: var(--primary); padding: 0.35rem 0.6rem; border-radius: 8px; font-weight: 800; border: 1px solid rgba(37, 99, 235, 0.15); display: inline-block; }
+    .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 30px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+    .pill-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .pill-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .pill-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+    .pill-info { background: var(--info-bg); color: var(--info); border: 1px solid rgba(14, 165, 233, 0.2); }
 
     @media (max-width: 768px) {
         .page-header { flex-direction: column; align-items: flex-start; }
@@ -409,7 +390,7 @@
 
     {{-- Data Table Wrap --}}
     <div class="table-wrap">
-        <table>
+        <table class="kperpus-table">
             <thead>
                 <tr>
                     <th style="width: 50px; text-align: center;">No</th>

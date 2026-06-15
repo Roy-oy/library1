@@ -11,11 +11,11 @@
         margin: 2rem auto 4rem auto;
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-top: 5px solid #2563eb; /* Aksen biru utama di bagian atas */
+        border-top: 5px solid #1e3a8a; /* Aksen biru utama di bagian atas */
         border-radius: 16px;
         padding: 0;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.05), 0 8px 15px -6px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 10px 30px -5px rgba(30, 58, 138, 0.05), 0 8px 15px -6px rgba(0, 0, 0, 0.03);
         overflow: hidden;
     }
 
@@ -37,7 +37,7 @@
 
     .form-header-icon {
         background: #dbeafe;
-        color: #1d4ed8;
+        color: #172554;
         width: 48px;
         height: 48px;
         border-radius: 12px;
@@ -64,7 +64,7 @@
     /* Tombol Kembali dengan Efek Transisi Warna */
     .btn-kembali {
         text-decoration: none;
-        color: #1d4ed8;
+        color: #172554;
         background: #ffffff;
         border: 1px solid #bfdbfe;
         padding: 0.6rem 1.1rem;
@@ -79,8 +79,8 @@
 
     .btn-kembali:hover {
         background: #eff6ff;
-        border-color: #93c5fd;
-        color: #1e40af;
+        border-color: #bfdbfe;
+        color: #172554;
     }
 
     /* Grid & Padding Form */
@@ -116,7 +116,7 @@
 
     /* Pembeda Warna Ikon di Label */
     .form-group label i {
-        color: #3b82f6; /* Warna biru untuk ikon */
+        color: #1e3a8a; /* Warna biru untuk ikon */
         font-size: 0.95rem;
     }
 
@@ -140,8 +140,8 @@
 
     .form-input:focus {
         background-color: #ffffff;
-        border-color: #2563eb; /* Berubah jadi biru saat diklik */
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        border-color: #1e3a8a; /* Berubah jadi biru saat diklik */
+        box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.15);
     }
 
     .form-input::placeholder {
@@ -152,7 +152,7 @@
     select.form-input {
         cursor: pointer;
         appearance: none;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e3a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 1rem center;
         background-size: 0.9rem;
@@ -161,11 +161,11 @@
 
     /* Zone Upload Sampul Buku yang Atraktif */
     .file-upload-zone {
-        border: 2px dashed #93c5fd;
+        border: 2px dashed #bfdbfe;
         border-radius: 12px;
         padding: 2rem;
         text-align: center;
-        background: #f0f7ff;
+        background: #f0f5ff;
         cursor: pointer;
         transition: all 0.2s ease;
         display: flex;
@@ -175,13 +175,13 @@
     }
 
     .file-upload-zone:hover {
-        border-color: #2563eb;
-        background: #e0f2fe;
+        border-color: #1e3a8a;
+        background: #dbeafe;
     }
 
     .file-upload-zone i {
         font-size: 2rem;
-        color: #2563eb;
+        color: #1e3a8a;
     }
 
     .file-upload-zone input[type="file"] {
@@ -200,7 +200,7 @@
         max-width: 130px;
         border-radius: 8px;
         overflow: hidden;
-        border: 2px solid #2563eb;
+        border: 2px solid #1e3a8a;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
@@ -246,17 +246,17 @@
     }
 
     .btn-simpan {
-        background: #2563eb; /* Tombol biru utama */
+        background: #1e3a8a; /* Tombol biru utama */
         color: #ffffff;
-        border: 1px solid #2563eb;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+        border: 1px solid #1e3a8a;
+        box-shadow: 0 4px 14px rgba(30, 58, 138, 0.2);
     }
 
     .btn-simpan:hover {
-        background: #1d4ed8;
-        border-color: #1d4ed8;
+        background: #172554;
+        border-color: #172554;
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(29, 78, 216, 0.25);
+        box-shadow: 0 6px 20px rgba(23, 37, 84, 0.25);
     }
     
     .btn-simpan:active {
@@ -414,9 +414,9 @@
                 previewImg.src = e.target.result;
                 previewWrapper.style.display = 'block';
                 uploadText.textContent = `File dipilih: ${input.files[0].name}`;
-                uploadText.style.color = '#2563eb'; // Diubah dari hijau ke biru jernih
+                uploadText.style.color = '#1e3a8a'; // Diubah dari hijau ke biru jernih
                 uploadIcon.className = 'fas fa-check-circle';
-                uploadIcon.style.color = '#2563eb'; // Diubah dari hijau ke biru jernih
+                uploadIcon.style.color = '#1e3a8a'; // Diubah dari hijau ke biru jernih
             }
             
             reader.readAsDataURL(input.files[0]);
@@ -425,7 +425,7 @@
             uploadText.textContent = 'Klik atau seret gambar ke sini untuk mengunggah';
             uploadText.style.color = '#334155';
             uploadIcon.className = 'fas fa-cloud-upload-alt';
-            uploadIcon.style.color = '#2563eb'; // Diubah dari hijau ke biru jernih
+            uploadIcon.style.color = '#1e3a8a'; // Diubah dari hijau ke biru jernih
         }
     }
 

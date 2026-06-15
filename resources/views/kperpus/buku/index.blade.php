@@ -1,7 +1,7 @@
 @extends('kperpus.layouts.app')
 
-@section('title', 'Data Buku')
-@section('page-title', 'Data Buku Perpustakaan')
+@section('title', 'Buku')
+@section('page-title', 'Manajemen Buku BOS dan Perpustakaan')
 
 @push('styles')
 <style>
@@ -144,49 +144,6 @@
         width: 240px;
     }
 
-    /* ── Table Styling (Rapi & Jelas) ── */
-    .table-wrap {
-        overflow-x: auto;
-        padding: 0;
-        width: 100%;
-    }
-    table {
-        width: 100%;
-        min-width: 1100px;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    thead th {
-        background: #f1f5f9;
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #475569;
-        padding: 1.1rem 1rem;
-        border-bottom: 2px solid #cbd5e1;
-        white-space: nowrap;
-    }
-    tbody td {
-        padding: 1rem;
-        font-size: 0.88rem;
-        border-bottom: 1px solid var(--border);
-        color: var(--text);
-        vertical-align: middle;
-    }
-    tbody tr:nth-child(even) td {
-        background: #f8fafc;
-    }
-    tbody tr:last-child td {
-        border-bottom: none;
-    }
-    tbody tr {
-        transition: background var(--transition-speed) ease;
-    }
-    tbody tr:hover td {
-        background: var(--theme-primary-light) !important;
-    }
-
     /* ── Book Cover ── */
     .book-cover-container {
         position: relative;
@@ -217,94 +174,6 @@
     .book-cover-placeholder i {
         color: rgba(255, 255, 255, 0.85);
         font-size: 1rem;
-    }
-
-    /* ── Badges / Pills ── */
-    .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 30px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.2px;
-        white-space: nowrap;
-    }
-    .pill-success {
-        background: var(--theme-success-light);
-        color: var(--theme-success);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-    .pill-warning {
-        background: var(--theme-warning-light);
-        color: var(--theme-warning);
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-
-    .kelas-badge {
-        display: inline-block;
-        background: var(--accent-light);
-        color: #b45309;
-        font-size: 0.75rem;
-        font-weight: 800;
-        padding: 0.25rem 0.6rem;
-        border-radius: 6px;
-        border: 1px solid rgba(245, 158, 11, 0.15);
-    }
-
-    /* ── Action Buttons ── */
-    .actions {
-        display: flex;
-        gap: 0.4rem;
-        justify-content: center;
-    }
-    .btn-icon {
-        width: 34px;
-        height: 34px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-size: 0.85rem;
-        text-decoration: none;
-        transition: all var(--transition-speed) ease;
-    }
-    .btn-edit {
-        background: var(--theme-primary-light);
-        color: var(--primary);
-    }
-    .btn-edit:hover {
-        background: var(--primary);
-        color: #fff;
-        transform: translateY(-1px);
-    }
-    .btn-del {
-        background: var(--theme-danger-light);
-        color: var(--theme-danger);
-    }
-    .btn-del:hover {
-        background: var(--theme-danger);
-        color: #fff;
-        transform: translateY(-1px);
-    }
-
-    /* ── Pagination ── */
-    .pagination-wrap {
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-        background: #fafbfc;
-    }
-    .pagination-wrap .info {
-        font-size: 0.88rem;
-        color: var(--text-muted);
     }
 
     /* ── Modals Delete ── */
@@ -475,7 +344,7 @@
     </div>
 
     <div class="table-wrap">
-        <table>
+        <table class="kperpus-table">
             <thead>
                 <tr>
                     <th style="width: 60px; text-align: center;">No</th>
@@ -510,8 +379,8 @@
                             @endif
                         </div>
                     </td>
-                    <td style="padding-left: 1.5rem;">
-                        <code style="font-size:0.82rem; background: var(--theme-primary-light); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 800; border: 1px solid rgba(37, 99, 235, 0.12);">{{ $item->kode_buku }}</code>
+                    <td style="text-align: left; padding-left: 1.5rem;">
+                        <span class="code-badge">{{ $item->kode_buku }}</span>
                     </td>
                     <td style="font-weight: 700; color: #1e293b; max-width: 280px; line-height: 1.4;">{{ $item->judul_buku }}</td>
                     <td style="font-weight: 600; color: #4a5568;">{{ $item->pengarang }}</td>

@@ -7,9 +7,9 @@
 <style>
     /* ── Theme variables for this view ── */
     :root {
-        --theme-primary: #2563eb;
+        --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
-        --theme-primary-hover: #1d4ed8;
+        --theme-primary-hover: #172554;
         --theme-info: #0ea5e9;
         --theme-info-light: #f0f9ff;
         --theme-success: #10b981;
@@ -74,48 +74,6 @@
         font-weight: 800;
     }
 
-    /* ── Table Styling ── */
-    .table-wrap {
-        overflow-x: auto;
-        padding: 0;
-    }
-    table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    thead th {
-        background: #f1f5f9;
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #475569;
-        padding: 0.85rem 1rem;
-        border-bottom: 2px solid var(--border);
-        white-space: nowrap;
-        text-align: left;
-    }
-    tbody td {
-        padding: 0.85rem 1rem;
-        font-size: 0.88rem;
-        border-bottom: 1px solid var(--border);
-        color: var(--text);
-        vertical-align: middle;
-    }
-    tbody tr:nth-child(even) td {
-        background: #f8fafc;
-    }
-    tbody tr:last-child td {
-        border-bottom: none;
-    }
-    tbody tr {
-        transition: background var(--transition-speed) ease;
-    }
-    tbody tr:hover td {
-        background: var(--theme-primary-light) !important;
-    }
-
     /* ── Category Badge ── */
     .cat-badge {
         display: inline-flex;
@@ -125,7 +83,7 @@
         border-radius: 30px;
         font-size: 0.85rem;
         font-weight: 800;
-        text-transform: capitalize;
+        text-transform: uppercase;
     }
     .cat-badge i {
         font-size: 0.75rem;
@@ -163,59 +121,6 @@
     }
     .borrow-count i {
         color: var(--theme-warning);
-    }
-
-    /* ── Action Buttons ── */
-    .actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-    .btn-icon {
-        width: 36px;
-        height: 36px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        font-size: 0.9rem;
-        text-decoration: none;
-        transition: all var(--transition-speed) ease;
-    }
-    .btn-edit {
-        background: var(--theme-primary-light);
-        color: var(--primary);
-    }
-    .btn-edit:hover {
-        background: var(--primary);
-        color: #fff;
-        transform: translateY(-2px);
-    }
-    .btn-del {
-        background: var(--theme-danger-light);
-        color: var(--theme-danger);
-    }
-    .btn-del:hover {
-        background: var(--theme-danger);
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    /* ── Pagination ── */
-    .pagination-wrap {
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-        background: #fafbfc;
-    }
-    .pagination-wrap .info {
-        font-size: 0.88rem;
-        color: var(--text-muted);
     }
 
     /* ── Empty state ── */
@@ -283,17 +188,13 @@
         width: 44px;
         height: 44px;
         border-radius: 12px;
-        background: linear-gradient(135deg, var(--theme-success), #059669);
+        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
         display: flex;
         align-items: center;
         justify-content: center;
         color: #fff;
         font-size: 1.1rem;
         flex-shrink: 0;
-        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
-    }
-    .form-card-header.edit-mode .hdr-icon {
-        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
         box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
     }
     .form-card-header h2 {
@@ -353,10 +254,6 @@
         padding-left: 2.5rem;
     }
     .form-control:focus {
-        border-color: var(--theme-success);
-        box-shadow: 0 0 0 3.5px rgba(16, 185, 129, 0.15);
-    }
-    .form-overlay-modal.edit-active .form-control:focus {
         border-color: var(--theme-primary);
         box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.15);
     }
@@ -381,6 +278,7 @@
     .form-actions {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 0.8rem;
         padding: 1.25rem 1.8rem;
         border-top: 1px solid var(--border);
@@ -391,7 +289,7 @@
         align-items: center;
         gap: 0.6rem;
         padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, var(--theme-success), #059669);
+        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
         color: #fff;
         border: none;
         border-radius: 10px;
@@ -400,10 +298,6 @@
         font-weight: 700;
         cursor: pointer;
         transition: all var(--transition-speed) ease;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-    }
-    .form-overlay-modal.edit-active .btn-submit {
-        background: linear-gradient(135deg, var(--theme-primary), #1d4ed8);
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
     }
     .btn-submit:hover {
@@ -540,11 +434,13 @@
     </div>
 
     <div class="table-wrap">
-        <table id="kategori-table">
+        <table class="kperpus-table" id="kategori-table">
             <thead>
                 <tr>
-                    <th style="width: 60px; text-align: center;">#</th>
-                    <th>Nama Kategori</th>
+                    {{-- DIUBAH: Mengubah simbol # menjadi No --}}
+                    <th style="width: 60px; text-align: center;">No</th>
+                    {{-- DIUBAH: Menambahkan text-align: left agar nama kategori konsisten rata kiri --}}
+                    <th style="text-align: left;">Nama Kategori</th>
                     <th style="width: 180px; text-align: center;">Jumlah Buku</th>
                     <th style="width: 180px; text-align: center;">Jumlah yang Di Pinjam</th>
                     <th style="width: 120px; text-align: center;">Aksi</th>
@@ -558,10 +454,11 @@
                 @endphp
                 <tr>
                     <td style="text-align: center;">{{ $kategori->firstItem() + $index }}</td>
-                    <td>
+                    {{-- DIUBAH: Menambahkan text-align: left pada cell data nama kategori --}}
+                    <td style="text-align: left;">
                         <span class="cat-badge" style="color: {{ $color }}; background: {{ $color }}1a; border-color: {{ $color }}40;">
                             <i class="fas fa-tag"></i>
-                            {{ ucwords($item->nama_kategori) }}
+                            {{ strtoupper($item->nama_kategori) }}
                         </span>
                     </td>
                     <td style="text-align: center;">
@@ -585,7 +482,7 @@
                             <button type="button" class="btn-icon btn-del" title="Hapus Kategori"
                                 onclick="confirmDelete(
                                     '{{ route('kperpus.kategori.destroy', $item->id_kategori) }}',
-                                    '{{ addslashes(ucwords($item->nama_kategori)) }}',
+                                    '{{ addslashes(strtoupper($item->nama_kategori)) }}',
                                     {{ $item->total_buku }}
                                 )">
                                 <i class="fas fa-trash"></i>
@@ -687,7 +584,7 @@
         if (e.target === this) closeModal('edit-modal');
     });
 
-    /* ── Fungsi Modal Delete Bawaan Anda ── */
+    /* ── Fungsi Modal Delete ── */
     function confirmDelete(url, nama, jumlahBuku) {
         document.getElementById('delete-form').action = url;
         let msg = 'Apakah Anda yakin ingin menghapus kategori <strong style="color: var(--text)">"' + nama + '"</strong>?';

@@ -35,8 +35,8 @@
             --sidebar-accent:   #93c5fd;
 
             /* Layout */
-            --primary:          #2563eb;
-            --primary-dark:     #1d4ed8;
+            --primary:          #1e3a8a;
+            --primary-dark:     #172554;
             --primary-soft:     #eff6ff;
             --accent:           #38bdf8;   /* sky-400 — aksen segar */
             --accent-warm:      #f59e0b;   /* amber — hanya untuk badge denda */
@@ -260,17 +260,17 @@
         .btn-primary {
             display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
             padding: .65rem 1.4rem;
-            background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: #ffffff;
             border: none; border-radius: var(--radius-sm);
             font-family: inherit; font-size: .88rem; font-weight: 700;
             cursor: pointer; text-decoration: none;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
             transition: all .25s ease;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 6px 16px rgba(30, 58, 138, 0.35);
             color: #ffffff;
         }
         .btn-primary:active {
@@ -290,6 +290,63 @@
         }
         .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #a7f3d0; }
         .alert-danger  { background: var(--danger-bg);  color: var(--danger);  border: 1px solid #fecaca; }
+
+        /* ── UNIVERSAL PREMIUM TABLE ── */
+        .table-wrap { overflow-x: auto; width: 100%; }
+        table.kperpus-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 800px; }
+        table.kperpus-table thead th {
+            background: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #ffffff;
+            padding: 1.1rem 1.25rem;
+            border-bottom: 2px solid var(--primary-dark);
+            white-space: nowrap;
+        }
+        table.kperpus-table tbody td {
+            padding: 1rem 1.25rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+        table.kperpus-table tbody tr:nth-child(even) td { background: #f8fafc; }
+        table.kperpus-table tbody tr:last-child td { border-bottom: none; }
+        table.kperpus-table tbody tr { transition: background-color .2s ease; }
+        table.kperpus-table tbody tr:hover td { background-color: var(--primary-soft) !important; }
+
+        /* ── UNIVERSAL PAGINATION ── */
+        .pagination-wrap { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: #fafbfc; }
+        .pagination-wrap .info { font-size: 0.88rem; color: var(--text-muted); }
+        .pagination-wrap nav { display: block; }
+        .pagination { display: flex; padding-left: 0; list-style: none; margin: 0; gap: 0.4rem; align-items: center; }
+        .page-item .page-link { display: flex; align-items: center; justify-content: center; min-width: 38px; height: 38px; padding: 0 0.85rem; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); background-color: #fff; border: 1.5px solid var(--border); border-radius: 10px; text-decoration: none; transition: all .2s ease; font-family: inherit; }
+        .page-item .page-link:hover { background-color: var(--primary-soft); color: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
+        .page-item.active .page-link { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border-color: transparent; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25); }
+        .page-item.disabled .page-link { color: #cbd5e1; background-color: #f8fafc; border-color: #e2e8f0; cursor: not-allowed; transform: none; box-shadow: none; }
+        .page-link[rel="prev"] span, .page-link[rel="next"] span { display: none; }
+
+        /* ── UNIVERSAL BADGES & BUTTONS ── */
+        .code-badge { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; background: var(--primary-soft); color: var(--primary); padding: 0.35rem 0.6rem; border-radius: 8px; font-weight: 800; border: 1px solid rgba(37, 99, 235, 0.15); display: inline-block; }
+        .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 30px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+        .pill-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .pill-danger, .pill-accent { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .pill-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .pill-info { background: var(--info-bg); color: var(--info); border: 1px solid rgba(14, 165, 233, 0.2); }
+        
+        .actions { display: flex; gap: 0.5rem; justify-content: center; }
+        .btn-icon { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: none; cursor: pointer; font-size: 0.9rem; transition: all .2s ease; text-decoration: none; }
+        .btn-edit { background: var(--primary-soft); color: var(--primary); }
+        .btn-edit:hover { background: var(--primary); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+        .btn-del { background: var(--danger-bg); color: var(--danger); }
+        .btn-del:hover { background: var(--danger); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2); }
+        
+        .empty-state { padding: 4rem 2rem; text-align: center; color: var(--text-muted); }
+        .empty-state i { font-size: 3rem; color: var(--primary); opacity: 0.3; margin-bottom: 1rem; display: block; }
+        .empty-state p { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem;}
+        .empty-state span { font-size: 0.85rem; color: var(--text-muted); }
 
         /* ── SIDEBAR OVERLAY ───────────────────── */
         .sidebar-overlay {

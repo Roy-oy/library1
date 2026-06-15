@@ -32,11 +32,11 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn-submit">
-                        <i class="fas fa-plus"></i> Tambah Kategori
-                    </button>
                     <button type="button" class="btn-cancel-modal" onclick="closeModal('create-modal')">
                         <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-plus"></i> Tambah Kategori
                     </button>
                 </div>
             </form>

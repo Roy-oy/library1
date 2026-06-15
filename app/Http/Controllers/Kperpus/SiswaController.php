@@ -10,15 +10,20 @@ class SiswaController extends Controller
 {
     public function index(Request $request)
     {
-        $kelas = $request->query('kelas');
-        $query = Siswa::latest();
-        
-        if ($kelas) {
-            $query->where('kelas', $kelas);
+        $kelas = $request->query('kelas', 'VII-A');
+        $search = $request->query('search');
+
+        $query = Siswa::latest()->where('kelas', $kelas);
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nis', 'like', "%{$search}%")
+                  ->orWhere('nama_siswa', 'like', "%{$search}%");
+            });
         }
         
-        $siswa = $query->paginate(15)->withQueryString();
-        return view('kperpus.siswa.index', compact('siswa', 'kelas'));
+        $siswa = $query->paginate(30)->withQueryString();
+        return view('kperpus.siswa.index', compact('siswa', 'kelas', 'search'));
     }
 
     public function create()

@@ -293,6 +293,17 @@
         .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #a7f3d0; }
         .alert-danger  { background: var(--danger-bg);  color: var(--danger);  border: 1px solid #fecaca; }
 
+        /* ── PAGINATION ────────────────────────── */
+        .pagination-wrap { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: #fafbfc; }
+        .pagination-wrap .info { font-size: 0.88rem; color: var(--text-muted); }
+        .pagination-wrap nav { display: block; }
+        .pagination { display: flex; padding-left: 0; list-style: none; margin: 0; gap: 0.4rem; align-items: center; }
+        .page-item .page-link { display: flex; align-items: center; justify-content: center; min-width: 38px; height: 38px; padding: 0 0.85rem; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); background-color: #fff; border: 1.5px solid var(--border); border-radius: 10px; text-decoration: none; transition: all .2s ease; font-family: inherit; }
+        .page-item .page-link:hover { background-color: var(--primary-soft); color: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
+        .page-item.active .page-link { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border-color: transparent; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25); }
+        .page-item.disabled .page-link { color: #cbd5e1; background-color: #f8fafc; border-color: #e2e8f0; cursor: not-allowed; transform: none; box-shadow: none; }
+        /* .page-link[rel="prev"] span, .page-link[rel="next"] span { display: none; } */
+
         /* ── SIDEBAR OVERLAY ───────────────────── */
         .sidebar-overlay {
             display: none; position: fixed; inset: 0;

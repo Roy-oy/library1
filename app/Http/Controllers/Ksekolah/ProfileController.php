@@ -28,8 +28,18 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'foto_profile' => ['nullable', 'image', 'max:2048'],
             'password' => ['nullable', 'confirmed', Password::defaults()],
         ]);
+
+        if ($request->hasFile('foto_profile')) {
+            // Hapus foto lama jika ada
+            if ($user->foto_profile && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->foto_profile)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto_profile);
+            }
+            $path = $request->file('foto_profile')->store('profile_photos', 'public');
+            $user->foto_profile = $path;
+        }
 
         $user->name = $request->name;
         $user->username = $request->username;

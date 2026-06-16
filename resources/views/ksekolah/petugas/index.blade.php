@@ -90,6 +90,16 @@
             </tbody>
         </table>
     </div>
+    
+    {{-- Pagination --}}
+    @if($officers->hasPages())
+    <div class="pagination-wrap">
+        <span class="info">
+            Menampilkan {{ $officers->firstItem() }}–{{ $officers->lastItem() }} dari {{ $officers->total() }} data
+        </span>
+        {{ $officers->links('pagination::bootstrap-4') }}
+    </div>
+    @endif
 </div>
 
 @endsection

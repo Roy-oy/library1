@@ -31,7 +31,7 @@ class ReportDendaController extends Controller
             $query->where('status_denda', $request->status);
         }
 
-        $reports = $query->latest('tanggal_kembali')->get();
+        $reports = $query->latest('tanggal_kembali')->paginate(20)->withQueryString();
 
         return view('pperpus.report.denda.index', compact('reports'));
     }

@@ -428,9 +428,15 @@
                     <td><span class="code-badge">{{ $item->kode_buku }}</span></td>
                     <td style="max-width: 240px; font-weight: 500; color: var(--text); line-height: 1.4; white-space: normal; word-wrap: break-word;">
                         <div>{{ $item->buku }}</div>
-                        <div style="font-size: .75rem; color: var(--primary); background: var(--theme-primary-light); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600;">
-                            {{ $item->kategori }}
-                        </div>
+                        @if($item->sumber_buku === 'bos')
+                            <div style="font-size: .75rem; color: #fff; background: var(--primary); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600; text-transform: uppercase;">
+                                <i class="fas fa-graduation-cap" style="font-size: 0.7rem;"></i> BOS
+                            </div>
+                        @else
+                            <div style="font-size: .75rem; color: var(--primary); background: var(--theme-primary-light); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600;">
+                                <i class="fas fa-tag" style="font-size: 0.7rem;"></i> {{ $item->kategori }}
+                            </div>
+                        @endif
                     </td>
                     <td style="text-align: center;">
                         @if($item->telat > 0)

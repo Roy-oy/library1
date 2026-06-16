@@ -1,10 +1,10 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <div class="brand-logo">
-            <img src="{{ asset('images/logos.png') }}" alt="Logo Sekolah">
+            <div class="brand-logo"><img src="{{ asset('images/utama.png') }}" alt="Logo Perpustakaan" style="width: 50px; height: 50px; object-fit: contain;"></div>
         </div>
         <div class="brand-text">
-            <div class="title">SIP SMP Negeri 1<br>Percut Sei Tuan</div>
+            <div class="title">E-Library SMPN 8<br>Percut Sei Tuan</div>
         </div>
     </div>
 
@@ -50,9 +50,15 @@
 
     <div class="sidebar-footer">
         <div class="user-card">
-            <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+            <div class="user-avatar">
+                @if(auth()->user()->foto_profile)
+                    <img src="{{ asset('storage/' . auth()->user()->foto_profile) }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                @else
+                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                @endif
+            </div>
             <div class="user-info">
-                <div class="name">{{ Str::limit(auth()->user()->name, 16) }}</div>
+                <div class="name">{{ Str::limit(auth()->user()->name, 22) }}</div>
                 <div class="role">{{ auth()->user()->getRoleLabel() }}</div>
             </div>
         </div>

@@ -55,6 +55,7 @@ class ReportAktivitasController extends Controller
                 'kode_buku' => $d->buku->kode_buku ?? '-',
                 'buku' => $judulBuku,
                 'kategori' => $kategoriNama,
+                'sumber_buku' => $d->sumber_buku,
                 'telat' => $d->tanggal_kembali ? max(0, $d->jumlah_hari_terlambat) : $d->hari_terlambat_realtime,
                 'denda' => $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0),
                 'status' => $d->label_status

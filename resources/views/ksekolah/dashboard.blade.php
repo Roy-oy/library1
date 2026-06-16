@@ -1,7 +1,7 @@
 @extends('ksekolah.layouts.app')
 
 @section('title', 'Dashboard')
-@section('page-title', 'Dashboard Kepala Sekolah')
+@section('page-title', 'DASHBOARD KEPALA SEKOLAH')
 
 @push('styles')
 <style>
@@ -209,6 +209,82 @@
     }
     .empty-state i { font-size: 2rem; display: block; margin-bottom: .6rem; opacity: .35; }
 
+    /* ─── Books showcase & Rank Badge ─────────────────── */
+    .rank-num {
+        width: 28px; height: 28px; border-radius: 8px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: .78rem; font-weight: 800;
+    }
+    .rank-1 { background: #ccfbf1; color: #0f766e; }
+    .rank-2 { background: #e0e7ff; color: #4f46e5; }
+    .rank-3 { background: #f1f5f9; color: #475569; }
+    .rank-n { background: var(--border-soft); color: var(--text-muted); }
+
+    .monitoring-row {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 1.25rem; margin-bottom: 2rem;
+    }
+
+    .books-showcase {
+        display: flex; gap: 1.1rem; overflow-x: auto;
+        padding: 1.25rem 1.2rem 1.75rem;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin; scrollbar-color: var(--blue-200) transparent;
+        -webkit-overflow-scrolling: touch;
+    }
+    .books-showcase::-webkit-scrollbar { height: 5px; }
+    .books-showcase::-webkit-scrollbar-thumb { background: var(--blue-200); border-radius: 10px; }
+
+    .book-card-sleek {
+        min-width: 130px; max-width: 130px; flex-shrink: 0;
+        scroll-snap-align: start; display: flex; flex-direction: column;
+        transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+        cursor: pointer;
+    }
+    .book-card-sleek:hover { transform: translateY(-8px); }
+
+    .book-card-sleek .cover-box {
+        width: 100%; aspect-ratio: 2/3; border-radius: 12px;
+        overflow: hidden; position: relative;
+        box-shadow: 0 6px 14px rgba(15,23,42,.05);
+        background: linear-gradient(135deg, var(--slate-50), var(--slate-100));
+        border: 1px solid rgba(255,255,255,.4);
+    }
+    .book-card-sleek .cover-box img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform .45s ease;
+    }
+    .book-card-sleek:hover .cover-box img { transform: scale(1.07); }
+
+    .book-card-sleek .rank-badge {
+        position: absolute; top: 0; left: 0;
+        background: linear-gradient(135deg, var(--blue-600), #1e293b);
+        color: white; font-size: .72rem; font-weight: 800;
+        padding: .28rem .55rem; border-bottom-right-radius: 11px;
+        z-index: 2;
+    }
+
+    .book-card-sleek .borrow-stat {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: rgba(15,23,42,.9); backdrop-filter: blur(8px);
+        color: #fff; font-size: .68rem; font-weight: 600;
+        padding: .38rem; text-align: center;
+        transform: translateY(100%); transition: transform .25s ease;
+    }
+    .book-card-sleek:hover .borrow-stat { transform: translateY(0); }
+
+    .book-card-sleek .info-box { padding: .7rem .1rem 0; text-align: center; }
+    .book-card-sleek .info-box h4 {
+        font-size: .82rem; font-weight: 800; color: var(--text);
+        margin: 0 0 .18rem; line-height: 1.3;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .book-card-sleek .info-box p {
+        font-size: .68rem; color: var(--text-muted); margin: 0;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mt-4 { margin-top: 1.5rem; }
+
     @media (max-width: 1024px) {
         .stats-grid { grid-template-columns: repeat(2, 1fr); }
         .panels-grid { grid-template-columns: 1fr; }
@@ -228,17 +304,13 @@
         <h2>Halo, {{ auth()->user()->name ?? 'Kepala Sekolah' }}! 👋</h2>
         <p>Ringkasan laporan perpustakaan sekolah &mdash; {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
-    <div class="banner-badge-role">
-        <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.8; font-weight: 700; margin-bottom: 0.15rem;">Hak Akses</div>
-        <div style="font-size: 0.9rem; font-weight: 800; color: #fbbf24;"><i class="fas fa-shield-alt" style="margin-right: 5px;"></i>{{ auth()->user()->getRoleLabel() ?? 'Kepala Sekolah' }}</div>
-    </div>
 </div>
 
 {{-- ─────────────────── STATS GRID ─────────────────────── --}}
 <div class="section-label">
     <i class="fas fa-chart-pie"></i> Statistik Ringkasan Koleksi & Siswa
 </div>
-<div class="stats-grid">
+<div class="stats-grid" style="grid-template-columns: repeat(5, 1fr);">
     <div class="stat-card blue">
         <div class="stat-card-top">
             <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
@@ -280,6 +352,17 @@
         <div>
             <div class="stat-val">{{ number_format($stats['total_buku_bos']) }}</div>
             <div class="stat-lbl">Koleksi Buku BOS</div>
+        </div>
+    </div>
+
+    <div class="stat-card rose">
+        <div class="stat-card-top">
+            <div class="stat-icon"><i class="fas fa-coins"></i></div>
+            <span class="stat-tag tag-rose">Total</span>
+        </div>
+        <div>
+            <div class="stat-val" style="font-size: 1.2rem; margin-top: 0.5rem; font-weight: 800;">Rp {{ number_format($stats['total_denda_grand'] ?? 0, 0, ',', '.') }}</div>
+            <div class="stat-lbl">Total Denda</div>
         </div>
     </div>
 </div>
@@ -368,6 +451,90 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+    </div>
+
+</div>
+
+{{-- ─────────────────── TOP SISWA + BUKU ───────────────── --}}
+<div class="section-label mt-4">
+    <i class="fas fa-star"></i> Peringkat Siswa &amp; Buku Populer
+</div>
+<div class="monitoring-row">
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>
+                <span class="ph-icon" style="background:var(--blue-100);">
+                    <i class="fas fa-medal" style="color:var(--blue-700);"></i>
+                </span>
+                Siswa Rajin Meminjam
+            </h3>
+            <span class="panel-badge pb-blue">Top 5</span>
+        </div>
+        <div class="table-responsive" style="padding: 1rem 1.2rem;">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">Rank</th>
+                        <th>Siswa</th>
+                        <th style="text-align: right;">Pinjaman</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($topStudents as $index => $siswa)
+                    <tr>
+                        <td>
+                            <span class="rank-num {{ $index === 0 ? 'rank-1' : ($index === 1 ? 'rank-2' : ($index === 2 ? 'rank-3' : 'rank-n')) }}">
+                                #{{ $index + 1 }}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="font-weight: 700; font-size: .85rem; color: var(--text);">{{ $siswa->nama_siswa }}</div>
+                            <div style="font-size: .7rem; color: var(--text-light); margin-top: .1rem;">NIS: {{ $siswa->nis }} &bull; Kelas: {{ $siswa->kelas }}</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <span class="badge bg-primary" style="padding: .25rem .65rem; font-size: .69rem; font-weight: 700; border-radius: 50rem; background-color: var(--primary); color: white;">{{ $siswa->total_buku_dipinjam }} Buku</span>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel" style="overflow: hidden;">
+        <div class="panel-header">
+            <h3>
+                <span class="ph-icon" style="background:var(--indigo-100);">
+                    <i class="fas fa-fire" style="color:var(--indigo-600);"></i>
+                </span>
+                Buku Terpopuler
+            </h3>
+            <span class="panel-badge pb-indigo">Top 10</span>
+        </div>
+        <div class="books-showcase">
+            @foreach($topBooks as $index => $buku)
+            <div class="book-card-sleek" title="{{ $buku->judul_buku }}">
+                <div class="cover-box">
+                    <div class="rank-badge">#{{ $index + 1 }}</div>
+                    @if($buku->gambar)
+                        <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul_buku }}">
+                    @else
+                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:2.8rem;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    @endif
+                    <div class="borrow-stat">
+                        <i class="fas fa-fire" style="color:#fde68a;margin-right:.25rem;"></i>Dipinjam {{ $buku->total_dipinjam }}x
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h4>{{ $buku->judul_buku }}</h4>
+                    <p>{{ $buku->pengarang ?: 'Penulis tidak diketahui' }}</p>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 

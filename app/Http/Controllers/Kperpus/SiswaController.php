@@ -10,10 +10,14 @@ class SiswaController extends Controller
 {
     public function index(Request $request)
     {
-        $kelas = $request->query('kelas', 'VII-A');
+        $kelas = $request->query('kelas', 'all');
         $search = $request->query('search');
 
-        $query = Siswa::latest()->where('kelas', $kelas);
+        $query = Siswa::latest();
+
+        if ($kelas !== 'all') {
+            $query->where('kelas', $kelas);
+        }
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -44,7 +48,7 @@ class SiswaController extends Controller
 
         Siswa::create($request->all());
 
-        return redirect()->route('kperpus.siswa.index')
+        return redirect()->route('kperpus.siswa.index', ['kelas' => $request->kelas])
                          ->with('success', 'Data siswa berhasil ditambahkan');
     }
 
@@ -66,14 +70,15 @@ class SiswaController extends Controller
 
         $siswa->update($request->all());
 
-        return redirect()->route('kperpus.siswa.index')
+        return redirect()->route('kperpus.siswa.index', ['kelas' => $request->kelas])
                          ->with('success', 'Data siswa berhasil diperbarui');
     }
 
     public function destroy(Siswa $siswa)
     {
+        $kelas = $siswa->kelas;
         $siswa->delete();
-        return redirect()->route('kperpus.siswa.index')
+        return redirect()->route('kperpus.siswa.index', ['kelas' => $kelas])
                          ->with('success', 'Data siswa berhasil dihapus');
     }
 }

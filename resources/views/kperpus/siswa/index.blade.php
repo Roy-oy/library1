@@ -274,6 +274,9 @@
         <div class="toolbar-upper">
             {{-- Bagian Kiri: Filter Kapsul Kelas --}}
             <div class="filter-inline-group">
+                <a href="{{ route('kperpus.siswa.index', ['kelas' => 'all', 'search' => request('search')]) }}" class="btn-filter-pill {{ $kelas === 'all' ? 'active' : '' }}" style="text-decoration: none;">
+                    Semua
+                </a>
                 @foreach(['VII-A', 'VII-B', 'VIII-A', 'VIII-B', 'IX-A', 'IX-B'] as $kls)
                     <a href="{{ route('kperpus.siswa.index', ['kelas' => $kls, 'search' => request('search')]) }}" class="btn-filter-pill {{ $kelas === $kls ? 'active' : '' }}" style="text-decoration: none;">
                         Kelas {{ $kls }}
@@ -291,7 +294,7 @@
         
         {{-- Status Filter Saat ini --}}
         <div class="total-label" style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Total data pada kelas {{ $kelas }}: <strong>{{ $siswa->total() }} siswa</strong></span>
+            <span>Total data {{ $kelas === 'all' ? 'seluruh siswa' : 'pada kelas ' . $kelas }}: <strong>{{ $siswa->total() }} siswa</strong></span>
             @if(request('search'))
                 <a href="{{ route('kperpus.siswa.index', ['kelas' => $kelas]) }}" class="btn-cancel-modal" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; text-decoration: none;"><i class="fas fa-times"></i> Reset Pencarian</a>
             @endif
@@ -448,5 +451,14 @@
         modal.classList.remove('show');
         setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
+
+    // Auto-open modal if validation errors exist
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            // For now, default to opening the create modal if errors occur
+            // You can refine this logic if you need to distinguish between create and edit errors
+            openCreateModal();
+        });
+    @endif
 </script>
 @endpush

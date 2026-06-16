@@ -475,13 +475,27 @@ class PeminjamanController extends Controller
 
     public function prosesAkhirTahunBos(Request $request)
     {
+        // Validasi dasar
         $request->validate([
-            'detail'               => ['required', 'array'],
+            'detail'               => ['required', 'array', 'min:1'],
             'detail.*.id_detail'   => ['required', 'exists:detail_peminjaman,id_detail'],
             'detail.*.kondisi'     => ['required', Rule::in(['baik', 'rusak', 'hilang'])],
             'detail.*.denda_ganti' => ['nullable', 'integer', 'min:0'],
             'detail.*.keterangan'  => ['nullable', 'string'],
         ]);
+
+        // Validasi custom: denda wajib diisi jika rusak/hilang
+        foreach ($request->detail as $index => $item) {
+            if (in_array($item['kondisi'] ?? null, ['rusak', 'hilang'])) {
+                if (empty($item['denda_ganti']) || (int)$item['denda_ganti'] === 0) {
+                    return back()
+                        ->withErrors([
+                            "detail.{$index}.denda_ganti" => 'Denda ganti wajib diisi jika buku rusak atau hilang.'
+                        ])
+                        ->withInput();
+                }
+            }
+        }
 
         DB::beginTransaction();
         $berhasil = 0;
@@ -496,17 +510,19 @@ class PeminjamanController extends Controller
 
                 if ($item['kondisi'] === 'baik') {
                     $detail->prosesPengembalian(now(), $item['keterangan'] ?? null);
+                    
+                    // Hanya jika kondisi BAIK, stok bertambah dan status update
+                    $detail->buku->increment('stok');
+                    if ($detail->buku->stok > 0 && $detail->buku->status_buku === 'habis') {
+                        $detail->buku->update(['status_buku' => 'tersedia']);
+                    }
                 } else {
                     $detail->prosesHilangAtauRusak(
                         $item['kondisi'],
                         (int) ($item['denda_ganti'] ?? 0),
                         $item['keterangan'] ?? null
                     );
-                }
-
-                $detail->buku->increment('stok');
-                if ($detail->buku->stok > 0 && $detail->buku->status_buku === 'habis') {
-                    $detail->buku->update(['status_buku' => 'tersedia']);
+                    // Jika hilang/rusak, stok TIDAK bertambah (buku tidak bisa dipinjam lagi)
                 }
 
                 $detail->peminjaman->syncStatus();
@@ -516,10 +532,10 @@ class PeminjamanController extends Controller
             DB::commit();
             return redirect()
                 ->route('pperpus.pengembalian.bos.index')
-                ->with('success', "{$berhasil} buku BOS berhasil diproses pengembalian akhir tahun.");
+                ->with('success', "Berhasil! {$berhasil} buku BOS telah diproses kembali. Data siswa akan diperbarui secara otomatis di daftar.");
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

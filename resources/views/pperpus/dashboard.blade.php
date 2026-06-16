@@ -1,7 +1,7 @@
 @extends('pperpus.layouts.app')
 
 @section('title', 'Dashboard')
-@section('page-title', 'Dashboard Penjaga Perpustakaan')
+@section('page-title', 'DASHBOARD PENJAGA PERPUSTAKAAN')
 
 @push('styles')
 <style>
@@ -623,6 +623,74 @@
         {{ $fines->links() }}
     </div>
     @endif
+</div>
+
+{{-- ─────────────────── RECENT ACTIVITIES ───────────────── --}}
+<div class="section-label mt-4">
+    <i class="fas fa-history"></i> Aktivitas Terbaru Perpustakaan
+</div>
+<div class="panel" style="margin-bottom: 1.8rem;">
+    <div class="panel-header">
+        <h3>
+            <span class="ph-icon" style="background:var(--indigo-50);">
+                <i class="fas fa-history" style="color:var(--indigo-600);"></i>
+            </span>
+            Aktivitas Terbaru
+        </h3>
+        <a href="{{ route('pperpus.report.aktivitas.index') }}" class="panel-badge pb-indigo" style="text-decoration: none;">
+            Semua Laporan <i class="fas fa-arrow-right" style="font-size: .65rem; margin-left: 2px;"></i>
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kode</th>
+                    <th>Siswa</th>
+                    <th>Status</th>
+                    <th>Waktu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($recent_activities as $activity)
+                <tr>
+                    <td>
+                        <span class="code-badge">{{ $activity->peminjaman->kode_peminjaman }}</span>
+                    </td>
+                    <td>
+                        <div style="font-weight: 700; font-size: .82rem;">{{ $activity->peminjaman->siswa->nama_siswa ?? '-' }}</div>
+                        <div style="font-size: .7rem; color: var(--text-light)">{{ $activity->peminjaman->siswa->kelas ?? '-' }}</div>
+                    </td>
+                    <td>
+                        @if($activity->status_detail === 'dipinjam')
+                            <span class="pill pill-info" style="background: #eff6ff; color: #1e40af;"><i class="fas fa-book-reader"></i> Dipinjam</span>
+                        @elseif($activity->status_detail === 'dikembalikan')
+                            <span class="pill pill-success" style="background: #dcfce7; color: #15803d;"><i class="fas fa-check"></i> Kembali</span>
+                        @elseif($activity->status_detail === 'terlambat')
+                            <span class="pill pill-danger" style="background: #fee2e2; color: #b91c1c;"><i class="fas fa-exclamation-triangle"></i> Lambat</span>
+                        @elseif($activity->status_detail === 'hilang')
+                            <span class="pill pill-warning" style="background: #fef3c7; color: #b45309;"><i class="fas fa-times-circle"></i> Hilang</span>
+                        @else
+                            <span class="pill pill-info">{{ ucfirst($activity->status_detail) }}</span>
+                        @endif
+                    </td>
+                    <td style="font-size: .72rem; color: var(--text-muted);">
+                        {{ $activity->updated_at->diffForHumans() }}
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            Belum ada aktivitas terbaru terdeteksi.
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {{-- ─────────────────── TOP SISWA + BUKU ───────────────── --}}

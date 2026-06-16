@@ -179,7 +179,7 @@
         <div class="kop-inner">
             <div class="kop-logo">
                 @php
-                    $imagePath = public_path('images/logos.png');
+                    $imagePath = public_path('images/utama.png');
                     $src = '';
                     if (file_exists($imagePath)) {
                         $imageData = base64_encode(file_get_contents($imagePath));
@@ -279,8 +279,13 @@
                     </td>
                     <td style="text-align: center;">{{ $item->kode_buku }}</td>
                     <td>
-                        {{ $item->buku }} <br>
-                        <small style="color: #2563eb;">({{ $item->kategori }})</small>
+                        @if($item->sumber_buku === 'bos')
+                            <strong>Buku BOS:</strong> {{ $item->buku }}
+                        @else
+                            {{ $item->buku }}
+                        @endif
+                        <br>
+                        <small style="color: #2563eb;">({{ $item->sumber_buku === 'bos' ? 'BOS' : $item->kategori }})</small>
                     </td>
                     <td style="text-align: center;">{{ $item->telat > 0 ? $item->telat : '0' }}</td>
                     <td style="text-align: right;">

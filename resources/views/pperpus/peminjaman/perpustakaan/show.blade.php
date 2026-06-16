@@ -232,7 +232,7 @@
     <div class="kop-surat">
         <div class="kop-inner">
             <div class="kop-logo">
-                <img src="{{ asset('images/logos.png') }}" alt="Logo Sekolah">
+                <img src="{{ asset('images/utama.png') }}" alt="Logo Sekolah">
             </div>
             <div class="kop-teks">
                 <div class="nama-instansi">SMP Negeri 8 Percut Sei Tuan</div>

@@ -177,7 +177,7 @@
         <div class="kop-inner">
             <div class="kop-logo">
                 @php
-                    $imagePath = public_path('images/logos.png');
+                    $imagePath = public_path('images/utama.png');
                     $src = '';
                     if (file_exists($imagePath)) {
                         $imageData = base64_encode(file_get_contents($imagePath));
@@ -279,8 +279,13 @@
                         </td>
                         <td style="text-align: center;">{{ $report->buku->kode_buku ?? '-' }}</td>
                         <td>
-                            {{ $report->buku->judul_buku ?? '-' }} <br>
-                            <small style="color: #2563eb;">({{ optional($report->buku->kategoriBuku)->nama_kategori ?? 'Tanpa Kategori' }})</small>
+                            @if($report->sumber_buku === 'bos')
+                                <strong>Buku BOS:</strong> {{ $report->buku->judul_buku ?? '-' }}
+                            @else
+                                {{ $report->buku->judul_buku ?? '-' }}
+                            @endif
+                            <br>
+                            <small style="color: #2563eb;">({{ $report->sumber_buku === 'bos' ? 'BOS' : (optional($report->buku->kategoriBuku)->nama_kategori ?? 'Tanpa Kategori') }})</small>
                         </td>
                         <td style="text-align: center;">{{ $report->jumlah_hari_terlambat }}</td>
                         <td style="text-align: right;">

@@ -47,6 +47,7 @@
         background: var(--surface); border-radius: 20px; overflow: hidden;
         border: 1px solid var(--border); transition: all .3s ease;
         display: flex; flex-direction: column;
+        cursor: pointer;
     }
     .book-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); border-color: var(--primary); }
     
@@ -78,6 +79,55 @@
     .stok-label { font-size: .65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
     .stok-value { font-size: .95rem; font-weight: 800; color: var(--text); }
     .stok-low { color: var(--danger); }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+        display: none; align-items: center; justify-content: center;
+        z-index: 1000; backdrop-filter: blur(4px); padding: 1.5rem;
+    }
+    .modal-content {
+        background: #fff; width: 100%; max-width: 800px;
+        border-radius: 24px; overflow: hidden; position: relative;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        display: flex; flex-direction: column; max-height: 90vh;
+    }
+    .modal-header {
+        padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-body { padding: 2rem; overflow-y: auto; }
+    .modal-close {
+        background: var(--surface-2); border: none; width: 36px; height: 36px;
+        border-radius: 50%; cursor: pointer; color: var(--text-muted);
+        display: flex; align-items: center; justify-content: center; transition: all .2s;
+    }
+    .modal-close:hover { background: var(--danger-bg); color: var(--danger); }
+
+    .detail-grid { display: grid; grid-template-columns: 280px 1fr; gap: 2.5rem; }
+    @media (max-width: 700px) {
+        .detail-grid { grid-template-columns: 1fr; }
+        .detail-cover { max-width: 200px; margin: 0 auto; }
+    }
+    .detail-cover {
+        border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-md);
+        aspect-ratio: 3/4; background: #f8fafc; display: flex; align-items: center; justify-content: center;
+    }
+    .detail-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .detail-cover i { font-size: 5rem; color: #e2e8f0; }
+
+    .detail-info h2 { font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1.2; margin-bottom: .5rem; }
+    .detail-author { font-size: 1.1rem; color: var(--primary); font-weight: 600; margin-bottom: 2rem; }
+    
+    .detail-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    .meta-item { display: flex; flex-direction: column; gap: .3rem; }
+    .meta-label { font-size: .7rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: .5px; }
+    .meta-value { font-size: .95rem; font-weight: 700; color: var(--text); }
+    
+    .detail-badge {
+        display: inline-block; padding: .5rem 1rem; border-radius: 12px;
+        font-size: .75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
 </style>
 @endpush
 
@@ -128,7 +178,12 @@
 @else
     <div class="books-grid">
         @foreach($buku as $b)
-        <div class="book-card">
+        {{-- BAGIAN YANG DIPERBAIKI: Menggunakan attribute data-* dan melemparkan keyword 'this' --}}
+        <div class="book-card" 
+             data-book="{{ json_encode($b) }}" 
+             data-kategori="{{ $b->kategoriBuku->nama_kategori ?? ($b->kelas ? 'Kelas '.$b->kelas : 'Umum') }}"
+             onclick="showDetail(this)">
+            
             <div class="book-cover">
                 @if($b->gambar)
                     <img src="{{ asset('storage/'.$b->gambar) }}" alt="{{ $b->judul_buku }}">
@@ -160,9 +215,114 @@
         @endforeach
     </div>
 
-    <div style="margin-top: 2rem;">
-        {{ $buku->links() }}
+    {{-- Pagination --}}
+    @if($buku->hasPages())
+    <div class="pagination-wrap" style="margin-top: 2rem; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
+        <span class="info">
+            Menampilkan {{ $buku->firstItem() }}–{{ $buku->lastItem() }} dari {{ $buku->total() }} data
+        </span>
+        {{ $buku->links('pagination::bootstrap-4') }}
     </div>
+    @endif
 @endif
 
+<div id="bookModal" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 style="font-weight: 800; color: var(--text);">Detail Informasi Buku</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-grid">
+                <div class="detail-cover" id="modalCover">
+                    </div>
+                <div class="detail-info">
+                    <div id="modalBadge" class="detail-badge"></div>
+                    <h2 id="modalTitle"></h2>
+                    <div class="detail-author" id="modalAuthor"></div>
+                    
+                    <div class="detail-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Kode Buku</span>
+                            <span class="meta-value" id="modalKode"></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">ISBN</span>
+                            <span class="meta-value" id="modalISBN"></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Kategori</span>
+                            <span class="meta-value" id="modalKategori"></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Tahun Terbit</span>
+                            <span class="meta-value" id="modalTahun"></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Stok Tersedia</span>
+                            <span class="meta-value" id="modalStok"></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Sumber Buku</span>
+                            <span class="meta-value" id="modalSumber" style="text-transform: uppercase;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('scripts')
+<script>
+    function showDetail(element) {
+        // Mengambil data dari atribut HTML data-*
+        const buku = JSON.parse(element.getAttribute('data-book'));
+        const kategoriName = element.getAttribute('data-kategori');
+        
+        const modal = document.getElementById('bookModal');
+        const cover = document.getElementById('modalCover');
+        const badge = document.getElementById('modalBadge');
+        
+        // Set Image / Cover
+        if(buku.gambar) {
+            cover.innerHTML = `<img src="{{ asset('storage') }}/${buku.gambar}" alt="${buku.judul_buku}">`;
+        } else {
+            cover.innerHTML = `<i class="fas fa-book"></i>`;
+        }
+
+        // Set Badge Sumber Buku
+        badge.innerText = buku.sumber_buku === 'bos' ? 'Buku BOS' : 'Buku Perpustakaan';
+        badge.className = 'detail-badge ' + (buku.sumber_buku === 'bos' ? 'badge-bos' : 'badge-perpus');
+
+        // Set Informasi Teks
+        document.getElementById('modalTitle').innerText = buku.judul_buku;
+        document.getElementById('modalAuthor').innerText = 'oleh ' + (buku.pengarang ?? '-');
+        document.getElementById('modalKode').innerText = buku.kode_buku ?? '-';
+        document.getElementById('modalISBN').innerText = buku.isbn || '-';
+        document.getElementById('modalKategori').innerText = kategoriName;
+        document.getElementById('modalTahun').innerText = buku.tahun_terbit ?? '-';
+        document.getElementById('modalStok').innerText = (buku.stok ?? 0) + ' Eksemplar';
+        document.getElementById('modalSumber').innerText = buku.sumber_buku ?? '-';
+
+        // Tampilkan Modal
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Kunci scroll background belakang
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('bookModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Aktifkan kembali scroll background
+    }
+
+    // Menutup modal dengan tombol Escape di Keyboard
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
+@endpush

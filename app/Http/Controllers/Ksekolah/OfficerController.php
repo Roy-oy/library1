@@ -15,7 +15,7 @@ class OfficerController extends Controller
     {
         $officers = User::whereIn('role', ['penjaga_perpustakaan', 'kepala_perpustakaan'])
             ->orderBy('role')
-            ->get();
+            ->paginate(15);
 
         return view('ksekolah.petugas.index', compact('officers'));
     }

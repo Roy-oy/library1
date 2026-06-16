@@ -9,6 +9,6 @@
 ">
     <i class="fas fa-book-open" style="color: var(--purple-400); font-size: .75rem; opacity: .7;"></i>
     <p style="font-size:.78rem; color: var(--text-light); font-weight: 600; letter-spacing: .1px;">
-        &copy; {{ date('Y') }} Sistem Informasi Perpustakaan &mdash; SMP Negeri 1 Percut Sei Tuan
+        &copy; {{ date('Y') }} Sistem Informasi Perpustakaan &mdash; SMP Negeri 8 Percut Sei Tuan
     </p>
 </footer>

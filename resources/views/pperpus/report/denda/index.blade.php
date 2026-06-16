@@ -172,7 +172,7 @@
 
 <div class="card">
     <div class="card-toolbar">
-        <span class="total-label">Ditemukan: <strong>{{ $reports->count() }} transaksi denda</strong></span>
+        <span class="total-label">Ditemukan: <strong>{{ $reports->total() }} transaksi denda</strong></span>
         
         <form action="{{ route('pperpus.report.denda.index') }}" method="GET" class="filter-search-group">
             <div class="search-box">
@@ -234,9 +234,15 @@
                     <td><span class="code-badge">{{ $report->buku->kode_buku ?? '-' }}</span></td>
                     <td style="max-width: 240px; font-weight: 500; color: var(--text); line-height: 1.4; white-space: normal; word-wrap: break-word;">
                         <div>{{ $report->buku->judul_buku ?? '-' }}</div>
-                        <div style="font-size: .75rem; color: var(--primary); background: var(--theme-primary-light); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600;">
-                            {{ optional($report->buku->kategoriBuku)->nama_kategori ?? 'Tanpa Kategori' }}
-                        </div>
+                        @if($report->sumber_buku === 'bos')
+                            <div style="font-size: .75rem; color: #fff; background: var(--theme-primary); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600; text-transform: uppercase;">
+                                <i class="fas fa-graduation-cap" style="font-size: 0.7rem;"></i> BOS
+                            </div>
+                        @else
+                            <div style="font-size: .75rem; color: var(--primary); background: var(--theme-primary-light); padding: 0.15rem 0.4rem; border-radius: 4px; display: inline-block; margin-top: 0.2rem; font-weight: 600;">
+                                <i class="fas fa-tag" style="font-size: 0.7rem;"></i> {{ optional($report->buku->kategoriBuku)->nama_kategori ?? 'Tanpa Kategori' }}
+                            </div>
+                        @endif
                     </td>
                     <td style="text-align: center;">
                         <span class="pill pill-warning">
@@ -282,6 +288,16 @@
             @endif
         </table>
     </div>
+
+    {{-- Pagination --}}
+    @if($reports->hasPages())
+    <div class="pagination-wrap">
+        <span class="info">
+            Menampilkan {{ $reports->firstItem() }}–{{ $reports->lastItem() }} dari {{ $reports->total() }} data
+        </span>
+        {{ $reports->links('pagination::bootstrap-4') }}
+    </div>
+    @endif
 </div>
 
 @endsection

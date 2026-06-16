@@ -59,7 +59,13 @@
                 {{ $item->tanggal_kembali !== '-' ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d/m/Y') : '-' }}
             </td>
             <td style="text-align: center;">{{ $item->kode_buku }}</td>
-            <td>{{ $item->buku }} ({{ $item->kategori }})</td>
+            <td>
+                @if($item->sumber_buku === 'bos')
+                    Buku BOS: {{ $item->buku }} (BOS)
+                @else
+                    {{ $item->buku }} ({{ $item->kategori }})
+                @endif
+            </td>
             <td style="text-align: center;">{{ $item->telat > 0 ? $item->telat : '0' }}</td>
             <td style="text-align: right;">{{ $item->denda > 0 ? $item->denda : '0' }}</td>
             <td style="text-align: center;">{{ $statusLabel }}</td>

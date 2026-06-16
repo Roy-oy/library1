@@ -137,16 +137,6 @@
     .empty-state p { font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem; }
     .empty-state span { font-size: 0.8rem; }
 
-    .pagination-wrap {
-        padding: 1.25rem 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #fafbfc;
-        border-top: 1px solid var(--border);
-    }
-    .pagination-wrap .info { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
-
     @media (max-width: 768px) {
         .page-header { flex-direction: column; align-items: flex-start; }
         .card-toolbar { flex-direction: column; align-items: stretch; }

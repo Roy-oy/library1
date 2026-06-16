@@ -87,6 +87,12 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        return view('pperpus.dashboard', compact('stats', 'borrowingsLast7Days', 'fines', 'topStudents', 'topBooks'));
+        // ── 9. Laporan Aktivitas Terbaru ─────────────────────────────
+        $recent_activities = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
+            ->latest('updated_at')
+            ->take(5)
+            ->get();
+
+        return view('pperpus.dashboard', compact('stats', 'borrowingsLast7Days', 'fines', 'topStudents', 'topBooks', 'recent_activities'));
     }
 }

@@ -86,6 +86,22 @@
         box-shadow: 0 0 0 3.5px rgba(13, 148, 136, 0.1);
     }
     .form-control:disabled { background: #f8fafc; cursor: not-allowed; }
+    .form-control:disabled:hover { background: #f8fafc; }
+    
+    /* ── Denda Input Styling ── */
+    .denda-input {
+        transition: all var(--transition-speed);
+    }
+    .denda-input:disabled {
+        background: #f0f4f8;
+        color: #cbd5e1;
+    }
+    .denda-input:not(:disabled) {
+        background: #fff;
+        color: var(--text);
+        border-color: var(--theme-warning) !important;
+        box-shadow: 0 0 0 3.5px rgba(245, 158, 11, 0.1);
+    }
 
     /* ── Card Container ── */
     .card {
@@ -243,6 +259,7 @@
         }
 
         const siswas = data[kelas] || [];
+        // Use == for comparison as idSiswa from select value is string
         const siswa = siswas.find(s => s.id_siswa == idSiswa);
         
         if (siswa) {
@@ -302,7 +319,8 @@
                     <td>
                         <div style="position: relative; display: flex; align-items: center;">
                             <span style="position: absolute; left: 0.75rem; font-weight: 800; color: var(--text-muted); font-size: 0.85rem;">Rp</span>
-                            <input type="number" name="detail[${index}][denda_ganti]" id="denda-${index}" class="form-control" style="padding-left: 2.5rem; font-weight: 800;" placeholder="0" disabled>
+                            <input type="number" name="detail[${index}][denda_ganti]" id="denda-${index}" class="form-control denda-input" style="padding-left: 2.5rem; font-weight: 800;" placeholder="0" value="0" data-index="${index}">
+                            <input type="hidden" id="denda-enabled-${index}" name="denda_enabled[${index}]" value="0">
                         </div>
                     </td>
                     <td>
@@ -317,7 +335,7 @@
                         </table>
                     </div>
                     <div style="padding: 1.5rem; background: #fafbfc; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
-                        <button type="button" class="btn-submit" onclick="confirmProses(this, '${siswa.nama_siswa}', ${siswa.buku.length})">
+                        <button type="submit" class="btn-submit">
                             <i class="fas fa-check-double"></i> Selesaikan Pengembalian
                         </button>
                     </div>
@@ -326,40 +344,119 @@
         `;
         
         container.innerHTML = html;
-    }
 
-    window.confirmProses = function(btn, namaSiswa, jmlBuku) {
-        const form = btn.closest('form');
-        if (!form.reportValidity()) {
-            return;
-        }
+        // Initialize all kondisi selects
+        const kondisiSelects = form.querySelectorAll('select[name*="[kondisi]"]');
+        kondisiSelects.forEach(select => {
+            const index = select.name.match(/detail\[(\d+)\]/)[1];
+            // Set initial state - default to "baik"
+            select.value = 'baik';
+            toggleDendaField(select, index);
+        });
 
-        Swal.fire({
-            title: 'Konfirmasi Pengembalian',
-            text: `Proses pengembalian ${jmlBuku} buku untuk ${namaSiswa}?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#0d9488',
-            cancelButtonColor: '#ef4444',
-            confirmButtonText: 'Ya, Proses Sekarang',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
+        // Add submit event listener to the newly created form
+        const form = document.getElementById('form-kembali');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate denda fields
+            let isValid = true;
+            let errorMsg = '';
+            
+            const kondisiSelects = form.querySelectorAll('select[name*="[kondisi]"]');
+            kondisiSelects.forEach((select, idx) => {
+                const index = select.name.match(/detail\[(\d+)\]/)[1];
+                const dendaInput = document.getElementById('denda-' + index);
+                const kondisi = select.value;
+                
+                if (!select.value) {
+                    isValid = false;
+                    errorMsg = 'Silakan pilih kondisi buku untuk semua buku!';
+                    select.focus();
+                    return;
+                }
+                
+                if ((kondisi === 'rusak' || kondisi === 'hilang') && (!dendaInput.value || dendaInput.value === '0')) {
+                    isValid = false;
+                    errorMsg = 'Denda ganti harus diisi jika buku rusak atau hilang!';
+                    dendaInput.focus();
+                    return;
+                }
+            });
+            
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validasi Gagal',
+                    text: errorMsg,
+                    confirmButtonColor: '#0d9488'
+                });
+                return;
             }
-        })
+
+            Swal.fire({
+                title: 'Konfirmasi Pengembalian',
+                text: `Proses pengembalian ${siswa.buku.length} buku untuk ${siswa.nama_siswa}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#0d9488',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: 'Ya, Proses Sekarang',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clean up disabled inputs before submission
+                    const kondisiSelects = form.querySelectorAll('select[name*="[kondisi]"]');
+                    kondisiSelects.forEach(select => {
+                        const index = select.name.match(/detail\[(\d+)\]/)[1];
+                        const dendaInput = document.getElementById('denda-' + index);
+                        
+                        // If kondisi is 'baik', ensure denda is 0
+                        if (select.value === 'baik') {
+                            dendaInput.value = '0';
+                        }
+                        
+                        // Make sure denda input is not disabled before submitting
+                        dendaInput.disabled = false;
+                    });
+                    
+                    this.submit();
+                }
+            });
+        });
     }
 
     window.toggleDendaField = function(select, index) {
         const dendaInput = document.getElementById('denda-' + index);
+        const dendaEnabled = document.getElementById('denda-enabled-' + index);
+        const tr = select.closest('tr');
+        
         if (select.value === 'rusak' || select.value === 'hilang') {
+            // Enable denda input
             dendaInput.disabled = false;
+            dendaInput.style.opacity = '1';
+            dendaInput.style.cursor = 'pointer';
+            dendaEnabled.value = '1';
+            
+            // Set minimum value if needed
+            if (!dendaInput.value || dendaInput.value === '0') {
+                dendaInput.value = '50000';
+            }
             dendaInput.focus();
-            dendaInput.required = true;
+            dendaInput.select();
+            
+            // Add visual indicator
+            tr.style.backgroundColor = 'var(--theme-warning-light)';
         } else {
+            // Reset denda input
             dendaInput.disabled = true;
-            dendaInput.value = '';
-            dendaInput.required = false;
+            dendaInput.style.opacity = '0.6';
+            dendaInput.style.cursor = 'not-allowed';
+            dendaInput.value = '0';
+            dendaEnabled.value = '0';
+            
+            // Remove visual indicator
+            tr.style.backgroundColor = '';
         }
     }
 </script>

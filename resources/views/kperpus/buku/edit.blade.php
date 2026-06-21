@@ -420,6 +420,15 @@
                     @enderror
                 </div>
 
+                {{-- Rak Buku --}}
+                <div class="form-group">
+                    <label for="rak"><i class="fas fa-archive"></i> Lokasi Rak</label>
+                    <input type="text" name="rak" id="rak" class="form-input @error('rak') is-invalid @enderror" placeholder="Contoh: R-01, A-1" value="{{ old('rak', $buku->rak) }}">
+                    @error('rak')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 {{-- Preview Cover Aktif Saat Ini --}}
                 <div class="full-width">
                     <div class="current-cover-wrap">

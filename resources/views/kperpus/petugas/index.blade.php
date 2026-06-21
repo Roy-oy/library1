@@ -1,7 +1,7 @@
 @extends('kperpus.layouts.app')
 
-@section('title', 'Manajemen Petugas')
-@section('page-title', 'Manajemen Petugas')
+@section('title', 'Manajemen Pengguna')
+@section('page-title', 'Manajemen Pengguna')
 
 @push('styles')
 <style>
@@ -413,18 +413,18 @@
 {{-- Page Header --}}
 <div class="page-header">
     <div class="page-header-title">
-        <h1><i class="fas fa-user-shield" style="color:var(--primary)"></i> Manajemen Petugas</h1>
-        <p>Kelola data penjaga perpustakaan (staff operasional)</p>
+        <h1><i class="fas fa-users-cog" style="color:var(--primary)"></i> Manajemen Pengguna</h1>
+        <p>Kelola data pengguna: Penjaga Perpustakaan & Kepala Sekolah</p>
     </div>
     <button type="button" onclick="openCreateModal()" class="btn-primary" style="border:none; cursor:pointer; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.2rem; border-radius:10px; font-weight:700;">
-        <i class="fas fa-plus"></i> Tambah Petugas
+        <i class="fas fa-plus"></i> Tambah Pengguna
     </button>
 </div>
 
 {{-- Table Card --}}
 <div class="card">
     <div class="card-toolbar">
-        <span class="total-label">Total petugas: <strong>{{ $officers->count() }} orang</strong></span>
+        <span class="total-label">Total pengguna: <strong>{{ $officers->count() }} orang</strong></span>
     </div>
 
     <div class="table-wrap">
@@ -432,9 +432,11 @@
             <thead>
                 <tr>
                     <th style="width: 60px; text-align: center;">No</th>
-                    <th style="text-align: left;">Nama Petugas</th>
-                    <th style="width: 200px; text-align: left;">Username</th>
-                    <th style="width: 200px; text-align: left;">Terdaftar Sejak</th>
+                    <th style="text-align: left;">Nama Pengguna</th>
+                    <th style="width: 180px; text-align: left;">Role</th>
+                    <th style="width: 150px; text-align: left;">Username</th>
+                    <th style="width: 100px; text-align: center;">Status</th>
+                    <th style="width: 120px; text-align: left;">Terdaftar Sejak</th>
                     <th style="width: 120px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
@@ -453,9 +455,19 @@
                         </span>
                     </td>
                     <td style="text-align: left;">
+                        <span style="font-size: 0.82rem; font-weight: 700; color: var(--text); background: #e2e8f0; padding: 0.25rem 0.6rem; border-radius: 6px; text-transform: uppercase;">
+                            {{ $officer->role === 'kepala_sekolah' ? 'Kepala Sekolah' : 'Penjaga Perpustakaan' }}
+                        </span>
+                    </td>
+                    <td style="text-align: left;">
                         <span class="username-pill">
                             <i class="fas fa-at"></i>
                             {{ $officer->username }}
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <span style="font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.7rem; border-radius: 20px; text-transform: uppercase; {{ $officer->is_active ? 'color: var(--theme-success); background: var(--theme-success-light); border: 1px solid #6ee7b7;' : 'color: var(--theme-danger); background: var(--theme-danger-light); border: 1px solid #fca5a5;' }}">
+                            {{ $officer->is_active ? 'Aktif' : 'Non-Aktif' }}
                         </span>
                     </td>
                     <td style="text-align: left;">
@@ -466,11 +478,11 @@
                     </td>
                     <td>
                         <div class="actions" style="justify-content: center;">
-                            <button type="button" class="btn-icon btn-edit" title="Edit Petugas" 
-                                    onclick="openEditModal('{{ $officer->id }}', '{{ addslashes($officer->name) }}', '{{ addslashes($officer->username) }}')">
+                            <button type="button" class="btn-icon btn-edit" title="Edit Pengguna" 
+                                    onclick="openEditModal('{{ $officer->id }}', '{{ addslashes($officer->name) }}', '{{ addslashes($officer->username) }}', '{{ $officer->role }}', {{ $officer->is_active ? 1 : 0 }})">
                                 <i class="fas fa-pen"></i>
                             </button>
-                            <button type="button" class="btn-icon btn-del" title="Hapus Petugas"
+                            <button type="button" class="btn-icon btn-del" title="Hapus Pengguna"
                                 onclick="confirmDelete(
                                     '{{ route('kperpus.petugas.destroy', $officer->id) }}',
                                     '{{ addslashes(strtoupper($officer->name)) }}'
@@ -534,15 +546,19 @@
     }
 
     /* ── Fungsi Pop-up Edit ── */
-    function openEditModal(id, name, username) {
+    function openEditModal(id, name, username, role, is_active) {
         const modal = document.getElementById('edit-modal');
         const form = document.getElementById('edit-form-action');
         const inputName = document.getElementById('edit_name');
         const inputUsername = document.getElementById('edit_username');
+        const selectRole = document.getElementById('edit_role');
+        const selectStatus = document.getElementById('edit_is_active');
 
         form.action = updateUrlBase + '/' + id;
         inputName.value = name;
         inputUsername.value = username;
+        if(selectRole) selectRole.value = role;
+        if(selectStatus) selectStatus.value = is_active;
 
         modal.style.display = 'flex';
         setTimeout(() => { 
@@ -568,7 +584,7 @@
     /* ── Fungsi Modal Delete ── */
     function confirmDelete(url, name) {
         document.getElementById('delete-form').action = url;
-        document.getElementById('delete-modal-msg').innerHTML = 'Apakah Anda yakin ingin menghapus petugas <strong style="color: var(--text)">"' + name + '"</strong>? Data yang dihapus tidak dapat dikembalikan.';
+        document.getElementById('delete-modal-msg').innerHTML = 'Apakah Anda yakin ingin menghapus pengguna <strong style="color: var(--text)">"' + name + '"</strong>? Data yang dihapus tidak dapat dikembalikan.';
         const modal = document.getElementById('delete-modal');
         modal.style.display = 'flex';
         setTimeout(() => { modal.classList.add('show'); }, 10);

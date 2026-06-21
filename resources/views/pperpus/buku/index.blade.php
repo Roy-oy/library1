@@ -15,7 +15,7 @@
     }
     .search-grid {
         display: grid;
-        grid-template-columns: 1fr 200px 200px 120px;
+        grid-template-columns: 1fr 160px 160px 140px 120px;
         gap: 1rem;
     }
     @media (max-width: 900px) {
@@ -158,6 +158,17 @@
                 <option value="bos" {{ request('sumber') == 'bos' ? 'selected' : '' }}>Buku BOS</option>
             </select>
         </div>
+        <div class="form-group">
+            <label>Rak</label>
+            <select name="rak" class="form-input">
+                <option value="">Semua Rak</option>
+                @if(isset($raks))
+                    @foreach($raks as $r)
+                        <option value="{{ $r }}" {{ request('rak') == $r ? 'selected' : '' }}>{{ $r }}</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
         <div class="form-group" style="display: flex; align-items: flex-end;">
             <button type="submit" class="btn-search" style="width: 100%; height: 42px;">
                 <i class="fas fa-search"></i> Cari
@@ -207,8 +218,9 @@
                     <span class="stok-label">Tersedia</span>
                     <span class="stok-value {{ $b->stok <= 2 ? 'stok-low' : '' }}">{{ $b->stok }} Eks.</span>
                 </div>
-                <div style="font-size: .8rem; font-weight: 700; color: var(--text-muted);">
-                    {{ $b->tahun_terbit }}
+                <div style="text-align: right;">
+                    <div style="font-size: .75rem; font-weight: 800; color: var(--primary);">Rak: {{ $b->rak ?? '-' }}</div>
+                    <div style="font-size: .8rem; font-weight: 700; color: var(--text-muted);">{{ $b->tahun_terbit }}</div>
                 </div>
             </div>
         </div>
@@ -268,6 +280,10 @@
                             <span class="meta-label">Sumber Buku</span>
                             <span class="meta-value" id="modalSumber" style="text-transform: uppercase;"></span>
                         </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Rak</span>
+                            <span class="meta-value" id="modalRak"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -308,6 +324,7 @@
         document.getElementById('modalTahun').innerText = buku.tahun_terbit ?? '-';
         document.getElementById('modalStok').innerText = (buku.stok ?? 0) + ' Eksemplar';
         document.getElementById('modalSumber').innerText = buku.sumber_buku ?? '-';
+        document.getElementById('modalRak').innerText = buku.rak ?? '-';
 
         // Tampilkan Modal
         modal.style.display = 'flex';

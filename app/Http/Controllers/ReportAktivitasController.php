@@ -19,6 +19,7 @@ class ReportAktivitasController extends Controller
         $sumberBuku = $request->input('sumber_buku', 'buku perpus');
         $kelasFilter = $request->input('kelas');
         $kategoriFilter = $request->input('kategori');
+        $statusFilter = $request->input('status');
 
         $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku.kategoriBuku'])
             ->where('sumber_buku', $sumberBuku)
@@ -36,6 +37,12 @@ class ReportAktivitasController extends Controller
             $query->whereHas('buku', function($q) use ($kategoriFilter) {
                 $q->where('id_kategori', $kategoriFilter);
             });
+        }
+
+        if ($statusFilter === 'dipinjam') {
+            $query->whereIn('status_detail', ['dipinjam', 'terlambat']);
+        } elseif ($statusFilter === 'selesai') {
+            $query->whereNotIn('status_detail', ['dipinjam', 'terlambat']);
         }
 
         $detailPeminjaman = $query->get();
@@ -76,6 +83,7 @@ class ReportAktivitasController extends Controller
         $sumberBuku = $request->input('sumber_buku', 'buku perpus');
         $kelasFilter = $request->input('kelas');
         $kategoriFilter = $request->input('kategori');
+        $statusFilter = $request->input('status');
 
         $aktivitas = $this->getFilteredAktivitas($request);
 
@@ -98,6 +106,7 @@ class ReportAktivitasController extends Controller
             'sumberBuku',
             'kelasFilter',
             'kategoriFilter',
+            'statusFilter',
             'kelases',
             'kategoris',
             'layout'

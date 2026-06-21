@@ -331,6 +331,19 @@
                 </div>
             </div>
 
+            {{-- Filter Status --}}
+            <div class="filter-item">
+                <label class="filter-label">Status</label>
+                <div class="filter-control-wrap">
+                    <i class="fas fa-tasks input-icon"></i>
+                    <select name="status" class="filter-control" onchange="this.form.submit()">
+                        <option value="">Semua Status</option>
+                        <option value="dipinjam" {{ request('status') == 'dipinjam' ? 'selected' : '' }}>Sedang Dipinjam</option>
+                        <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai / Kembali</option>
+                    </select>
+                </div>
+            </div>
+
             {{-- Filter 2: Kondisional Kategori / Kelas --}}
             @if((request('sumber_buku') ?? 'buku perpus') === 'buku perpus')
                 <div class="filter-item">
@@ -372,7 +385,7 @@
             </div>
 
             {{-- Action Filter Buttons (Reset) --}}
-            @if(request()->filled('sumber_buku') || request()->filled('kategori') || request()->filled('kelas') || request()->filled('start_date') || request()->filled('end_date'))
+            @if(request()->filled('sumber_buku') || request()->filled('kategori') || request()->filled('kelas') || request()->filled('status') || request()->filled('start_date') || request()->filled('end_date'))
                 <div class="filter-item actions-filter">
                     <a href="{{ route($prefix . 'report.aktivitas.index') }}" class="btn-reset-filter" title="Bersihkan Semua Filter">
                         <i class="fas fa-undo mr-1"></i> Reset

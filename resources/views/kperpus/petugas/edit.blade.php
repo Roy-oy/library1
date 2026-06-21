@@ -42,6 +42,38 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="edit_role">Role (Peran) <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-user-tag input-icon"></i>
+                            <select name="role" id="edit_role" class="form-control @error('role') is-invalid @enderror" required>
+                                <option value="penjaga_perpustakaan">Penjaga Perpustakaan</option>
+                                <option value="kepala_sekolah">Kepala Sekolah</option>
+                            </select>
+                        </div>
+                        @error('role')
+                            <span class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_is_active">Status Akun <span class="req">*</span></label>
+                        <div class="form-control-wrap">
+                            <i class="fas fa-power-off input-icon"></i>
+                            <select name="is_active" id="edit_is_active" class="form-control @error('is_active') is-invalid @enderror" required>
+                                <option value="1">Aktif (Dapat Login)</option>
+                                <option value="0">Non-Aktif (Akses Diblokir)</option>
+                            </select>
+                        </div>
+                        @error('is_active')
+                            <span class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label for="edit_password">Password Baru</label>
                         <div class="form-control-wrap">
                             <i class="fas fa-lock input-icon"></i>

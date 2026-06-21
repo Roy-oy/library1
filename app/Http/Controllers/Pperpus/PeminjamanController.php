@@ -26,7 +26,11 @@ class PeminjamanController extends Controller
             ->latest('tanggal_pinjam');
 
         if ($request->filled('status')) {
-            $query->where('status_peminjaman', $request->status);
+            if ($request->status === 'dipinjam') {
+                $query->whereIn('status_peminjaman', ['dipinjam', 'dikembalikan']);
+            } else {
+                $query->where('status_peminjaman', $request->status);
+            }
         }
         if ($request->filled('kelas')) {
             $query->whereHas('siswa', function($q) use ($request) {
@@ -283,11 +287,25 @@ class PeminjamanController extends Controller
 
     public function indexPengembalianPerpustakaan(Request $request)
     {
-        $query = Peminjaman::where('status_peminjaman', 'dipinjam')
-            ->whereHas('details', function($q) {
-                $q->where('sumber_buku', 'buku perpus')->whereIn('status_detail', ['dipinjam', 'terlambat']);
+        $query = Peminjaman::whereHas('details', function($q) {
+                $q->where('sumber_buku', 'buku perpus');
             })->with(['siswa', 'details.buku'])
             ->latest('tanggal_pinjam');
+
+        if ($request->filled('status')) {
+            if ($request->status === 'dipinjam') {
+                $query->whereIn('status_peminjaman', ['dipinjam', 'dikembalikan']);
+            } else {
+                $query->where('status_peminjaman', $request->status);
+            }
+        }
+
+        if ($request->filled('dari')) {
+            $query->whereDate('tanggal_pinjam', '>=', $request->dari);
+        }
+        if ($request->filled('sampai')) {
+            $query->whereDate('tanggal_pinjam', '<=', $request->sampai);
+        }
 
         if ($request->filled('q')) {
             $q = $request->q;
@@ -363,8 +381,15 @@ class PeminjamanController extends Controller
 
             $peminjaman->syncStatus();
             DB::commit();
+
+            if ($peminjaman->ada_denda_belum_lunas) {
+                return redirect()
+                    ->route('pperpus.peminjaman.perpustakaan.show', $peminjaman->id_peminjaman)
+                    ->with('success', 'Pengembalian buku perpustakaan berhasil diproses. Silakan selesaikan pembayaran denda.');
+            }
+
             return redirect()
-                ->route('pperpus.peminjaman.perpustakaan.show', $peminjaman->id_peminjaman)
+                ->route('pperpus.pengembalian.perpustakaan.index')
                 ->with('success', 'Pengembalian buku perpustakaan berhasil diproses.');
         } catch (\Exception $e) {
             DB::rollBack();

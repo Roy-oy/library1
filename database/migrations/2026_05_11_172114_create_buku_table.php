@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('isbn', 13)->unique()->nullable();
             $table->integer('stok')->default(1);
             $table->string('gambar')->nullable();
+            $table->string('rak')->nullable();
             
             // Penentu utama: Buku BOS atau Buku Perpus
             $table->enum('sumber_buku', ['bos', 'buku perpus'])->default('buku perpus');

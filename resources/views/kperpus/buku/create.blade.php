@@ -369,6 +369,12 @@
                     <input type="number" name="stok" id="stok" class="form-input" required min="0" value="{{ old('stok', 1) }}">
                 </div>
 
+                {{-- Rak Buku --}}
+                <div class="form-group">
+                    <label for="rak"><i class="fas fa-archive"></i> Lokasi Rak</label>
+                    <input type="text" name="rak" id="rak" class="form-input" placeholder="Contoh: R-01, A-1" value="{{ old('rak') }}">
+                </div>
+
                 {{-- File Sampul Dropzone Berwarna --}}
                 <div class="form-group full-width">
                     <label><i class="fas fa-image"></i> Foto Sampul Buku</label>

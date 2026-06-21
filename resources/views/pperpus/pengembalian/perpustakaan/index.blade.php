@@ -130,6 +130,23 @@
     }
     .btn-action:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }
 
+    /* ── Filter Select ── */
+    .filter-select {
+        padding: 0.55rem 1rem;
+        border-radius: 10px;
+        border: 1.5px solid var(--border);
+        background: #fff;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text);
+        outline: none;
+        cursor: pointer;
+        transition: all var(--transition-speed);
+        font-family: inherit;
+    }
+    .filter-select:hover { border-color: var(--primary); }
+    .filter-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1); }
+
     .empty-state {
         text-align: center; padding: 3rem 1.5rem; color: var(--text-light);
     }
@@ -158,13 +175,41 @@
 
 <div class="card">
     <div class="card-toolbar">
-        <span class="total-label">Total transaksi aktif: <strong>{{ $peminjamans->total() }} data</strong></span>
+        <span class="total-label">Total ditemukan: <strong>{{ $peminjamans->total() }} transaksi</strong></span>
         
         <form action="{{ route('pperpus.pengembalian.perpustakaan.index') }}" method="GET" class="filter-search-group">
+            <!-- Filter Status -->
+            <div class="search-box">
+                <i class="fas fa-filter"></i>
+                <select name="status" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); cursor:pointer;">
+                    <option value="">Semua Status</option>
+                    <option value="dipinjam" {{ request('status') == 'dipinjam' ? 'selected' : '' }}>Dipinjam / Belum Selesai</option>
+                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                </select>
+            </div>
+
+            <!-- Filter Tanggal -->
+            <div class="search-box">
+                <i class="far fa-calendar-alt"></i>
+                <input type="date" name="dari" value="{{ request('dari') }}" title="Dari Tanggal" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); width: auto;">
+                <span style="color:var(--border); margin: 0 0.25rem;">—</span>
+                <input type="date" name="sampai" value="{{ request('sampai') }}" title="Sampai Tanggal" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); width: auto;">
+            </div>
+
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" name="q" placeholder="Cari NIS / Nama / Kode..." value="{{ request('q') }}">
             </div>
+
+            <button type="submit" class="btn-action" style="border:none; cursor:pointer;">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+
+            @if(request()->anyFilled(['status', 'dari', 'sampai', 'q']))
+                <a href="{{ route('pperpus.pengembalian.perpustakaan.index') }}" class="btn-action" style="background:var(--danger-bg); color:var(--danger)">
+                    <i class="fas fa-times"></i> Reset
+                </a>
+            @endif
         </form>
     </div>
 
@@ -177,7 +222,7 @@
                     <th>Informasi Peminjam</th>
                     <th>Tanggal Pinjam</th>
                     <th>Jumlah Buku</th>
-                    <th>Status</th>
+                    <th style="text-align: center">Status</th>
                     <th style="text-align: center;">Aksi</th>
                 </tr>
             </thead>
@@ -199,19 +244,31 @@
                             {{ $pjm->details->count() }} Buku
                         </span>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         @if($pjm->status_peminjaman === 'dipinjam')
                             <span class="pill pill-warning"><i class="fas fa-clock"></i> Sedang Dipinjam</span>
                         @elseif($pjm->status_peminjaman === 'dikembalikan')
-                            <span class="pill pill-info"><i class="fas fa-check-circle"></i> Dikembalikan (Denda)</span>
+                            <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Belum Selesai (Denda)</span>
                         @else
-                            <span class="pill pill-success"><i class="fas fa-check-circle"></i> Selesai</span>
+                            @if($pjm->ada_denda_belum_lunas)
+                                <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Belum Selesai (Denda)</span>
+                            @elseif($pjm->total_denda > 0)
+                                <span class="pill pill-success"><i class="fas fa-check-circle"></i> Selesai (Denda)</span>
+                            @else
+                                <span class="pill pill-success"><i class="fas fa-check-circle"></i> Selesai</span>
+                            @endif
                         @endif
                     </td>
                     <td style="text-align: center;">
-                        <a href="{{ route('pperpus.pengembalian.perpustakaan.formKembali', $pjm->id_peminjaman) }}" class="btn-action">
-                            <i class="fas fa-reply"></i> Proses Kembali
-                        </a>
+                        @if($pjm->status_peminjaman === 'dipinjam')
+                            <a href="{{ route('pperpus.pengembalian.perpustakaan.formKembali', $pjm->id_peminjaman) }}" class="btn-action">
+                                <i class="fas fa-reply"></i> Proses Kembali
+                            </a>
+                        @else
+                            <a href="{{ route('pperpus.peminjaman.perpustakaan.show', $pjm->id_peminjaman) }}" class="btn-action" style="background: #e0f2fe; color: #0369a1;">
+                                <i class="fas fa-eye"></i> Lihat Detail
+                            </a>
+                        @endif
                     </td>
                 </tr>
                 @empty

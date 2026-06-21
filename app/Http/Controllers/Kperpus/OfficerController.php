@@ -14,7 +14,7 @@ class OfficerController extends Controller
      */
     public function index()
     {
-        $officers = User::where('role', 'penjaga_perpustakaan')->latest()->get();
+        $officers = User::whereIn('role', ['penjaga_perpustakaan', 'kepala_sekolah'])->latest()->get();
         return view('kperpus.petugas.index', compact('officers'));
     }
 
@@ -35,17 +35,18 @@ class OfficerController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role' => 'required|in:penjaga_perpustakaan,kepala_sekolah',
         ]);
 
         User::create([
             'name' => $request->name,
             'username' => $request->username,
             'password' => Hash::make($request->password),
-            'role' => 'penjaga_perpustakaan',
+            'role' => $request->role,
             'is_active' => true,
         ]);
 
-        return redirect()->route('kperpus.petugas.index')->with('success', 'Petugas berhasil ditambahkan.');
+        return redirect()->route('kperpus.petugas.index')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     /**
@@ -65,10 +66,14 @@ class OfficerController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $petuga->id,
             'password' => 'nullable|string|min:8',
+            'role' => 'required|in:penjaga_perpustakaan,kepala_sekolah',
+            'is_active' => 'required|boolean',
         ]);
 
         $petuga->name = $request->name;
         $petuga->username = $request->username;
+        $petuga->role = $request->role;
+        $petuga->is_active = $request->is_active;
 
         if ($request->filled('password')) {
             $petuga->password = Hash::make($request->password);
@@ -76,7 +81,7 @@ class OfficerController extends Controller
 
         $petuga->save();
 
-        return redirect()->route('kperpus.petugas.index')->with('success', 'Data petugas berhasil diperbarui.');
+        return redirect()->route('kperpus.petugas.index')->with('success', 'Data pengguna berhasil diperbarui.');
     }
 
     /**
@@ -85,6 +90,6 @@ class OfficerController extends Controller
     public function destroy(User $petuga)
     {
         $petuga->delete();
-        return redirect()->route('kperpus.petugas.index')->with('success', 'Petugas berhasil dihapus.');
+        return redirect()->route('kperpus.petugas.index')->with('success', 'Pengguna berhasil dihapus.');
     }
 }

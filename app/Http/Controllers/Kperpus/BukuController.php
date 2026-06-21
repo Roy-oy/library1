@@ -15,6 +15,7 @@ class BukuController extends Controller
         $type = $request->query('type', 'perpus');
         $kategori_filter = $request->query('kategori');
         $kelas_filter = $request->query('kelas');
+        $search = $request->query('search');
 
         $query = Buku::with('kategoriBuku')->latest();
 
@@ -30,6 +31,16 @@ class BukuController extends Controller
                 $query->where('id_kategori', $kategori_filter);
             }
             $pageTitle = 'Data Buku Perpus';
+        }
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('judul_buku', 'LIKE', "%{$search}%")
+                  ->orWhere('pengarang', 'LIKE', "%{$search}%")
+                  ->orWhere('kode_buku', 'LIKE', "%{$search}%")
+                  ->orWhere('isbn', 'LIKE', "%{$search}%")
+                  ->orWhere('rak', 'LIKE', "%{$search}%");
+            });
         }
 
         $buku = $query->paginate(10)->withQueryString();
@@ -66,6 +77,7 @@ class BukuController extends Controller
             'tahun_terbit'  => 'required|digits:4',
             'isbn'          => 'nullable|unique:buku,isbn',
             'stok'          => 'required|integer|min:1',
+            'rak'           => 'nullable|string',
             'sumber_buku'   => 'required|in:bos,buku perpus',
             'id_kategori'   => 'nullable|exists:kategori_buku,id_kategori',
             'kelas'         => 'nullable|in:VII,VIII,IX',
@@ -125,6 +137,7 @@ class BukuController extends Controller
             'tahun_terbit'  => 'required|digits:4',
             'isbn'          => 'nullable|unique:buku,isbn,' . $buku->id_buku . ',id_buku',
             'stok'          => 'required|integer|min:1',
+            'rak'           => 'nullable|string',
             'sumber_buku'   => 'required|in:bos,buku perpus',
             'id_kategori'   => 'nullable|exists:kategori_buku,id_kategori',
             'kelas'         => 'nullable|in:VII,VIII,IX',

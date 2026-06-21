@@ -20,6 +20,7 @@ class Buku extends Model
         'isbn',
         'stok',
         'gambar',
+        'rak',
         'status_buku',
         'id_kategori',
         'kelas',

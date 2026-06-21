@@ -355,6 +355,7 @@
                     <th style="width: 100px; text-align: center;">Tahun</th>
                     <th style="width: 150px; text-align: center;">ISBN</th>
                     <th style="width: 110px; text-align: center;">Stok</th>
+                    <th style="width: 100px; text-align: center;">Rak</th>
                     @if($type !== 'bos')
                         <th style="width: 160px; text-align: left;">Kategori</th>
                     @else
@@ -390,6 +391,9 @@
                         <span class="pill {{ $item->stok > 0 ? 'pill-success' : 'pill-warning' }}">
                             {{ $item->stok }} Eks
                         </span>
+                    </td>
+                    <td style="text-align: center; font-weight: 700; color: #1e3a8a;">
+                        {{ $item->rak ?? '—' }}
                     </td>
                     @if($type !== 'bos')
                         @php
@@ -436,7 +440,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="11">
+                    <td colspan="12">
                         <div style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
                             <i class="fas fa-book-open" style="font-size: 3rem; color: var(--primary); opacity: 0.3; margin-bottom: 1rem; display: block;"></i>
                             <p style="font-weight: 600; font-size: 0.95rem;">Belum ada data koleksi buku.</p>

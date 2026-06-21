@@ -164,10 +164,38 @@
         <span class="total-label">Total ditemukan: <strong>{{ $peminjamans->total() }} transaksi</strong></span>
         
         <form action="{{ route('pperpus.peminjaman.perpustakaan.index') }}" method="GET" class="filter-search-group">
+            <!-- Filter Status -->
+            <div class="search-box">
+                <i class="fas fa-filter"></i>
+                <select name="status" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); cursor:pointer;">
+                    <option value="">Semua Status</option>
+                    <option value="dipinjam" {{ request('status') == 'dipinjam' ? 'selected' : '' }}>Dipinjam / Belum Selesai</option>
+                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                </select>
+            </div>
+
+            <!-- Filter Tanggal -->
+            <div class="search-box">
+                <i class="far fa-calendar-alt"></i>
+                <input type="date" name="dari" value="{{ request('dari') }}" title="Dari Tanggal" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); width: auto;">
+                <span style="color:var(--border); margin: 0 0.25rem;">—</span>
+                <input type="date" name="sampai" value="{{ request('sampai') }}" title="Sampai Tanggal" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); width: auto;">
+            </div>
+
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" name="q" placeholder="Cari NIS / Nama / Kode..." value="{{ request('q') }}">
             </div>
+
+            <button type="submit" class="btn-action" style="border:none; cursor:pointer;">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+
+            @if(request()->anyFilled(['status', 'dari', 'sampai', 'q']))
+                <a href="{{ route('pperpus.peminjaman.perpustakaan.index') }}" class="btn-action" style="background:var(--danger-bg); color:var(--danger)">
+                    <i class="fas fa-times"></i> Reset
+                </a>
+            @endif
         </form>
     </div>
 
@@ -176,11 +204,11 @@
             <thead>
                 <tr>
                     <th style="width: 60px; text-align: center;">No</th>
-                    <th>Kode Transaksi</th>
-                    <th>Informasi Peminjam</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Jumlah Buku</th>
-                    <th>Status</th>
+                    <th style="text-align: center">Kode Transaksi</th>
+                    <th style="text-align: left">Informasi Peminjam</th>
+                    <th style="text-align: center">Tanggal Pinjam</th>
+                    <th style="text-align: center">Jumlah Buku</th>
+                    <th style="text-align: center">Status</th>
                     <th style="text-align: center;">Aksi</th>
                 </tr>
             </thead>
@@ -188,28 +216,30 @@
                 @forelse($peminjamans as $index => $pjm)
                 <tr>
                     <td style="text-align: center; color: var(--text-muted); font-weight: 600;">{{ $peminjamans->firstItem() + $index }}</td>
-                    <td><span class="code-badge">{{ $pjm->kode_peminjaman }}</span></td>
+                    <td style="text-align: center;"><span class="code-badge">{{ $pjm->kode_peminjaman }}</span></td>
                     <td>
                         <div style="font-weight: 800; color: var(--text)">{{ strtoupper($pjm->siswa->nama_siswa) }}</div>
                         <div style="font-size: .75rem; color: var(--text-muted); margin-top: 2px;">NIS: {{ $pjm->siswa->nis }} — {{ $pjm->siswa->kelas }}</div>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <div style="font-weight: 600;"><i class="far fa-calendar-alt" style="color: var(--primary); margin-right: 0.3rem;"></i> {{ $pjm->tanggal_pinjam->format('d/m/Y') }}</div>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <span class="pill pill-info">
                             <i class="fas fa-book"></i>
                             {{ $pjm->details->count() }} Buku
                         </span>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         @if($pjm->status_peminjaman === 'dipinjam')
                             <span class="pill pill-warning"><i class="fas fa-clock"></i> Sedang Dipinjam</span>
                         @elseif($pjm->status_peminjaman === 'dikembalikan')
-                            <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Denda (Belum Lunas)</span>
+                            <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Belum Selesai (Denda)</span>
                         @else
-                            @if($pjm->total_denda > 0)
-                                <span class="pill pill-success"><i class="fas fa-check-circle"></i> Denda (Lunas)</span>
+                            @if($pjm->ada_denda_belum_lunas)
+                                <span class="pill pill-danger"><i class="fas fa-exclamation-triangle"></i> Belum Selesai (Denda)</span>
+                            @elseif($pjm->total_denda > 0)
+                                <span class="pill pill-success"><i class="fas fa-check-circle"></i> Selesai (Denda)</span>
                             @else
                                 <span class="pill pill-success"><i class="fas fa-check-circle"></i> Selesai</span>
                             @endif

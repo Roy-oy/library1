@@ -40,10 +40,10 @@
             </div>
         </header>
 
-        <!-- CONTENT SIDE (Fokus di sebelah kiri agar seimbang dengan foto di sebelah kanan) -->
-        <main class="w-full max-w-xl text-left my-auto pt-10">
+        <!-- CONTENT SIDE -->
+        <main class="w-full text-center mx-auto my-auto pt-10 flex flex-col items-center">
             <!-- Label Kecil Klasik -->
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/20 border border-blue-500/30 rounded-full mb-6">
+            <div class="inline-flex items-center justify-center gap-2 px-3 py-1 bg-blue-600/20 border border-blue-500/30 rounded-full mb-6">
                 <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
                 <span class="text-blue-300 text-xs font-semibold tracking-widest uppercase">Official Digital Library</span>
             </div>
@@ -55,12 +55,12 @@
             </h2>
 
             <!-- Deskripsi Singkat & Jelas -->
-            <p class="text-gray-300 text-sm md:text-base font-light leading-relaxed mb-8 max-w-md border-b border-white/10 pb-6">
+            <p class="text-gray-300 text-sm md:text-base font-light leading-relaxed mb-8 max-w-lg mx-auto border-b border-white/10 pb-6">
                 Akses ribuan buku, jurnal, dan materi pembelajaran digital dalam satu platform terintegrasi. Mewujudkan generasi UPT SPF SMP Negeri 8 yang cerdas dan berkarakter.
             </p>
 
             <!-- Tombol Aksi Utama yang Rapi -->
-            <div class="flex items-center gap-4">
+            <div class="flex flex-col items-center gap-2">
                 <a href="{{ route('login') }}" class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-all duration-300 shadow-xl hover:shadow-blue-600/20 hover:-translate-y-0.5 tracking-wide">
                     Silahkan Login
                 </a>
@@ -69,7 +69,7 @@
         </main>
 
         <!-- FOOTER -->
-        <footer class="flex justify-between items-center w-full border-t border-white/10 pt-4 text-gray-400 text-xs tracking-wide">
+        <footer class="flex flex-col items-center justify-center w-full border-t border-white/10 pt-4 text-gray-400 text-xs tracking-wide gap-2">
             <div>
                 &copy; 2026 E-Library SMPN 8 Percut Sei Tuan.
             </div>

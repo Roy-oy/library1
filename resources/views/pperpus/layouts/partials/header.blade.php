@@ -10,7 +10,15 @@
 
     <div class="header-right">
         @php
-            $terlambatHeaderCount = \App\Models\DetailPeminjaman::where('status_detail', 'terlambat')->count();
+            $terlambatHeaderCount = \App\Models\DetailPeminjaman::where(function ($query) {
+                $query->where('status_detail', 'terlambat')
+                      ->orWhere(function ($q) {
+                          $q->where('status_detail', 'dipinjam')
+                            ->where('sumber_buku', 'buku perpus')
+                            ->whereNotNull('tanggal_jatuh_tempo')
+                            ->whereDate('tanggal_jatuh_tempo', '<', now()->startOfDay());
+                      });
+            })->count();
         @endphp
 
         <div class="header-notif-container" style="position: relative;">
@@ -56,8 +64,7 @@
                     dropdown.style.display = 'none';
                 }
             }
-            
-            // Close when clicking outside
+
             document.addEventListener('click', function(event) {
                 const container = document.querySelector('.header-notif-container');
                 const dropdown = document.getElementById('notifDropdown');

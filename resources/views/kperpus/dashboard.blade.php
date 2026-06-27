@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ─── Base Tokens ─────────────────────────────────── */
+    
     :root {
         --blue-50:  #eff6ff;
         --blue-100: #dbeafe;
@@ -42,7 +42,7 @@
         --orange-600: #ea580c;
     }
 
-    /* ─── Section Label ───────────────────────────────── */
+    
     .section-label {
         font-size: .68rem; font-weight: 700;
         text-transform: uppercase; letter-spacing: 1.6px;
@@ -56,7 +56,7 @@
         background: var(--border);
     }
 
-    /* ─── Welcome Banner ──────────────────────────────── */
+    
     .welcome-banner {
         background: linear-gradient(125deg, var(--blue-900) 0%, var(--blue-600) 55%, #38bdf8 100%);
         border-radius: 20px;
@@ -112,7 +112,7 @@
         transform: rotate(-18deg); pointer-events: none; z-index: 0;
     }
 
-    /* ─── Stats Grid ──────────────────────────────────── */
+    
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -178,7 +178,7 @@
     .stat-lbl { font-size: .83rem; font-weight: 700; color: var(--text-muted); margin-top: .3rem; }
     .stat-sub { font-size: .71rem; color: var(--text-light); font-weight: 500; margin-top: .1rem; }
 
-    /* ─── Panel ───────────────────────────────────────── */
+    
     .panel {
         background: var(--surface);
         border-radius: 18px;
@@ -213,7 +213,7 @@
     .pb-rose   { background: var(--rose-100);   color: var(--rose-600); }
     .pb-amber  { background: var(--amber-100);  color: var(--amber-600); }
 
-    /* ─── Layout grids ────────────────────────────────── */
+    
     .chart-denda-layout {
         display: grid; grid-template-columns: 1.65fr 1fr;
         gap: 1.25rem; margin-bottom: 2rem;
@@ -223,10 +223,10 @@
         gap: 1.25rem; margin-bottom: 2rem;
     }
 
-    /* ─── RINGKASAN DENDA ─────────────────────────────── */
+    
     .denda-body { padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
 
-    /* Grand total pill */
+    
     .denda-grand {
         border-radius: 14px;
         background: linear-gradient(130deg, var(--blue-900) 0%, var(--blue-600) 100%);
@@ -257,7 +257,7 @@
         color: #fff; letter-spacing: -.5px; line-height: 1;
     }
 
-    /* Split cards */
+    
     .denda-split { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
     .denda-split-card {
         border-radius: 13px; padding: 1rem 1.1rem;
@@ -284,7 +284,7 @@
     }
     .dsc-sub { font-size: .7rem; font-weight: 500; color: var(--text-light); }
 
-    /* Progress bar */
+    
     .denda-progress { }
     .dp-header {
         display: flex; justify-content: space-between;
@@ -307,7 +307,7 @@
     }
     .dp-footer span { font-size: .68rem; color: var(--text-light); font-weight: 500; }
 
-    /* ─── Student table ───────────────────────────────── */
+    
     .table-responsive { overflow-x: auto; }
     .table { width: 100%; border-collapse: collapse; }
     .table th {
@@ -323,7 +323,7 @@
     .bg-primary { background-color: var(--primary); color: white; }
     .rounded-pill { border-radius: 50rem; }
 
-    /* Rank badge */
+    
     .rank-num {
         width: 28px; height: 28px; border-radius: 8px;
         display: inline-flex; align-items: center; justify-content: center;
@@ -334,7 +334,7 @@
     .rank-3 { background: #fff7ed; color: #9a3412; }
     .rank-n { background: var(--border-soft); color: var(--text-muted); }
 
-    /* ─── Books showcase ──────────────────────────────── */
+    
     .books-showcase {
         display: flex; gap: 1.1rem; overflow-x: auto;
         padding: 1.25rem 1.2rem 1.75rem;
@@ -396,7 +396,7 @@
 
     .mt-4 { margin-top: 1.5rem; }
 
-    /* ─── Responsive ──────────────────────────────────── */
+    
     @media (max-width: 1280px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 1100px) {
         .chart-denda-layout { grid-template-columns: 1fr; }
@@ -413,7 +413,7 @@
 
 @section('content')
 
-{{-- ─────────────────── WELCOME BANNER ─────────────────── --}}
+
 <div class="welcome-banner">
     <div class="banner-bg-icon"><i class="fas fa-chart-line"></i></div>
     <div>
@@ -422,7 +422,7 @@
     </div>
 </div>
 
-{{-- ─────────────────── STATS GRID ─────────────────────── --}}
+
 <div class="section-label">
     <i class="fas fa-layer-group"></i> Statistik Koleksi &amp; Pengelolaan
 </div>
@@ -478,13 +478,13 @@
 
 </div>
 
-{{-- ─────────────────── CHART + DENDA ──────────────────── --}}
+
 <div class="section-label">
     <i class="fas fa-chart-bar"></i> Analitik Peminjaman &amp; Laporan Keuangan
 </div>
 <div class="chart-denda-layout">
 
-    {{-- Chart Panel --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -502,7 +502,7 @@
         </div>
     </div>
 
-    {{-- Denda Panel (REDESIGNED) --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -516,7 +516,7 @@
 
         <div class="denda-body">
 
-            {{-- Grand total --}}
+            
             <div class="denda-grand">
                 <div class="denda-grand-icon">
                     <i class="fas fa-coins"></i>
@@ -527,7 +527,7 @@
                 </div>
             </div>
 
-            {{-- Split: lunas & belum lunas --}}
+            
             <div class="denda-split">
                 <div class="denda-split-card lunas">
                     <div class="dsc-header">
@@ -554,7 +554,7 @@
                 </div>
             </div>
 
-            {{-- Progress: tingkat pelunasan --}}
+            
             <div class="denda-progress">
                 <div class="dp-header">
                     <span class="dp-lbl">Tingkat Pelunasan</span>
@@ -574,13 +574,13 @@
 
 </div>
 
-{{-- ─────────────────── TOP SISWA + BUKU ───────────────── --}}
+
 <div class="section-label mt-4">
     <i class="fas fa-star"></i> Peringkat Siswa &amp; Buku Populer
 </div>
 <div class="monitoring-row">
 
-    {{-- Top Students --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -630,7 +630,7 @@
         </div>
     </div>
 
-    {{-- Top Books --}}
+    
     <div class="panel" style="overflow: hidden;">
         <div class="panel-header">
             <h3>

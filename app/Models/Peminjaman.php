@@ -28,53 +28,61 @@ class Peminjaman extends Model
         'tanggal_pinjam' => 'date',
     ];
 
-    // RELASI
+    
 
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
     }
 
-    // public function petugas() dihapus karena id_petugas dihapus
+    
 
     public function details(): HasMany
     {
         return $this->hasMany(DetailPeminjaman::class, 'id_peminjaman', 'id_peminjaman');
     }
 
-    /** Detail buku perpus saja */
+    
     public function detailPerpus(): HasMany
     {
         return $this->details()->where('sumber_buku', 'buku perpus');
     }
 
-    /** Detail buku BOS saja */
+    
     public function detailBos(): HasMany
     {
         return $this->details()->where('sumber_buku', 'bos');
     }
 
-    // ACCESSOR
+    
 
-    /** Total denda semua buku dalam transaksi ini */
+    
     public function getTotalDendaAttribute(): int
     {
         return $this->details()->sum('jumlah_denda');
     }
 
-    /** Jumlah buku yang masih dipinjam */
+    
     public function getJumlahDipinjamAttribute(): int
     {
         return $this->details()->whereIn('status_detail', ['dipinjam', 'terlambat'])->count();
     }
 
-    /** Cek apakah ada buku terlambat */
+    
     public function getAdaTerlambatAttribute(): bool
     {
-        return $this->details()->where('status_detail', 'terlambat')->exists();
+        return $this->details()->where(function ($query) {
+            $query->where('status_detail', 'terlambat')
+                  ->orWhere(function ($q) {
+                      $q->where('status_detail', 'dipinjam')
+                        ->where('sumber_buku', 'buku perpus')
+                        ->whereNotNull('tanggal_jatuh_tempo')
+                        ->whereDate('tanggal_jatuh_tempo', '<', now()->startOfDay());
+                  });
+        })->exists();
     }
 
-    /** Cek apakah ada denda belum lunas */
+    
     public function getAdaDendaBelumLunasAttribute(): bool
     {
         return $this->details()->where('status_denda', 'belum_lunas')->exists();
@@ -85,7 +93,7 @@ class Peminjaman extends Model
         $tanggal = now()->format('Ymd');
         $prefix  = "PJM-{$tanggal}-";
 
-        // Ambil nomor urut terakhir hari ini (termasuk soft-deleted)
+        
         $last = static::withTrashed()
             ->where('kode_peminjaman', 'like', "{$prefix}%")
             ->orderByDesc('kode_peminjaman')

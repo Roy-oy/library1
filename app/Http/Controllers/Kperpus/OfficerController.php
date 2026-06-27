@@ -9,26 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class OfficerController extends Controller
 {
-    /**
-     * Tampilkan daftar petugas (Penjaga Perpustakaan).
-     */
+    
     public function index()
     {
         $officers = User::whereIn('role', ['penjaga_perpustakaan', 'kepala_sekolah'])->latest()->get();
         return view('kperpus.petugas.index', compact('officers'));
     }
 
-    /**
-     * Form tambah petugas.
-     */
+    
     public function create()
     {
         return view('kperpus.petugas.create');
     }
 
-    /**
-     * Simpan petugas baru.
-     */
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -49,17 +43,13 @@ class OfficerController extends Controller
         return redirect()->route('kperpus.petugas.index')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
-    /**
-     * Form edit petugas.
-     */
+    
     public function edit(User $petuga)
     {
         return view('kperpus.petugas.edit', ['officer' => $petuga]);
     }
 
-    /**
-     * Update data petugas.
-     */
+    
     public function update(Request $request, User $petuga)
     {
         $request->validate([
@@ -84,9 +74,7 @@ class OfficerController extends Controller
         return redirect()->route('kperpus.petugas.index')->with('success', 'Data pengguna berhasil diperbarui.');
     }
 
-    /**
-     * Hapus petugas.
-     */
+    
     public function destroy(User $petuga)
     {
         $petuga->delete();

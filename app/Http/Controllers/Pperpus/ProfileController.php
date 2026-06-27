@@ -10,18 +10,14 @@ use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
-    /**
-     * Tampilkan halaman profil kepala perpustakaan.
-     */
+    
     public function index()
     {
         $user = auth()->user();
         return view('pperpus.profile.index', compact('user'));
     }
 
-    /**
-     * Perbarui data profil.
-     */
+    
     public function update(Request $request)
     {
         $user = auth()->user();
@@ -41,12 +37,12 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('foto_profile')) {
-            // Delete old photo if exists
+            
             if ($user->foto_profile && Storage::disk('public')->exists($user->foto_profile)) {
                 Storage::disk('public')->delete($user->foto_profile);
             }
             
-            // Store new photo
+            
             $path = $request->file('foto_profile')->store('profile_photos', 'public');
             $user->foto_profile = $path;
         }

@@ -14,7 +14,7 @@
             --sidebar-w:        260px;
             --header-h:         70px;
 
-            /* ── Palet Utama: Biru Soft + Slate ── */
+            
             --blue-900:         #1e3a8a;
             --blue-800:         #1e40af;
             --blue-700:         #1d4ed8;
@@ -24,7 +24,7 @@
             --blue-100:         #dbeafe;
             --blue-50:          #eff6ff;
 
-            /* Sidebar: biru navy yang elegan */
+            
             --sidebar-bg:       #1e3a8a;
             --sidebar-surface:  #1e3f96;
             --sidebar-active:   #2563eb;
@@ -34,28 +34,28 @@
             --sidebar-border:   rgba(96, 165, 250, 0.12);
             --sidebar-accent:   #93c5fd;
 
-            /* Layout */
+            
             --primary:          #1e3a8a;
             --primary-dark:     #172554;
             --primary-soft:     #eff6ff;
-            --accent:           #38bdf8;   /* sky-400 — aksen segar */
-            --accent-warm:      #f59e0b;   /* amber — hanya untuk badge denda */
+            --accent:           #38bdf8;   
+            --accent-warm:      #f59e0b;   
 
-            /* Background & Surface */
-            --bg:               #f0f4f8;   /* slate-100 warm — tidak terlalu putih, tidak mencolok */
+            
+            --bg:               #f0f4f8;   
             --surface:          #ffffff;
             --surface-2:        #f8fafc;
 
-            /* Teks */
+            
             --text:             #0f172a;
             --text-muted:       #64748b;
             --text-light:       #94a3b8;
 
-            /* Border */
+            
             --border:           #e2e8f0;
             --border-soft:      #f1f5f9;
 
-            /* Status */
+            
             --success:          #059669;
             --success-bg:       #ecfdf5;
             --warning:          #d97706;
@@ -79,7 +79,7 @@
             min-height: 100vh;
         }
 
-        /* ── SIDEBAR ───────────────────────────── */
+        
         .sidebar {
             width: var(--sidebar-w);
             background: var(--sidebar-bg);
@@ -91,7 +91,7 @@
             box-shadow: 4px 0 24px rgba(30,58,138,.18);
         }
 
-        /* Subtle gradient overlay */
+        
         .sidebar::before {
             content: '';
             position: absolute;
@@ -189,14 +189,14 @@
         .user-info .name  { font-size: .81rem; font-weight: 700; color: #ffffff; }
         .user-info .role  { font-size: .7rem; color: var(--sidebar-text-dim); margin-top: .1rem; }
 
-        /* ── MAIN ──────────────────────────────── */
+        
         .main-wrapper {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
             display: flex; flex-direction: column;
         }
 
-        /* ── HEADER ────────────────────────────── */
+        
         .header {
             height: var(--header-h);
             background: var(--surface);
@@ -256,7 +256,7 @@
             box-shadow: 0 3px 10px rgba(220,38,38,.12);
         }
 
-        /* ── BUTTONS ───────────────────────────── */
+        
         .btn-primary {
             display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
             padding: .65rem 1.4rem;
@@ -277,10 +277,10 @@
             transform: translateY(0);
         }
 
-        /* ── CONTENT ───────────────────────────── */
+        
         .content { padding: 1.6rem; flex: 1; }
 
-        /* ── ALERTS ────────────────────────────── */
+        
         .alert {
             padding: .85rem 1.1rem;
             border-radius: var(--radius);
@@ -291,7 +291,7 @@
         .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #a7f3d0; }
         .alert-danger  { background: var(--danger-bg);  color: var(--danger);  border: 1px solid #fecaca; }
 
-        /* ── UNIVERSAL PREMIUM TABLE ── */
+        
         .table-wrap { overflow-x: auto; width: 100%; }
         table.kperpus-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 800px; }
         table.kperpus-table thead th {
@@ -317,7 +317,7 @@
         table.kperpus-table tbody tr { transition: background-color .2s ease; }
         table.kperpus-table tbody tr:hover td { background-color: var(--primary-soft) !important; }
 
-        /* ── UNIVERSAL PAGINATION ── */
+        
         .pagination-wrap { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: #fafbfc; }
         .pagination-wrap .info { font-size: 0.88rem; color: var(--text-muted); }
         .pagination-wrap nav { display: block; }
@@ -328,7 +328,7 @@
         .page-item.disabled .page-link { color: #cbd5e1; background-color: #f8fafc; border-color: #e2e8f0; cursor: not-allowed; transform: none; box-shadow: none; }
         .page-link[rel="prev"] span, .page-link[rel="next"] span { display: none; }
 
-        /* ── UNIVERSAL BADGES & BUTTONS ── */
+        
         .code-badge { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; background: var(--primary-soft); color: var(--primary); padding: 0.35rem 0.6rem; border-radius: 8px; font-weight: 800; border: 1px solid rgba(37, 99, 235, 0.15); display: inline-block; }
         .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 30px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
         .pill-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
@@ -348,7 +348,7 @@
         .empty-state p { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem;}
         .empty-state span { font-size: 0.85rem; color: var(--text-muted); }
 
-        /* ── SIDEBAR OVERLAY ───────────────────── */
+        
         .sidebar-overlay {
             display: none; position: fixed; inset: 0;
             background: rgba(15,23,42,.45); z-index: 90;

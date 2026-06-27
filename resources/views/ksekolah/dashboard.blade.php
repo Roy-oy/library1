@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ─── Base Tokens Perbaikan ─────────────────────────── */
+    
     :root {
         --slate-50:   #f8fafc;
         --slate-100:  #f1f5f9;
@@ -26,7 +26,7 @@
         --amber-600:  #d97706;
     }
 
-    /* ─── Section Label ───────────────────────────────── */
+    
     .section-label {
         font-size: .68rem; font-weight: 700;
         text-transform: uppercase; letter-spacing: 1.6px;
@@ -41,7 +41,7 @@
         background: var(--border);
     }
 
-    /* ─── Welcome Banner ──────────────────────────────── */
+    
     .welcome-banner {
         background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
         border-radius: 20px;
@@ -88,7 +88,7 @@
         transform: rotate(-18deg); pointer-events: none; z-index: 0;
     }
 
-    /* ─── Stats Grid ──────────────────────────────────── */
+    
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -144,7 +144,7 @@
     .stat-val { font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1; }
     .stat-lbl { font-size: .83rem; font-weight: 700; color: var(--text-muted); margin-top: .3rem; }
 
-    /* ─── Panel & Tables ─────────────────────────────── */
+    
     .panels-grid {
         display: grid; grid-template-columns: 1.5fr 1.2fr;
         gap: 1.25rem; margin-bottom: 2rem;
@@ -209,7 +209,7 @@
     }
     .empty-state i { font-size: 2rem; display: block; margin-bottom: .6rem; opacity: .35; }
 
-    /* ─── Books showcase & Rank Badge ─────────────────── */
+    
     .rank-num {
         width: 28px; height: 28px; border-radius: 8px;
         display: inline-flex; align-items: center; justify-content: center;
@@ -297,7 +297,7 @@
 
 @section('content')
 
-{{-- ─────────────────── WELCOME BANNER ─────────────────── --}}
+
 <div class="welcome-banner">
     <div class="banner-bg-icon"><i class="fas fa-school"></i></div>
     <div>
@@ -306,7 +306,7 @@
     </div>
 </div>
 
-{{-- ─────────────────── STATS GRID ─────────────────────── --}}
+
 <div class="section-label">
     <i class="fas fa-chart-pie"></i> Statistik Ringkasan Koleksi & Siswa
 </div>
@@ -367,13 +367,13 @@
     </div>
 </div>
 
-{{-- ─────────────────── CHARTS & TABLES ─────────────────── --}}
+
 <div class="section-label">
     <i class="fas fa-sync-alt"></i> Analisis Grafik & Aktivitas Terbaru Perpustakaan
 </div>
 <div class="panels-grid">
     
-    {{-- Chart Panel --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -389,7 +389,7 @@
         </div>
     </div>
 
-    {{-- Table Panel --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -456,7 +456,7 @@
 
 </div>
 
-{{-- ─────────────────── TOP SISWA + BUKU ───────────────── --}}
+
 <div class="section-label mt-4">
     <i class="fas fa-star"></i> Peringkat Siswa &amp; Buku Populer
 </div>
@@ -552,7 +552,7 @@
         const labels = chartData.map(item => item.label);
         const dataValues = chartData.map(item => item.count);
 
-        /* Gradien Baru Menggunakan Warna Amber Gold Mewah */
+        
         const gradient = ctx.createLinearGradient(0, 0, 0, 260);
         gradient.addColorStop(0, 'rgba(217, 119, 6, 0.25)'); 
         gradient.addColorStop(1, 'rgba(217, 119, 6, 0.01)');

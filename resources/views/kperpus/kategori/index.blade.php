@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ── Theme variables for this view ── */
+    
     :root {
         --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
@@ -22,7 +22,7 @@
         --transition-speed: 0.25s;
     }
 
-    /* ── Page Header ── */
+    
     .page-header {
         display: flex;
         align-items: center;
@@ -46,7 +46,7 @@
         margin-top: 0.25rem;
     }
 
-    /* ── Card Container ── */
+    
     .card {
         background: var(--surface);
         border-radius: var(--card-radius);
@@ -74,7 +74,7 @@
         font-weight: 800;
     }
 
-    /* ── Category Badge ── */
+    
     .cat-badge {
         display: inline-flex;
         align-items: center;
@@ -89,7 +89,7 @@
         font-size: 0.75rem;
     }
 
-    /* ── Buku count pill ── */
+    
     .buku-count {
         display: inline-flex;
         align-items: center;
@@ -106,7 +106,7 @@
         color: var(--primary);
     }
     
-    /* Green status pill specifically for borrowed books count */
+    
     .borrow-count {
         display: inline-flex;
         align-items: center;
@@ -123,7 +123,7 @@
         color: var(--theme-warning);
     }
 
-    /* ── Empty state ── */
+    
     .empty-state {
         padding: 4rem 2rem;
         text-align: center;
@@ -141,7 +141,7 @@
         font-weight: 600;
     }
 
-    /* ── Pop-Up Form Modal Shared Styling ── */
+    
     .modal-overlay {
         display: none;
         position: fixed;
@@ -323,7 +323,7 @@
         color: var(--text);
     }
 
-    /* Delete Modal specifics style reset */
+    
     .modal-box-del {
         max-width: 420px;
         padding: 2rem;
@@ -416,7 +416,7 @@
 
 @section('content')
 
-{{-- Page Header --}}
+
 <div class="page-header">
     <div class="page-header-title">
         <h1><i class="fas fa-tags" style="color:var(--primary)"></i> Kategori Buku</h1>
@@ -427,7 +427,7 @@
     </button>
 </div>
 
-{{-- Table Card --}}
+
 <div class="card">
     <div class="card-toolbar">
         <span class="total-label">Daftar kategori aktif: <strong>{{ $kategori->total() }} data</strong></span>
@@ -437,9 +437,9 @@
         <table class="kperpus-table" id="kategori-table">
             <thead>
                 <tr>
-                    {{-- DIUBAH: Mengubah simbol # menjadi No --}}
+                    
                     <th style="width: 60px; text-align: center;">No</th>
-                    {{-- DIUBAH: Menambahkan text-align: left agar nama kategori konsisten rata kiri --}}
+                    
                     <th style="text-align: left;">Nama Kategori</th>
                     <th style="width: 180px; text-align: center;">Jumlah Buku</th>
                     <th style="width: 180px; text-align: center;">Jumlah yang Di Pinjam</th>
@@ -454,7 +454,7 @@
                 @endphp
                 <tr>
                     <td style="text-align: center;">{{ $kategori->firstItem() + $index }}</td>
-                    {{-- DIUBAH: Menambahkan text-align: left pada cell data nama kategori --}}
+                    
                     <td style="text-align: left;">
                         <span class="cat-badge" style="color: {{ $color }}; background: {{ $color }}1a; border-color: {{ $color }}40;">
                             <i class="fas fa-tag"></i>
@@ -505,7 +505,7 @@
         </table>
     </div>
 
-    {{-- Pagination --}}
+    
     @if($kategori->hasPages())
     <div class="pagination-wrap">
         <span class="info">
@@ -516,7 +516,7 @@
     @endif
 </div>
 
-{{-- Delete Modal --}}
+
 <div class="modal-overlay" id="delete-modal">
     <div class="modal-box modal-box-del">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -533,7 +533,7 @@
     </div>
 </div>
 
-{{-- Memanggil Modular Blade Modal Create dan Edit --}}
+
 @include('kperpus.kategori.create')
 @include('kperpus.kategori.edit')
 
@@ -541,9 +541,9 @@
 
 @push('scripts')
 <script>
-    const updateUrlBase = "{{ url('kperpus/kategori') }}"; 
+    const updateUrlBase = "{{ route('kperpus.kategori.index') }}"; 
 
-    /* ── Fungsi Pop-up Create ── */
+    
     function openCreateModal() {
         const modal = document.getElementById('create-modal');
         modal.style.display = 'flex';
@@ -553,7 +553,7 @@
         }, 10);
     }
 
-    /* ── Fungsi Pop-up Edit ── */
+    
     function openEditModal(id, nama) {
         const modal = document.getElementById('edit-modal');
         const form = document.getElementById('edit-form-action');
@@ -569,14 +569,13 @@
         }, 10);
     }
 
-    /* ── Fungsi Global Close Modal ── */
+    
     function closeModal(modalId) {
         const modal = document.getElementById(modalId);
         modal.classList.remove('show');
         setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
 
-    // Event Klik area luar untuk menutup
     document.getElementById('create-modal').addEventListener('click', function (e) {
         if (e.target === this) closeModal('create-modal');
     });
@@ -584,7 +583,7 @@
         if (e.target === this) closeModal('edit-modal');
     });
 
-    /* ── Fungsi Modal Delete ── */
+    
     function confirmDelete(url, nama, jumlahBuku) {
         document.getElementById('delete-form').action = url;
         let msg = 'Apakah Anda yakin ingin menghapus kategori <strong style="color: var(--text)">"' + nama + '"</strong>?';
@@ -607,7 +606,6 @@
         if (e.target === this) closeDeleteModal();
     });
 
-    // Auto-open jika terdapat validasi error dari Laravel
     @if($errors->any())
         @if(old('_method') == 'PUT')
             openEditModal('{{ basename(url()->previous()) }}', '{{ old("nama_kategori") }}');

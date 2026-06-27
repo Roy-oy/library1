@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Data statistik untuk kepala perpustakaan (manajemen penuh)
+        
         $stats = [
             'total_buku'        => \App\Models\Buku::count(),
             'buku_bos'          => \App\Models\Buku::bos()->count(),
@@ -25,7 +25,7 @@ class DashboardController extends Controller
             'pengembalian_hari' => \App\Models\DetailPeminjaman::whereDate('tanggal_kembali', now())->count(),
         ];
 
-        // ── Data Chart Peminjaman Buku (7 Hari Terakhir) ───────
+        
         $borrowingsLast7Days = [];
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::today()->subDays($i)->format('Y-m-d');
@@ -49,12 +49,12 @@ class DashboardController extends Controller
             }
         }
 
-        // ── Statistik Denda ───────────────────────────────────
+        
         $stats['denda_belum_lunas'] = DetailPeminjaman::where('status_denda', 'belum_lunas')->sum('jumlah_denda');
         $stats['denda_lunas']       = DetailPeminjaman::where('status_denda', 'lunas')->sum('jumlah_denda');
         $stats['total_denda_grand'] = DetailPeminjaman::whereIn('status_denda', ['lunas', 'belum_lunas'])->sum('jumlah_denda');
 
-        // ── Data Siswa Rajin Meminjam (Buku Perpus) ───────────
+        
         $topStudents = \App\Models\Siswa::select('siswa.id_siswa', 'siswa.nis', 'siswa.nama_siswa', 'siswa.kelas')
             ->join('peminjaman', 'siswa.id_siswa', '=', 'peminjaman.id_siswa')
             ->join('detail_peminjaman', 'peminjaman.id_peminjaman', '=', 'detail_peminjaman.id_peminjaman')
@@ -65,7 +65,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // ── Data Buku Terpopuler (Buku Perpus) ────────────────
+        
         $topBooks = \App\Models\Buku::select('buku.id_buku', 'buku.judul_buku', 'buku.gambar', 'buku.pengarang')
             ->join('detail_peminjaman', 'buku.id_buku', '=', 'detail_peminjaman.id_buku')
             ->where('detail_peminjaman.sumber_buku', 'buku perpus')

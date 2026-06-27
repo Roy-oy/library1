@@ -5,13 +5,13 @@
 
 @push('styles')
 <style>
-    /* Kontainer Utama dengan Sentuhan Border Berwarna */
+    
     .simple-container {
         max-width: 850px;
         margin: 2rem auto 4rem auto;
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-top: 5px solid #1e3a8a; /* Aksen biru utama di bagian atas */
+        border-top: 5px solid #1e3a8a; 
         border-radius: 16px;
         padding: 0;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -19,12 +19,12 @@
         overflow: hidden;
     }
 
-    /* Header Form yang Lebih Hidup & Berwarna */
+    
     .form-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: linear-gradient(to right, #eff6ff, #ffffff); /* Gradasi biru lembut */
+        background: linear-gradient(to right, #eff6ff, #ffffff); 
         padding: 2rem 3rem;
         border-bottom: 1px solid #dbeafe;
     }
@@ -61,7 +61,7 @@
         opacity: 0.8;
     }
 
-    /* Tombol Kembali dengan Efek Transisi Warna */
+    
     .btn-kembali {
         text-decoration: none;
         color: #172554;
@@ -83,7 +83,7 @@
         color: #172554;
     }
 
-    /* Grid & Padding Form */
+    
     .form-body {
         padding: 3rem;
     }
@@ -98,7 +98,7 @@
         grid-column: span 2;
     }
 
-    /* Desain Grup Input & Label Berwarna */
+    
     .form-group {
         display: flex;
         flex-direction: column;
@@ -114,9 +114,9 @@
         gap: 0.5rem;
     }
 
-    /* Pembeda Warna Ikon di Label */
+    
     .form-group label i {
-        color: #1e3a8a; /* Warna biru untuk ikon */
+        color: #1e3a8a; 
         font-size: 0.95rem;
     }
 
@@ -125,7 +125,7 @@
         font-weight: bold;
     }
 
-    /* Input & Select Box yang Lebih Responsif terhadap Fokus */
+    
     .form-input {
         padding: 0.8rem 1.1rem;
         font-size: 0.925rem;
@@ -140,7 +140,7 @@
 
     .form-input:focus {
         background-color: #ffffff;
-        border-color: #1e3a8a; /* Berubah jadi biru saat diklik */
+        border-color: #1e3a8a; 
         box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.15);
     }
 
@@ -148,7 +148,7 @@
         color: #94a3b8;
     }
 
-    /* Kustomisasi Panah Select Box */
+    
     select.form-input {
         cursor: pointer;
         appearance: none;
@@ -159,7 +159,7 @@
         padding-right: 2.75rem;
     }
 
-    /* Zone Upload Sampul Buku yang Atraktif */
+    
     .file-upload-zone {
         border: 2px dashed #bfdbfe;
         border-radius: 12px;
@@ -210,7 +210,7 @@
         display: block;
     }
 
-    /* Tombol Aksi di Bagian Bawah */
+    
     .form-actions {
         margin-top: 3rem;
         padding-top: 1.5rem;
@@ -246,7 +246,7 @@
     }
 
     .btn-simpan {
-        background: #1e3a8a; /* Tombol biru utama */
+        background: #1e3a8a; 
         color: #ffffff;
         border: 1px solid #1e3a8a;
         box-shadow: 0 4px 14px rgba(30, 58, 138, 0.2);
@@ -263,7 +263,7 @@
         transform: translateY(0);
     }
 
-    /* Media Query untuk Perangkat Mobile */
+    
     @media (max-width: 640px) {
         .form-header { padding: 1.5rem; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
         .btn-kembali { width: 100%; justify-content: center; }
@@ -279,7 +279,7 @@
 @section('content')
 <div class="simple-container">
     
-    {{-- Bagian Atas: Header Form --}}
+    
     <div class="form-header">
         <div class="form-header-title">
             <div class="form-header-icon">
@@ -295,14 +295,14 @@
         </a>
     </div>
 
-    {{-- Bagian Isi Formulir --}}
+    
     <div class="form-body">
         <form action="{{ route('kperpus.buku.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-grid">
                 
-                {{-- Jenis Anggaran --}}
+                
                 <div class="form-group">
                     <label for="sumber_buku"><i class="fas fa-wallet"></i> Sumber Buku <span>*</span></label>
                     <select name="sumber_buku" id="sumber_buku" class="form-input" onchange="pilihJenisBuku(this.value)">
@@ -311,7 +311,7 @@
                     </select>
                 </div>
 
-                {{-- Input Dinamis: Kategori --}}
+                
                 <div class="form-group" id="input-kategori">
                     <label for="id_kategori"><i class="fas fa-tags"></i> Kategori Buku <span>*</span></label>
                     <select name="id_kategori" id="id_kategori" class="form-input">
@@ -322,7 +322,7 @@
                     </select>
                 </div>
 
-                {{-- Input Dinamis: Kelas --}}
+                
                 <div class="form-group" id="input-kelas" style="display: none;">
                     <label for="kelas"><i class="fas fa-graduation-cap"></i> Untuk Siswa Kelas <span>*</span></label>
                     <select name="kelas" id="kelas" class="form-input">
@@ -333,49 +333,49 @@
                     </select>
                 </div>
 
-                {{-- Kode Buku --}}
+                
                 <div class="form-group">
                     <label for="kode_buku"><i class="fas fa-barcode"></i> Kode Buku <span>*</span></label>
                     <input type="text" name="kode_buku" id="kode_buku" class="form-input" placeholder="Contoh: BKP-001" required value="{{ old('kode_buku') }}">
                 </div>
 
-                {{-- ISBN --}}
+                
                 <div class="form-group">
                     <label for="isbn"><i class="fas fa-book-open"></i> Nomor ISBN</label>
                     <input type="text" name="isbn" id="isbn" class="form-input" placeholder="Boleh dikosongkan jika tidak ada" value="{{ old('isbn') }}">
                 </div>
 
-                {{-- Judul Buku --}}
+                
                 <div class="form-group full-width">
                     <label for="judul_buku"><i class="fas fa-book"></i> Judul Buku <span>*</span></label>
                     <input type="text" name="judul_buku" id="judul_buku" class="form-input" placeholder="Masukkan judul lengkap buku secara jelas" required value="{{ old('judul_buku') }}">
                 </div>
 
-                {{-- Pengarang --}}
+                
                 <div class="form-group full-width">
                     <label for="pengarang"><i class="fas fa-user-edit"></i> Nama Pengarang / Penulis <span>*</span></label>
                     <input type="text" name="pengarang" id="pengarang" class="form-input" placeholder="Nama penulis asli atau instansi penerbit resmi" required value="{{ old('pengarang') }}">
                 </div>
 
-                {{-- Tahun Terbit --}}
+                
                 <div class="form-group">
                     <label for="tahun_terbit"><i class="fas fa-calendar-alt"></i> Tahun Terbit <span>*</span></label>
                     <input type="number" name="tahun_terbit" id="tahun_terbit" class="form-input" placeholder="Contoh: 2024" required min="1800" max="{{ date('Y') }}" value="{{ old('tahun_terbit') }}">
                 </div>
 
-                {{-- Stok Buku --}}
+                
                 <div class="form-group">
                     <label for="stok"><i class="fas fa-layer-group"></i> Jumlah Stok Fisik <span>*</span></label>
                     <input type="number" name="stok" id="stok" class="form-input" required min="0" value="{{ old('stok', 1) }}">
                 </div>
 
-                {{-- Rak Buku --}}
+                
                 <div class="form-group">
                     <label for="rak"><i class="fas fa-archive"></i> Lokasi Rak</label>
                     <input type="text" name="rak" id="rak" class="form-input" placeholder="Contoh: R-01, A-1" value="{{ old('rak') }}">
                 </div>
 
-                {{-- File Sampul Dropzone Berwarna --}}
+                
                 <div class="form-group full-width">
                     <label><i class="fas fa-image"></i> Foto Sampul Buku</label>
                     <div class="file-upload-zone" onclick="document.getElementById('gambar').click()">
@@ -383,19 +383,19 @@
                         <span class="font-medium text-sm text-slate-700" id="upload-text">Klik atau seret gambar ke sini untuk mengunggah</span>
                         <span class="info-bantuan">Format gambar wajib: JPG, JPEG, atau PNG (Maksimal file 2MB)</span>
                         <input type="file" name="gambar" id="gambar" accept="image/*" onchange="previewImage(this)">
-                    </div>
-                    <div class="preview-container" id="image-preview-wrapper">
-                        <img id="image-preview" src="#" alt="Pratinjau Sampul">
+                        <div class="preview-container" id="image-preview-wrapper">
+                            <img id="image-preview" src="#" alt="Preview Sampul">
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            {{-- Bagian Bawah: Tombol Navigasi --}}
+            
             <div class="form-actions">
                 <a href="{{ route('kperpus.buku.index') }}" class="btn btn-batal">Batal</a>
                 <button type="submit" class="btn btn-simpan">
-                    <i class="fas fa-save"></i> Simpan Data Buku
+                    <i class="fas fa-save"></i> Simpan Buku
                 </button>
             </div>
 
@@ -406,7 +406,6 @@
 
 @push('scripts')
 <script>
-    /* Fungsi Pratinjau Gambar Unggulan */
     function previewImage(input) {
         const previewWrapper = document.getElementById('image-preview-wrapper');
         const previewImg = document.getElementById('image-preview');
@@ -420,9 +419,9 @@
                 previewImg.src = e.target.result;
                 previewWrapper.style.display = 'block';
                 uploadText.textContent = `File dipilih: ${input.files[0].name}`;
-                uploadText.style.color = '#1e3a8a'; // Diubah dari hijau ke biru jernih
+                uploadText.style.color = '#1e3a8a';
                 uploadIcon.className = 'fas fa-check-circle';
-                uploadIcon.style.color = '#1e3a8a'; // Diubah dari hijau ke biru jernih
+                uploadIcon.style.color = '#1e3a8a';
             }
             
             reader.readAsDataURL(input.files[0]);
@@ -431,11 +430,11 @@
             uploadText.textContent = 'Klik atau seret gambar ke sini untuk mengunggah';
             uploadText.style.color = '#334155';
             uploadIcon.className = 'fas fa-cloud-upload-alt';
-            uploadIcon.style.color = '#1e3a8a'; // Diubah dari hijau ke biru jernih
+            uploadIcon.style.color = '#1e3a8a';
         }
     }
 
-    /* Logika Tampilan Form Dinamis */
+    
     function pilihJenisBuku(nilai) {
         const divKategori = document.getElementById('input-kategori');
         const divKelas = document.getElementById('input-kelas');

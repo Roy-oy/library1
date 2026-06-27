@@ -22,13 +22,13 @@ class Siswa extends Model
         'status'
     ];
 
-    // Relasi
+    
     public function peminjaman()
     {
         return $this->hasMany(Peminjaman::class, 'id_siswa', 'id_siswa');
     }
 
-    // Scope
+    
     public function scopeAktif($query)
     {
         return $query->where('status', 'aktif');

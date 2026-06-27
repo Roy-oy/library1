@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ─── Base Tokens Perbaikan ─────────────────────────── */
+    
     :root {
         --slate-50:   #f8fafc;
         --slate-100:  #f1f5f9;
@@ -27,7 +27,7 @@
         --green-700:  #15803d;
     }
 
-    /* ─── Section Label ───────────────────────────────── */
+    
     .section-label {
         font-size: .68rem; font-weight: 700;
         text-transform: uppercase; letter-spacing: 1.6px;
@@ -41,7 +41,7 @@
         background: var(--border);
     }
 
-    /* ─── Welcome Banner ──────────────────────────────── */
+    
     .welcome-banner {
         background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
         border-radius: 20px;
@@ -98,7 +98,7 @@
         transform: rotate(-18deg); pointer-events: none; z-index: 0;
     }
 
-    /* ─── Stats Grid ──────────────────────────────────── */
+    
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -155,7 +155,7 @@
     .stat-lbl { font-size: .83rem; font-weight: 700; color: var(--text-muted); margin-top: .3rem; }
     .stat-sub { font-size: .71rem; color: var(--text-light); font-weight: 500; margin-top: .1rem; }
 
-    /* ─── Panel ───────────────────────────────────────── */
+    
     .panel {
         background: var(--surface);
         border-radius: 18px;
@@ -188,7 +188,7 @@
     .pb-green  { background: var(--green-100);  color: var(--green-700); }
     .pb-rose   { background: var(--rose-100);   color: var(--rose-600); }
 
-    /* ─── Layout grids ────────────────────────────────── */
+    
     .chart-denda-layout {
         display: grid; grid-template-columns: 1.65fr 1fr;
         gap: 1.25rem; margin-bottom: 2rem;
@@ -198,7 +198,7 @@
         gap: 1.25rem; margin-bottom: 2rem;
     }
 
-    /* ─── RINGKASAN DENDA ─────────────────────────────── */
+    
     .denda-body { padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
 
     .denda-grand {
@@ -263,7 +263,7 @@
     }
     .dp-footer span { font-size: .68rem; color: var(--text-light); font-weight: 500; }
 
-    /* ─── Denda Table ─────────────────────────────────── */
+    
     .table-responsive { overflow-x: auto; }
     .table { width: 100%; border-collapse: collapse; }
     .table th {
@@ -290,7 +290,7 @@
     .pill-success { background: #dcfce7; color: #15803d; }
     .pill-danger  { background: #fee2e2; color: #b91c1c; }
 
-    /* Rank badge */
+    
     .rank-num {
         width: 28px; height: 28px; border-radius: 8px;
         display: inline-flex; align-items: center; justify-content: center;
@@ -301,7 +301,7 @@
     .rank-3 { background: #f1f5f9; color: #475569; }
     .rank-n { background: var(--border-soft); color: var(--text-muted); }
 
-    /* ─── Books showcase ──────────────────────────────── */
+    
     .books-showcase {
         display: flex; gap: 1.1rem; overflow-x: auto;
         padding: 1.25rem 1.2rem 1.75rem;
@@ -373,7 +373,7 @@
 
 @section('content')
 
-{{-- ─────────────────── WELCOME BANNER ─────────────────── --}}
+
 <div class="welcome-banner">
     <div class="banner-bg-icon"><i class="fas fa-book-reader"></i></div>
     <div>
@@ -393,7 +393,7 @@
     </div>
 </div>
 
-{{-- ─────────────────── STATS GRID ─────────────────────── --}}
+
 <div class="section-label">
     <i class="fas fa-layer-group"></i> Statistik Hari Ini &amp; Pengelolaan
 </div>
@@ -449,13 +449,13 @@
 
 </div>
 
-{{-- ─────────────────── CHART + DENDA ──────────────────── --}}
+
 <div class="section-label">
     <i class="fas fa-chart-bar"></i> Analitik Peminjaman &amp; Laporan Keuangan
 </div>
 <div class="chart-denda-layout">
 
-    {{-- Chart Panel --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -473,7 +473,7 @@
         </div>
     </div>
 
-    {{-- Denda Panel --}}
+    
     <div class="panel">
         <div class="panel-header">
             <h3>
@@ -540,7 +540,7 @@
 
 </div>
 
-{{-- ─────────────────── DENDA TABLE ─────────────────────── --}}
+
 <div class="panel" style="margin-bottom: 1.8rem;" id="denda-section">
     <div class="panel-header">
         <h3>
@@ -625,7 +625,7 @@
     @endif
 </div>
 
-{{-- ─────────────────── RECENT ACTIVITIES ───────────────── --}}
+
 <div class="section-label mt-4">
     <i class="fas fa-history"></i> Aktivitas Terbaru Perpustakaan
 </div>
@@ -693,7 +693,7 @@
     </div>
 </div>
 
-{{-- ─────────────────── TOP SISWA + BUKU ───────────────── --}}
+
 <div class="section-label mt-4">
     <i class="fas fa-star"></i> Peringkat Siswa &amp; Buku Populer
 </div>
@@ -789,7 +789,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const labels     = chartData.map(item => item.label);
     const dataValues = chartData.map(item => item.count);
 
-    /* Mengubah gradien chart menjadi warna Teal segar */
+    
     const gradTeal = ctx.createLinearGradient(0, 0, 0, 280);
     gradTeal.addColorStop(0, 'rgba(13, 148, 136, 0.2)');
     gradTeal.addColorStop(1, 'rgba(13, 148, 136, 0.0)');

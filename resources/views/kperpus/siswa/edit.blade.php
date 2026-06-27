@@ -15,7 +15,7 @@
                 <div class="form-body">
                     <div class="form-grid">
                         
-                        {{-- NIS --}}
+                        
                         <div class="form-group">
                             <label for="edit_nis">Nomor Induk Siswa (NIS) <span class="req">*</span></label>
                             <div class="form-control-wrap">
@@ -28,7 +28,7 @@
                             @enderror
                         </div>
 
-                        {{-- Nama Siswa --}}
+                        
                         <div class="form-group">
                             <label for="edit_nama">Nama Lengkap Siswa <span class="req">*</span></label>
                             <div class="form-control-wrap">
@@ -41,7 +41,7 @@
                             @enderror
                         </div>
 
-                        {{-- Kelas --}}
+                        
                         <div class="form-group">
                             <label for="edit_kelas">Kelas <span class="req">*</span></label>
                             <div class="form-control-wrap">
@@ -59,7 +59,7 @@
                             @enderror
                         </div>
 
-                        {{-- Jenis Kelamin --}}
+                        
                         <div class="form-group">
                             <label for="edit_jk">Jenis Kelamin <span class="req">*</span></label>
                             <div class="form-control-wrap">
@@ -76,7 +76,7 @@
                             @enderror
                         </div>
 
-                        {{-- Status --}}
+                        
                         <div class="form-group full">
                             <label for="edit_status">Status Anggota Perpustakaan <span class="req">*</span></label>
                             <div class="form-control-wrap">
@@ -92,7 +92,7 @@
                             @enderror
                         </div>
 
-                        {{-- Alamat --}}
+                        
                         <div class="form-group full">
                             <label for="edit_alamat">Alamat Lengkap Rumah <span class="req">*</span></label>
                             <div class="form-control-wrap">

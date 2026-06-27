@@ -5,7 +5,7 @@
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
-    /* Select2 Customization */
+    
     .select2-container .select2-selection--single {
         height: 42px;
         border: 1.5px solid var(--border);
@@ -34,7 +34,7 @@
         padding: 0 1rem;
     }
 
-    /* Page Header */
+    
     .page-header {
         display: flex;
         align-items: center;
@@ -67,7 +67,7 @@
         margin: 0;
     }
 
-    /* Card Design */
+    
     .card {
         background: var(--surface);
         border-radius: var(--radius);
@@ -95,7 +95,7 @@
         padding: 1.75rem; 
     }
 
-    /* Form Layouts */
+    
     .form-row { 
         display: flex; 
         gap: 1.25rem; 
@@ -148,14 +148,14 @@
         color: var(--danger);
     }
 
-    /* Section Divider */
+    
     .section-divider {
         border: 0; 
         border-top: 1px solid var(--border); 
         margin: 2rem 0;
     }
 
-    /* Books Selection Header */
+    
     .books-selection-header {
         display: flex; 
         justify-content: space-between; 
@@ -185,7 +185,7 @@
         border: 1px solid rgba(13, 148, 136, 0.1);
     }
 
-    /* Accordion Custom */
+    
     .accordion-item { 
         border: 1px solid var(--border); 
         border-radius: 10px; 
@@ -228,7 +228,7 @@
         color: var(--primary);
     }
 
-    /* Books List UI */
+    
     .buku-list {
         display: flex;
         flex-direction: column;
@@ -284,7 +284,7 @@
     .stok-tersedia { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .stok-habis { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     
-    /* Selected Books Basket List */
+    
     .selected-list { 
         margin-top: 1.5rem; 
         background: #f8fafc; 
@@ -335,7 +335,7 @@
         color: #cbd5e1;
     }
 
-    /* Submit Button */
+    
     .btn-submit {
         width: 100%; 
         padding: .9rem; 
@@ -505,7 +505,6 @@
 
     const allSiswas = @json($siswas);
 
-    // Filter Siswa Berdasarkan Kelas
     selectKelas.addEventListener('change', function() {
         const kelas = this.value;
         
@@ -533,7 +532,6 @@
         selectSiswa.trigger('change');
     });
 
-    // Event saat Siswa dipilih
     selectSiswa.on('change', function() {
         if (this.value) {
             hiddenIdSiswa.value = this.value;
@@ -542,7 +540,6 @@
         }
     });
 
-    // Map Buku Terpilih
     const selectedBooks = new Map();
 
     document.querySelectorAll('.buku-checkbox').forEach(checkbox => {
@@ -562,7 +559,6 @@
         });
     });
 
-    // Render List Keranjang Buku
     function renderSelectedList() {
         const list = document.getElementById('selected-books-list');
         const inputs = document.getElementById('hidden-inputs');
@@ -587,7 +583,7 @@
 
         let i = 0;
         selectedBooks.forEach((judul, id) => {
-            // Element List UI
+
             const div = document.createElement('div');
             div.className = 'selected-book';
             div.innerHTML = `
@@ -596,7 +592,6 @@
             `;
             list.appendChild(div);
 
-            // Hidden input form
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = `buku[${i}][id_buku]`;
@@ -606,7 +601,6 @@
         });
     }
 
-    // Fungsi menghapus buku lewat list keranjang bawah
     window.removeBook = function(id) {
         selectedBooks.delete(id);
         const el = document.querySelector(`.buku-list-item[data-id="${id}"]`);
@@ -618,7 +612,6 @@
         renderSelectedList();
     }
 
-    // Validasi Akhir Sebelum Submit Form
     document.getElementById('form-peminjaman').addEventListener('submit', function(e) {
         if (!hiddenIdSiswa.value) {
             e.preventDefault();

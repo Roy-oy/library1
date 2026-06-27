@@ -14,13 +14,13 @@
             --sidebar-w:        260px;
             --header-h:         70px;
 
-            /* ── Palette: Obsidian & Amber Gold ── */
+            
             --slate-950:        #0b0f19;
             --slate-900:        #111827;
             --slate-800:        #1f2937;
             --slate-700:        #374151;
             --slate-600:        #4b5563;
-            --blue-600:         #d97706; /* Emas Hangat / Amber */
+            --blue-600:         #d97706; 
             --blue-500:         #f59e0b;
             --blue-400:         #fbbf24;
             --blue-100:         #fef3c7;
@@ -28,7 +28,7 @@
             --indigo-600:       #4b5563;
             --indigo-100:       #f3f4f6;
 
-            /* Sidebar: Obsidian Dark Gold */
+            
             --sidebar-bg:       #111827;
             --sidebar-surface:  #1f2937;
             --sidebar-active:   #d97706;
@@ -38,27 +38,27 @@
             --sidebar-border:   rgba(255, 255, 255, 0.05);
             --sidebar-accent:   #fbbf24;
 
-            /* Layout Global */
+            
             --primary:          #d97706;
             --primary-dark:     #b45309;
             --primary-soft:     #fffbeb;
             --accent:           #374151;
 
-            /* Background & Surface Konten */
+            
             --bg:               #f9fafb;
             --surface:          #ffffff;
             --surface-2:        #f3f4f6;
 
-            /* Teks */
+            
             --text:             #111827;
             --text-muted:       #4b5563;
             --text-light:       #9ca3af;
 
-            /* Border */
+            
             --border:           #e5e7eb;
             --border-soft:      #f3f4f6;
 
-            /* Status Alert & Badge */
+            
             --success:          #10b981;
             --success-bg:       #ecfdf5;
             --warning:          #f59e0b;
@@ -82,7 +82,7 @@
             min-height: 100vh;
         }
 
-        /* ── SIDEBAR ───────────────────────────── */
+        
         .sidebar {
             width: var(--sidebar-w);
             background: var(--sidebar-bg);
@@ -185,14 +185,14 @@
         .user-info .name  { font-size: .8rem; font-weight: 600; color: #ffffff; }
         .user-info .role  { font-size: .7rem; color: var(--sidebar-text-dim); margin-top: 1px; }
 
-        /* ── MAIN WRAPPER ───────────────────────── */
+        
         .main-wrapper {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
             display: flex; flex-direction: column;
         }
 
-        /* ── HEADER ────────────────────────────── */
+        
         .header {
             height: var(--header-h);
             background: rgba(255, 255, 255, 0.85);
@@ -239,7 +239,7 @@
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
         }
 
-        /* ── CONTENT & ALERTS ──────────────────── */
+        
         .content { padding: 1.8rem; flex: 1; }
 
         .alert {
@@ -253,13 +253,13 @@
         .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.15); }
         .alert-danger  { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.15); }
 
-        /* ── SCROLLBAR ─────────────────────────── */
+        
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
 
-        /* ── UNIVERSAL PAGINATION ── */
+        
         .pagination-wrap { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: #fafbfc; margin-top: 1.5rem; border-radius: 0 0 var(--radius) var(--radius); }
         .pagination-wrap .info { font-size: 0.88rem; color: var(--text-muted); }
         .pagination-wrap nav { display: block; }
@@ -270,7 +270,7 @@
         .page-item.disabled .page-link { color: #cbd5e1; background-color: #f8fafc; border-color: #e2e8f0; cursor: not-allowed; transform: none; box-shadow: none; }
         .page-link[rel="prev"] span, .page-link[rel="next"] span { display: none; }
 
-        /* ── OVERLAY FOR MOBILE ────────────────── */
+        
         .sidebar-overlay {
             display: none; position: fixed; inset: 0;
             background: rgba(17,24,39,.4); z-index: 90;

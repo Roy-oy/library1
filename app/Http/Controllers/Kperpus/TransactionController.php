@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    /**
-     * Tampilkan riwayat peminjaman buku.
-     */
+    
     public function peminjaman(Request $request)
     {
         $query = Peminjaman::with(['siswa', 'details.buku']);
@@ -27,9 +25,7 @@ class TransactionController extends Controller
         return view('kperpus.peminjaman.index', compact('transactions'));
     }
 
-    /**
-     * Tampilkan riwayat pengembalian buku.
-     */
+    
     public function pengembalian(Request $request)
     {
         $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])

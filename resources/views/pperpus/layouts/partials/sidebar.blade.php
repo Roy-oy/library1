@@ -17,7 +17,7 @@
             </a>
         </div>
 
-        {{-- Peminjaman --}}
+        
         <div class="nav-section-label">Sirkulasi</div>
         <div class="nav-item nav-dropdown {{ request()->routeIs('pperpus.peminjaman.*') ? 'open' : '' }}">
             <a href="#" class="nav-link nav-dropdown-toggle {{ request()->routeIs('pperpus.peminjaman.*') ? 'active' : '' }}" onclick="toggleDropdown(this, event)">
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        {{-- Pengembalian --}}
+        
         <div class="nav-item nav-dropdown {{ request()->routeIs('pperpus.pengembalian.*') ? 'open' : '' }}">
             <a href="#" class="nav-link nav-dropdown-toggle {{ request()->routeIs('pperpus.pengembalian.*') ? 'active' : '' }}" onclick="toggleDropdown(this, event)">
                 <i class="fas fa-clipboard-check"></i> <span>Pengembalian</span>
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        {{-- Laporan --}}
+        
         <div class="nav-section-label">Manajemen & Laporan</div>
         <div class="nav-item nav-dropdown {{ request()->routeIs('pperpus.report.*') ? 'open' : '' }}">
             <a href="#" class="nav-link nav-dropdown-toggle {{ request()->routeIs('pperpus.report.*') ? 'active' : '' }}" onclick="toggleDropdown(this, event)">
@@ -105,12 +105,12 @@
     </div>
 </aside>
 
-{{-- ===== CSS Dropdown Disesuaikan dengan Palet Baru ===== --}}
+
 <style>
 .nav-dropdown-menu {
     display: none;
     overflow: hidden;
-    background: rgba(15, 23, 42, 0.38); /* Menggunakan alpha slate sejuk agar menyatu sempurna */
+    background: rgba(15, 23, 42, 0.38); 
     border-radius: 8px;
     margin: 4px 1.2rem 8px 1.2rem;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
@@ -171,7 +171,7 @@
     opacity: 1;
 }
 .nav-child.active {
-    background: rgba(13, 148, 136, 0.2); /* Aksen Teal emerald lembut saat aktif */
+    background: rgba(13, 148, 136, 0.2); 
     color: #2dd4bf;
     font-weight: 700;
 }
@@ -181,7 +181,7 @@
 }
 </style>
 
-{{-- ===== JS Dropdown ===== --}}
+
 <script>
 function toggleDropdown(el, event) {
     event.preventDefault();

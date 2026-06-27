@@ -9,18 +9,14 @@ use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
-    /**
-     * Tampilkan halaman profil kepala sekolah.
-     */
+    
     public function index()
     {
         $user = auth()->user();
         return view('ksekolah.profile.index', compact('user'));
     }
 
-    /**
-     * Perbarui data profil.
-     */
+    
     public function update(Request $request)
     {
         $user = auth()->user();
@@ -33,7 +29,7 @@ class ProfileController extends Controller
         ]);
 
         if ($request->hasFile('foto_profile')) {
-            // Hapus foto lama jika ada
+            
             if ($user->foto_profile && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->foto_profile)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto_profile);
             }

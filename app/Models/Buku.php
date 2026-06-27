@@ -27,19 +27,19 @@ class Buku extends Model
         'sumber_buku',
     ];
 
-    // Relasi ke Kategori Buku
+    
     public function kategoriBuku()
     {
         return $this->belongsTo(KategoriBuku::class, 'id_kategori', 'id_kategori');
     }
 
-    /** Alias untuk kategoriBuku */
+    
     public function kategori()
     {
         return $this->kategoriBuku();
     }
 
-    // Scope untuk sumber buku
+    
     public function scopeBos($query)
     {
         return $query->where('sumber_buku', 'bos');
@@ -50,12 +50,10 @@ class Buku extends Model
         return $query->where('sumber_buku', 'buku perpus');
     }
 
-    /**
-     * Dapatkan prefix kode buku berdasarkan sumber dan kategori.
-     */
+    
     public static function getPrefix(string $sumber, $id_kategori = null): string
     {
-        $prefix = 'BP-'; // Default
+        $prefix = 'BP-'; 
         if ($sumber === 'bos') {
             $prefix = 'BOS-';
         } else if ($sumber === 'buku perpus' && $id_kategori) {
@@ -81,20 +79,18 @@ class Buku extends Model
         return $prefix;
     }
 
-    /**
-     * Generate kode buku otomatis secara berurutan berdasarkan sumber buku dan kategori.
-     */
+    
     public static function generateKode(string $sumber, $id_kategori = null): string
     {
         $prefix = self::getPrefix($sumber, $id_kategori);
 
-        // Ambil kode terakhir yang berawalan sesuai prefix
+        
         $last = static::where('kode_buku', 'like', "{$prefix}%")
             ->orderBy('kode_buku', 'desc')
             ->value('kode_buku');
 
         if ($last) {
-            // Ekstrak angka dari kode buku (misal: BCP-0001 -> 1)
+            
             $num = (int) substr($last, strlen($prefix));
             $next = $num + 1;
         } else {

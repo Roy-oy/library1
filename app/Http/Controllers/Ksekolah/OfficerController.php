@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class OfficerController extends Controller
 {
-    /**
-     * Lihat daftar petugas perpustakaan.
-     */
+    
     public function index()
     {
         $officers = User::whereIn('role', ['penjaga_perpustakaan', 'kepala_perpustakaan'])

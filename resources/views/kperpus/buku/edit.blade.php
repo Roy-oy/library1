@@ -5,13 +5,13 @@
 
 @push('styles')
 <style>
-    /* Kontainer Utama dengan Sentuhan Border Berwarna (Sama dengan Create) */
+    
     .simple-container {
         max-width: 850px;
         margin: 2rem auto 4rem auto;
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-top: 5px solid #1e3a8a; /* Aksen biru utama di bagian atas */
+        border-top: 5px solid #1e3a8a; 
         border-radius: 16px;
         padding: 0;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -19,12 +19,12 @@
         overflow: hidden;
     }
 
-    /* Header Form Gradasi Biru (Sama dengan Create) */
+    
     .form-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: linear-gradient(to right, #eff6ff, #ffffff); /* Gradasi biru lembut */
+        background: linear-gradient(to right, #eff6ff, #ffffff); 
         padding: 2rem 3rem;
         border-bottom: 1px solid #dbeafe;
     }
@@ -58,11 +58,11 @@
     .form-header p {
         margin: 0.25rem 0 0 0;
         font-size: 0.875rem;
-        /* color: #1e40af; */
+        
         opacity: 0.8;
     }
 
-    /* Tombol Kembali dengan Efek Transisi Warna */
+    
     .btn-kembali {
         text-decoration: none;
         color: #172554;
@@ -84,7 +84,7 @@
         color: #172554;
     }
 
-    /* Grid & Padding Form */
+    
     .form-body {
         padding: 3rem;
     }
@@ -99,7 +99,7 @@
         grid-column: span 2;
     }
 
-    /* Desain Grup Input & Label Berwarna */
+    
     .form-group {
         display: flex;
         flex-direction: column;
@@ -115,9 +115,9 @@
         gap: 0.5rem;
     }
 
-    /* Pembeda Warna Ikon di Label */
+    
     .form-group label i {
-        color: #1e3a8a; /* Warna biru untuk ikon */
+        color: #1e3a8a; 
         font-size: 0.95rem;
     }
 
@@ -126,7 +126,7 @@
         font-weight: bold;
     }
 
-    /* Input & Select Box */
+    
     .form-input {
         padding: 0.8rem 1.1rem;
         font-size: 0.925rem;
@@ -141,7 +141,7 @@
 
     .form-input:focus {
         background-color: #ffffff;
-        border-color: #1e3a8a; /* Berubah jadi biru saat diklik */
+        border-color: #1e3a8a; 
         box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.15);
     }
 
@@ -153,7 +153,7 @@
         box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
     }
 
-    /* Kustomisasi Panah Select Box */
+    
     select.form-input {
         cursor: pointer;
         appearance: none;
@@ -164,7 +164,7 @@
         padding-right: 2.75rem;
     }
 
-    /* Status Terkunci pada Form Edit */
+    
     .form-input:disabled {
         background-color: #e2e8f0;
         color: #64748b;
@@ -185,7 +185,7 @@
         line-height: 1.4;
     }
 
-    /* Preview Cover Aktif Saat Ini */
+    
     .current-cover-wrap {
         background: #f0f5ff;
         border-radius: 12px;
@@ -232,7 +232,7 @@
         opacity: 0.8;
     }
 
-    /* Tombol Aksi di Bagian Bawah */
+    
     .form-actions {
         margin-top: 3rem;
         padding-top: 1.5rem;
@@ -268,7 +268,7 @@
     }
 
     .btn-simpan {
-        background: #1e3a8a; /* Tombol biru utama */
+        background: #1e3a8a; 
         color: #ffffff;
         border: 1px solid #1e3a8a;
         box-shadow: 0 4px 14px rgba(30, 58, 138, 0.2);
@@ -285,7 +285,7 @@
         transform: translateY(0);
     }
 
-    /* Media Query untuk Perangkat Mobile */
+    
     @media (max-width: 640px) {
         .form-header { padding: 1.5rem; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
         .btn-kembali { width: 100%; justify-content: center; }
@@ -301,7 +301,7 @@
 @section('content')
 <div class="simple-container">
     
-    {{-- Bagian Atas: Header Form --}}
+    
     <div class="form-header">
         <div class="form-header-title">
             <div class="form-header-icon">
@@ -317,7 +317,7 @@
         </a>
     </div>
 
-    {{-- Bagian Isi Formulir --}}
+    
     <div class="form-body">
         <form action="{{ route('kperpus.buku.update', $buku->id_buku) }}" method="POST" enctype="multipart/form-data" id="form-buku">
             @csrf
@@ -325,7 +325,7 @@
 
             <div class="form-grid">
                 
-                {{-- Sumber Buku (Locked/Disabled on Edit view) --}}
+                
                 <div class="form-group full-width">
                     <label><i class="fas fa-wallet"></i> Sumber Anggaran / Jenis Buku <span>*</span></label>
                     <select class="form-input" disabled>
@@ -336,7 +336,7 @@
                     <span class="info-bantuan" style="color: #1e3a8a;"><i class="fas fa-info-circle"></i> Jenis anggaran terkunci untuk menjaga riwayat prefix kode serial.</span>
                 </div>
 
-                {{-- Input Dinamis: Kategori (Hanya tampil jika buku perpus) --}}
+                
                 <div class="form-group" id="kategori-group">
                     <label for="id_kategori"><i class="fas fa-tags"></i> Kategori Rak Buku <span>*</span></label>
                     <select name="id_kategori" id="id_kategori" class="form-input @error('id_kategori') is-invalid @enderror" onchange="updateKodeBuku()">
@@ -352,7 +352,7 @@
                     @enderror
                 </div>
 
-                {{-- Input Dinamis: Kelas (Hanya tampil jika dana BOS) --}}
+                
                 <div class="form-group" id="kelas-group" style="display: none;">
                     <label for="kelas"><i class="fas fa-graduation-cap"></i> Untuk Siswa Kelas <span>*</span></label>
                     <select name="kelas" id="kelas" class="form-input @error('kelas') is-invalid @enderror">
@@ -366,7 +366,7 @@
                     @enderror
                 </div>
 
-                {{-- Kode Buku --}}
+                
                 <div class="form-group">
                     <label for="kode_buku"><i class="fas fa-barcode"></i> Kode Registrasi Buku <span>*</span></label>
                     <input type="text" name="kode_buku" id="kode_buku" class="form-input @error('kode_buku') is-invalid @enderror" placeholder="Contoh: BKP-001" required value="{{ old('kode_buku', $buku->kode_buku) }}">
@@ -375,7 +375,7 @@
                     @enderror
                 </div>
 
-                {{-- ISBN --}}
+                
                 <div class="form-group">
                     <label for="isbn"><i class="fas fa-book-open"></i> Nomor ISBN</label>
                     <input type="text" name="isbn" id="isbn" class="form-input @error('isbn') is-invalid @enderror" placeholder="Boleh dikosongkan jika tidak ada" maxlength="13" value="{{ old('isbn', $buku->isbn) }}">
@@ -384,7 +384,7 @@
                     @enderror
                 </div>
 
-                {{-- Judul Buku --}}
+                
                 <div class="form-group full-width">
                     <label for="judul_buku"><i class="fas fa-book"></i> Judul Buku <span>*</span></label>
                     <input type="text" name="judul_buku" id="judul_buku" class="form-input @error('judul_buku') is-invalid @enderror" placeholder="Masukkan judul lengkap" required value="{{ old('judul_buku', $buku->judul_buku) }}">
@@ -393,7 +393,7 @@
                     @enderror
                 </div>
 
-                {{-- Pengarang --}}
+                
                 <div class="form-group full-width">
                     <label for="pengarang"><i class="fas fa-user-edit"></i> Nama Pengarang / Penulis <span>*</span></label>
                     <input type="text" name="pengarang" id="pengarang" class="form-input @error('pengarang') is-invalid @enderror" placeholder="Nama penulis" required value="{{ old('pengarang', $buku->pengarang) }}">
@@ -402,7 +402,7 @@
                     @enderror
                 </div>
 
-                {{-- Tahun Terbit --}}
+                
                 <div class="form-group">
                     <label for="tahun_terbit"><i class="fas fa-calendar-alt"></i> Tahun Terbit <span>*</span></label>
                     <input type="number" name="tahun_terbit" id="tahun_terbit" class="form-input @error('tahun_terbit') is-invalid @enderror" placeholder="Contoh: 2024" required min="1800" max="{{ date('Y') }}" value="{{ old('tahun_terbit', $buku->tahun_terbit) }}">
@@ -411,7 +411,7 @@
                     @enderror
                 </div>
 
-                {{-- Stok Buku --}}
+                
                 <div class="form-group">
                     <label for="stok"><i class="fas fa-layer-group"></i> Jumlah Stok Fisik <span>*</span></label>
                     <input type="number" name="stok" id="stok" class="form-input @error('stok') is-invalid @enderror" required min="0" value="{{ old('stok', $buku->stok) }}">
@@ -420,7 +420,7 @@
                     @enderror
                 </div>
 
-                {{-- Rak Buku --}}
+                
                 <div class="form-group">
                     <label for="rak"><i class="fas fa-archive"></i> Lokasi Rak</label>
                     <input type="text" name="rak" id="rak" class="form-input @error('rak') is-invalid @enderror" placeholder="Contoh: R-01, A-1" value="{{ old('rak', $buku->rak) }}">
@@ -429,7 +429,7 @@
                     @enderror
                 </div>
 
-                {{-- Preview Cover Aktif Saat Ini --}}
+                
                 <div class="full-width">
                     <div class="current-cover-wrap">
                         @if($buku->gambar)
@@ -448,7 +448,7 @@
                     </div>
                 </div>
 
-                {{-- File Sampul Baru --}}
+                
                 <div class="form-group full-width">
                     <label for="gambar"><i class="fas fa-image"></i> Ganti / Upload Cover Baru</label>
                     <input type="file" name="gambar" id="gambar" class="form-input @error('gambar') is-invalid @enderror" accept="image/*">
@@ -460,7 +460,7 @@
 
             </div>
 
-            {{-- Navigasi Bawah --}}
+            
             <div class="form-actions">
                 <a href="{{ route('kperpus.buku.index') }}" class="btn btn-batal">Batal</a>
                 <button type="submit" class="btn btn-simpan">
@@ -536,7 +536,6 @@
         }
     });
 
-    // Inisialisasi awal saat dimuat
     toggleFields();
 </script>
 @endpush

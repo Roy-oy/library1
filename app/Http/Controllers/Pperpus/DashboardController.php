@@ -14,15 +14,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // ── 1. Statistik Siswa ───────────────────────────────────
+        
         $stats['total_siswa'] = Siswa::count();
         $stats['siswa_aktif'] = Siswa::where('status', 'aktif')->count();
 
-        // ── 2. Statistik Buku ────────────────────────────────────
+        
         $stats['total_buku'] = Buku::count();
         $stats['total_stok'] = Buku::sum('stok');
 
-        // ── 3. Statistik Peminjaman & Keterlambatan ───────────────
+        
         $stats['peminjaman_hari_ini'] = Peminjaman::whereDate('tanggal_pinjam', Carbon::today())->count();
         $stats['buku_dipinjam_hari_ini'] = DetailPeminjaman::whereHas('peminjaman', function ($q) {
             $q->whereDate('tanggal_pinjam', Carbon::today());
@@ -30,12 +30,12 @@ class DashboardController extends Controller
         $stats['peminjaman_aktif'] = Peminjaman::where('status_peminjaman', 'dipinjam')->count();
         $stats['buku_terlambat']   = DetailPeminjaman::where('status_detail', 'terlambat')->count();
 
-        // ── 4. Statistik Denda ───────────────────────────────────
+        
         $stats['denda_belum_lunas'] = DetailPeminjaman::where('status_denda', 'belum_lunas')->sum('jumlah_denda');
         $stats['denda_lunas']       = DetailPeminjaman::where('status_denda', 'lunas')->sum('jumlah_denda');
         $stats['total_denda_grand'] = DetailPeminjaman::whereIn('status_denda', ['lunas', 'belum_lunas'])->sum('jumlah_denda');
 
-        // ── 5. Data Chart Peminjaman Buku (7 Hari Terakhir) ───────
+        
         $borrowingsLast7Days = [];
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::today()->subDays($i)->format('Y-m-d');
@@ -59,14 +59,14 @@ class DashboardController extends Controller
             }
         }
 
-        // ── 6. Tabel Denda Lunas & Belum Lunas ────────────────────
+        
         $fines = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
             ->where('jumlah_denda', '>', 0)
             ->latest('updated_at')
             ->paginate(10, ['*'], 'fines_page')
             ->withQueryString();
 
-        // ── 7. Data Siswa Rajin Meminjam (Buku Perpus) ────────────
+        
         $topStudents = \App\Models\Siswa::select('siswa.id_siswa', 'siswa.nis', 'siswa.nama_siswa', 'siswa.kelas')
             ->join('peminjaman', 'siswa.id_siswa', '=', 'peminjaman.id_siswa')
             ->join('detail_peminjaman', 'peminjaman.id_peminjaman', '=', 'detail_peminjaman.id_peminjaman')
@@ -77,7 +77,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // ── 8. Data Buku Terpopuler (Buku Perpus) ─────────────────
+        
         $topBooks = \App\Models\Buku::select('buku.id_buku', 'buku.judul_buku', 'buku.gambar', 'buku.pengarang')
             ->join('detail_peminjaman', 'buku.id_buku', '=', 'detail_peminjaman.id_buku')
             ->where('detail_peminjaman.sumber_buku', 'buku perpus')
@@ -87,7 +87,7 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        // ── 9. Laporan Aktivitas Terbaru ─────────────────────────────
+        
         $recent_activities = DetailPeminjaman::with(['peminjaman.siswa', 'buku'])
             ->latest('updated_at')
             ->take(5)

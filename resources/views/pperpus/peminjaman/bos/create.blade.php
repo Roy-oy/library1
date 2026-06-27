@@ -5,7 +5,7 @@
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
-    /* Select2 Customization */
+    
     .select2-container .select2-selection--single {
         height: 42px;
         border: 1.5px solid var(--border);
@@ -28,7 +28,7 @@
         box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
     }
 
-    /* Books List UI */
+    
     .buku-list {
         display: flex;
         flex-direction: column;
@@ -113,7 +113,7 @@
     }
     .btn-submit:hover { background: var(--primary-dark); }
 
-    /* Books Selection UI */
+    
     .stok-badge {
         display: inline-flex; 
         align-items: center;
@@ -270,7 +270,6 @@
         
         selectSiswa.trigger('change');
 
-        // Automatically fetch books for this class
         fetchBooks(kelas);
     });
 
@@ -285,7 +284,7 @@
     async function fetchBooks(kelas) {
         bukuContainer.innerHTML = '<div style="text-align:center; padding:1rem;"><i class="fas fa-spinner fa-spin"></i> Memuat buku...</div>';
         try {
-            const baseClass = kelas.split('-')[0]; // Handle VII-A -> VII
+            const baseClass = kelas.split('-')[0];
             const resBuku = await fetch(`{{ route('pperpus.peminjaman.getBuku') }}?kelas=${baseClass}&sumber=bos`);
             const bukus = await resBuku.json();
 

@@ -14,20 +14,37 @@ use Illuminate\Validation\Rule;
 
 class PeminjamanController extends Controller
 {
-    // =========================================================================
-    // PEMINJAMAN BUKU PERPUSTAKAAN
-    // =========================================================================
+    
+    
+    
 
     public function indexPerpustakaan(Request $request)
     {
         $query = Peminjaman::whereHas('details', function($q) {
                 $q->where('sumber_buku', 'buku perpus');
-            })->with(['siswa', 'details.buku'])
+            })
+            ->withCount(['details as terlambat_count' => function ($q) {
+                $q->where('status_detail', 'terlambat');
+            }])
+            ->with(['siswa', 'details.buku'])
+            ->orderByDesc('terlambat_count')
             ->latest('tanggal_pinjam');
 
         if ($request->filled('status')) {
             if ($request->status === 'dipinjam') {
                 $query->whereIn('status_peminjaman', ['dipinjam', 'dikembalikan']);
+            } elseif ($request->status === 'telat') {
+                $query->where('status_peminjaman', 'dipinjam')
+                      ->whereHas('details', function ($q) {
+                          $q->where(function ($sq) {
+                              $sq->where('status_detail', 'terlambat')
+                                 ->orWhere(function ($ssq) {
+                                     $ssq->where('status_detail', 'dipinjam')
+                                         ->whereNotNull('tanggal_jatuh_tempo')
+                                         ->whereDate('tanggal_jatuh_tempo', '<', now()->startOfDay());
+                                 });
+                          });
+                      });
             } else {
                 $query->where('status_peminjaman', $request->status);
             }
@@ -158,15 +175,20 @@ class PeminjamanController extends Controller
         return view('pperpus.peminjaman.perpustakaan.show', compact('peminjaman'));
     }
 
-    // =========================================================================
-    // PEMINJAMAN BUKU BOS
-    // =========================================================================
+    
+    
+    
 
     public function indexBos(Request $request)
     {
         $query = Peminjaman::whereHas('details', function($q) {
                 $q->where('sumber_buku', 'bos');
-            })->with(['siswa', 'details.buku'])
+            })
+            ->withCount(['details as terlambat_count' => function ($q) {
+                $q->where('status_detail', 'terlambat');
+            }])
+            ->with(['siswa', 'details.buku'])
+            ->orderByDesc('terlambat_count')
             ->latest('tanggal_pinjam');
 
         if ($request->filled('status')) {
@@ -236,7 +258,7 @@ class PeminjamanController extends Controller
                     throw new \Exception("Stok buku BOS \"{$buku->judul_buku}\" sudah habis.");
                 }
 
-                $jatuhTempo = null; // BOS doesn't have strict auto due date initially
+                $jatuhTempo = null; 
                 $dendaHarian = DetailPeminjaman::DENDA_HARIAN_BOS;
 
                 DetailPeminjaman::create([
@@ -281,9 +303,9 @@ class PeminjamanController extends Controller
         return view('pperpus.peminjaman.bos.show', compact('peminjaman'));
     }
 
-    // =========================================================================
-    // PENGEMBALIAN PERPUSTAKAAN
-    // =========================================================================
+    
+    
+    
 
     public function indexPengembalianPerpustakaan(Request $request)
     {
@@ -446,9 +468,9 @@ class PeminjamanController extends Controller
             ->with('success', 'Semua denda BOS berhasil dilunaskan.');
     }
 
-    // =========================================================================
-    // PENGEMBALIAN BUKU BOS (Akhir Tahun Ajaran)
-    // =========================================================================
+    
+    
+    
 
     public function formAkhirTahunBos()
     {
@@ -500,7 +522,7 @@ class PeminjamanController extends Controller
 
     public function prosesAkhirTahunBos(Request $request)
     {
-        // Validasi dasar
+        
         $request->validate([
             'detail'               => ['required', 'array', 'min:1'],
             'detail.*.id_detail'   => ['required', 'exists:detail_peminjaman,id_detail'],
@@ -509,7 +531,7 @@ class PeminjamanController extends Controller
             'detail.*.keterangan'  => ['nullable', 'string'],
         ]);
 
-        // Validasi custom: denda wajib diisi jika rusak/hilang
+        
         foreach ($request->detail as $index => $item) {
             if (in_array($item['kondisi'] ?? null, ['rusak', 'hilang'])) {
                 if (empty($item['denda_ganti']) || (int)$item['denda_ganti'] === 0) {
@@ -536,7 +558,7 @@ class PeminjamanController extends Controller
                 if ($item['kondisi'] === 'baik') {
                     $detail->prosesPengembalian(now(), $item['keterangan'] ?? null);
                     
-                    // Hanya jika kondisi BAIK, stok bertambah dan status update
+                    
                     $detail->buku->increment('stok');
                     if ($detail->buku->stok > 0 && $detail->buku->status_buku === 'habis') {
                         $detail->buku->update(['status_buku' => 'tersedia']);
@@ -547,7 +569,7 @@ class PeminjamanController extends Controller
                         (int) ($item['denda_ganti'] ?? 0),
                         $item['keterangan'] ?? null
                     );
-                    // Jika hilang/rusak, stok TIDAK bertambah (buku tidak bisa dipinjam lagi)
+                    
                 }
 
                 $detail->peminjaman->syncStatus();
@@ -564,9 +586,9 @@ class PeminjamanController extends Controller
         }
     }
 
-    // =========================================================================
-    // API / AJAX HELPERS
-    // =========================================================================
+    
+    
+    
 
     public function cekPeminjamanAktifSiswa(Siswa $siswa)
     {

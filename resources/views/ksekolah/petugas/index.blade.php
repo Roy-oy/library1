@@ -91,7 +91,7 @@
         </table>
     </div>
     
-    {{-- Pagination --}}
+    
     @if($officers->hasPages())
     <div class="pagination-wrap">
         <span class="info">

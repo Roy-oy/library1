@@ -160,7 +160,7 @@
         if (!isChecked) {
             denda.disabled = true;
         } else {
-            // Only update denda if it should be shown
+
             if (kondisi.value === 'rusak' || kondisi.value === 'hilang') {
                 denda.disabled = false;
                 denda.required = true;
@@ -176,7 +176,7 @@
         const checkbox = document.querySelector(`input[name="detail[${index}][id_detail]"]`);
         
         checkbox.checked = true; // Auto-select if modified
-        // Do not call toggleRow here to avoid infinite loop. Just enable other fields manually if needed, or since checkbox is checked, it's fine.
+
         document.getElementById('kondisi-' + index).disabled = false;
         document.getElementById('keterangan-' + index).disabled = false;
         document.getElementById('tanggal-' + index).disabled = false;

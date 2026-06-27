@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ── Theme variables for this view ── */
+    
     :root {
         --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
@@ -22,7 +22,7 @@
         --transition-speed: 0.2s;
     }
 
-    /* ── Page Header ── */
+    
     .page-header {
         display: flex;
         align-items: center;
@@ -46,7 +46,7 @@
         margin-top: 0.25rem;
     }
 
-    /* ── Card Container ── */
+    
     .card {
         background: var(--surface);
         border-radius: var(--card-radius);
@@ -55,7 +55,7 @@
         overflow: hidden;
     }
 
-    /* ── INTEGRATED TOOLBAR (Filter & Search Menjadi Satu) ── */
+    
     .card-toolbar-integrated {
         background: #fafbfc;
         padding: 1.25rem 1.5rem;
@@ -83,7 +83,7 @@
         font-weight: 800;
     }
 
-    /* Mini Class Filter di dalam Toolbar */
+    
     .filter-inline-group {
         display: flex;
         gap: 0.35rem;
@@ -113,7 +113,7 @@
         border-color: var(--primary);
     }
 
-    /* Search Box */
+    
     .search-box {
         display: flex;
         align-items: center;
@@ -171,7 +171,7 @@
     
 
 
-    /* ── Pop-Up Form Modal Shared Styling ── */
+    
     .modal-overlay {
         display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45);
         backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center;
@@ -224,7 +224,7 @@
     }
     .btn-cancel-modal:hover { background: #e2e8f0; color: var(--text); }
 
-    /* Delete Modal specifics style reset */
+    
     .modal-box-del { max-width: 420px; padding: 2rem; }
     .modal-box-del .modal-icon {
         width: 60px; height: 60px; border-radius: 50%; background: var(--theme-danger-light); color: var(--theme-danger);
@@ -255,7 +255,7 @@
 
 @section('content')
 
-{{-- Page Header --}}
+
 <div class="page-header">
     <div class="page-header-title">
         <h1><i class="fas fa-users" style="color:var(--primary)"></i> Data Siswa</h1>
@@ -266,13 +266,13 @@
     </button>
 </div>
 
-{{-- Main Terpadu Card --}}
+
 <div class="card">
     
-    {{-- TOOLBAR GABUNGAN: Filter Kelas + Search Box + Counter Ada di Sini --}}
+    
     <div class="card-toolbar-integrated">
         <div class="toolbar-upper">
-            {{-- Bagian Kiri: Filter Kapsul Kelas --}}
+            
             <div class="filter-inline-group">
                 <a href="{{ route('kperpus.siswa.index', ['kelas' => 'all', 'search' => request('search')]) }}" class="btn-filter-pill {{ $kelas === 'all' ? 'active' : '' }}" style="text-decoration: none;">
                     Semua
@@ -284,7 +284,7 @@
                 @endforeach
             </div>
 
-            {{-- Bagian Kanan: Search Input Kontrol --}}
+            
             <form action="{{ route('kperpus.siswa.index') }}" method="GET" class="search-box">
                 <input type="hidden" name="kelas" value="{{ $kelas }}">
                 <i class="fas fa-search"></i>
@@ -292,7 +292,7 @@
             </form>
         </div>
         
-        {{-- Status Filter Saat ini --}}
+        
         <div class="total-label" style="display: flex; justify-content: space-between; align-items: center;">
             <span>Total data {{ $kelas === 'all' ? 'seluruh siswa' : 'pada kelas ' . $kelas }}: <strong>{{ $siswa->total() }} siswa</strong></span>
             @if(request('search'))
@@ -301,7 +301,7 @@
         </div>
     </div>
 
-    {{-- Tabel Data Utama Tunggal --}}
+    
     <div class="table-wrap">
         <table class="kperpus-table" id="siswa-table-main">
             <thead>
@@ -371,7 +371,7 @@
         </table>
     </div>
 
-    {{-- Pagination --}}
+    
     @if($siswa->hasPages())
     <div class="pagination-wrap">
         <span class="info">
@@ -382,7 +382,7 @@
     @endif
 </div>
 
-{{-- Modals Overlay Delete --}}
+
 <div class="modal-overlay" id="delete-modal">
     <div class="modal-box modal-box-del">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -406,7 +406,7 @@
 
 @push('scripts')
 <script>
-    // Modal Control Logic
+
     function confirmDelete(url, nama) {
         document.getElementById('delete-form').action = url;
         document.getElementById('delete-modal-msg').innerHTML =
@@ -452,11 +452,10 @@
         setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
 
-    // Auto-open modal if validation errors exist
     @if($errors->any())
         document.addEventListener('DOMContentLoaded', function() {
-            // For now, default to opening the create modal if errors occur
-            // You can refine this logic if you need to distinguish between create and edit errors
+
+
             openCreateModal();
         });
     @endif

@@ -14,7 +14,7 @@
             padding: 28px 36px;
         }
 
-        /* ─── KOP SURAT (Dibuat Presisi & Sejajar Tengah) ─── */
+        
         .kop-surat {
             width: 100%;
             border-bottom: 4px double #1a1a1a;
@@ -39,7 +39,7 @@
             display: table-cell;
             vertical-align: middle;
             text-align: center;
-            padding-right: 90px; /* Menyeimbangkan posisi teks akibat adanya logo di sisi kiri agar sentral */
+            padding-right: 90px; 
         }
         .kop-teks .nama-instansi {
             font-size: 16pt;
@@ -58,7 +58,7 @@
             margin-top: 3px;
         }
 
-        /* ─── JUDUL LAPORAN ─── */
+        
         .judul-laporan {
             text-align: center;
             margin: 20px 0 15px;
@@ -91,7 +91,7 @@
             vertical-align: middle;
         }
 
-        /* ─── TABEL DATA ────────────────────────────── */
+        
         .tabel-wrapper {
             margin-top: 10px;
         }
@@ -137,7 +137,7 @@
         .pill-success { color: #1a6b2f; font-weight: bold; }
         .pill-danger { color: #b91c1c; font-weight: bold; }
 
-        /* ─── TANDA TANGAN ───────────────────────────── */
+        
         .ttd-section {
             margin-top: 35px;
             width: 100%;
@@ -172,7 +172,7 @@
 </head>
 <body>
 
-    {{-- ── KOP SURAT ── --}}
+    
     <div class="kop-surat">
         <div class="kop-inner">
             <div class="kop-logo">
@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    {{-- ── JUDUL LAPORAN ── --}}
+    
     <div class="judul-laporan">
         <div class="judul-utama">Laporan Denda Keterlambatan</div>
         <div class="sub-judul">Perpustakaan SMP Negeri 8 Percut Sei Tuan</div>
@@ -238,7 +238,7 @@
         </div>
     </div>
 
-    {{-- ── TABEL DATA ── --}}
+    
     <div class="tabel-wrapper">
         <table class="tabel-data">
             <thead>
@@ -317,7 +317,7 @@
         </table>
     </div>
 
-    {{-- ── TANDA TANGAN ── --}}
+    
     <div class="ttd-section">
         <table class="ttd-table">
             <tr>

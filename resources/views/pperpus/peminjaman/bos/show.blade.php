@@ -7,7 +7,7 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
-    /* ── Variabel Tema Proteksi ── */
+    
     :root {
         --local-primary: #0d9488;
         --local-primary-dark: #0f766e;
@@ -15,7 +15,7 @@
         --local-primary-border: #ccfbf1;
     }
 
-    /* Wrap Utama */
+    
     .detail-wrap {
         font-family: 'Plus Jakarta Sans', sans-serif;
         max-width: 1240px;
@@ -26,7 +26,7 @@
     }
     @keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 
-    /* ── Page Header ── */
+    
     .pg-head {
         display: flex; align-items: center; justify-content: space-between;
         margin-bottom: 1.75rem; gap: 1rem; flex-wrap: wrap;
@@ -50,7 +50,7 @@
     }
     .btn-print:hover { background: var(--local-primary-dark); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); }
 
-    /* ── Komponen Card Terpisah ── */
+    
     .section-card {
         background: #ffffff; border-radius: 16px;
         border: 1px solid #e2e8f0; box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.03);
@@ -70,7 +70,7 @@
         justify-content: space-between;
     }
 
-    /* Grid Layout Data */
+    
     .info-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -81,7 +81,7 @@
     .info-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; }
     .info-value { font-size: 0.98rem; font-weight: 700; color: #1e293b; }
 
-    /* Status Badge Master */
+    
     .badge {
         display: inline-flex; align-items: center; gap: .4rem;
         padding: .3rem .85rem; border-radius: 20px; font-size: .75rem; font-weight: 800;
@@ -97,7 +97,7 @@
     .badge-default { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
     .badge-default::before { background: #94a3b8; }
 
-    /* ── Denda Banner ── */
+    
     .denda-banner {
         background: #fff1f2; border: 1px solid #ffe4e6;
         border-radius: 12px; margin: 0 1.75rem 1.5rem 1.75rem;
@@ -119,7 +119,7 @@
     }
     .btn-lunas:hover { background: #be123c; transform: translateY(-1px); }
 
-    /* ── Sub-section Tabel Buku ── */
+    
     .tbl-wrap { overflow-x: auto; padding: 0 0 0.5rem 0; }
     .tbl { width: 100%; border-collapse: collapse; }
     .tbl thead th {
@@ -144,7 +144,7 @@
     .denda-status.lunas { color: #0d9488; background: #ccfbf1; }
     .denda-status.belum { color: #b45309; background: #fef3c7; }
 
-    /* ── Print Media Optimization ── */
+    
     .print-document { display: none; }
     @media print {
         @page { margin: 0; size: A4; }
@@ -155,7 +155,7 @@
         
         .print-document { display: block; width: 100%; font-size: 11pt; }
         
-        /* Kop Surat */
+        
         .kop-surat { width: 100%; border-bottom: 4px double #000; padding-bottom: 10px; margin-bottom: 15px; }
         .kop-inner { display: table; width: 100%; }
         .kop-logo { display: table-cell; width: 90px; vertical-align: middle; text-align: center; }
@@ -164,22 +164,22 @@
         .kop-teks .nama-instansi { font-size: 16pt; font-weight: bold; text-transform: uppercase; line-height: 1.2; }
         .kop-teks .alamat, .kop-teks .telp { font-size: 10pt; line-height: 1.3; }
 
-        /* Judul */
+        
         .judul-laporan { text-align: center; margin: 20px 0 20px 0; }
         .judul-laporan .judul-utama { font-size: 13pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         .judul-laporan .sub-judul { font-size: 11pt; font-weight: bold; margin-top: 3px; }
 
-        /* Meta Table */
+        
         .meta-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 10pt; }
         .meta-table td { padding: 4px; vertical-align: top; border: none !important; color: #000 !important; }
 
-        /* Data Table */
+        
         .section-title { font-size: 10pt; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; }
         .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 9.5pt; font-family: Arial, Helvetica, sans-serif; }
         .data-table th { background: #f0f0f0 !important; border: 1px solid #000; padding: 6px; text-align: center; font-weight: bold; -webkit-print-color-adjust: exact; color: #000 !important; text-transform: uppercase; }
         .data-table td { border: 1px solid #000; padding: 6px; color: #000 !important; }
 
-        /* Tanda Tangan */
+        
         .ttd-section { margin-top: 40px; width: 100%; page-break-inside: avoid; }
         .ttd-table { width: 100%; border-collapse: collapse; }
         .ttd-table td { border: none !important; color: #000 !important; }
@@ -189,12 +189,14 @@
 
 @section('content')
 
-{{-- HITUNG AKUMULASI DENDA --}}
 @php
-    $realtime_total_denda = $peminjaman->details->sum(function($d) {
-        if ($d->status_denda === 'lunas') return 0;
-        return $d->jumlah_denda > 0 ? $d->jumlah_denda : ($d->denda_realtime ?? 0);
+    $denda_resmi = $peminjaman->details->where('status_denda', 'belum_lunas')->sum('jumlah_denda');
+    $denda_estimasi = $peminjaman->details->filter(function($d) {
+        return $d->status_denda !== 'lunas' && $d->status_denda !== 'belum_lunas';
+    })->sum(function($d) {
+        return $d->denda_realtime ?? 0;
     });
+    $realtime_total_denda = $denda_resmi + $denda_estimasi;
 @endphp
 
 <div class="print-document">
@@ -273,14 +275,14 @@
             </tr>
             @endforeach
         </tbody>
-        @if($peminjaman->total_denda > 0)
-        <tfoot>
-            <tr>
-                <td colspan="7" style="text-align: right; font-weight: bold;">TOTAL TUNGGAKAN DENDA:</td>
-                <td colspan="2" style="text-align: left; font-weight: bold;">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</td>
-            </tr>
-        </tfoot>
-        @endif
+        @if($realtime_total_denda > 0)
+          <tfoot>
+              <tr>
+                  <td colspan="7" style="text-align: right; font-weight: bold;">TOTAL TUNGGAKAN DENDA:</td>
+                  <td colspan="2" style="text-align: left; font-weight: bold;">Rp {{ number_format($realtime_total_denda, 0, ',', '.') }}</td>
+              </tr>
+          </tfoot>
+          @endif
     </table>
 
     <div class="ttd-section">
@@ -306,7 +308,7 @@
 
 <div class="detail-wrap">
 
-    {{-- Atas Navigasi --}}
+    
     <div class="pg-head">
         <div class="pg-head-left">
             <a href="{{ route('pperpus.peminjaman.bos.index') }}" class="back-btn" title="Kembali">
@@ -321,28 +323,28 @@
         </button>
     </div>
 
-    {{-- ================= TABEL 1: IDENTITAS SISWA ================= --}}
+    
     <div class="section-card">
         <div class="card-title-header">
             <span><i class="fas fa-user-graduate" style="color: var(--local-primary); margin-right: 6px;"></i> Detail Identitas Peminjam</span>
         </div>
         <div class="info-grid">
-            <!-- 1. NIS -->
+            
             <div class="info-block">
                 <span class="info-label">Nomor Induk Siswa (NIS)</span>
                 <span class="info-value" style="font-family: 'JetBrains Mono', monospace; color: var(--local-primary);">{{ $peminjaman->siswa->nis }}</span>
             </div>
-            <!-- 2. Nama -->
+            
             <div class="info-block">
                 <span class="info-label">Nama Siswa</span>
                 <span class="info-value">{{ $peminjaman->siswa->nama_siswa }}</span>
             </div>
-            <!-- 3. Kelas -->
+            
             <div class="info-block">
                 <span class="info-label">Kelas</span>
                 <span class="info-value">Kelas {{ $peminjaman->siswa->kelas }}</span>
             </div>
-            <!-- 4. Status Utama -->
+            
             <div class="info-block">
                 <span class="info-label">Status Utama</span>
                 <div>
@@ -362,13 +364,13 @@
     </div>
 
 
-    {{-- ================= TABEL 2: DETAIL BUKU & DATA PINJAM ================= --}}
+    
     <div class="section-card">
         <div class="card-title-header">
             <span><i class="fas fa-book" style="color: var(--local-primary); margin-right: 6px;"></i> Informasi Transaksi & Item Buku BOS</span>
         </div>
 
-        {{-- Info Kode & Tanggal Pinjam Utama --}}
+        
         <div class="info-grid" style="border-bottom: 1px solid #e2e8f0; background: #fafafa; padding: 1.25rem 1.75rem;">
             <div class="info-block">
                 <span class="info-label">Kode Peminjaman</span>
@@ -384,27 +386,41 @@
             </div>
         </div>
 
-        {{-- Banner Denda Terintegrasi --}}
-        @if($peminjaman->total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
-        <div class="denda-banner" style="margin-top: 1.5rem;">
-            <div class="denda-left">
-                <div class="denda-icon-wrap"><i class="fas fa-hand-holding-usd"></i></div>
-                <div class="denda-info-text">
-                    <div class="denda-label">Tunggakan Denda Aktif</div>
-                    <div class="denda-amount">Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}</div>
-                    <div class="denda-note"><i class="fas fa-info-circle"></i> Terdeteksi total denda buku BOS yang belum dilunasi.</div>
-                </div>
-            </div>
-            <form action="{{ route('pperpus.peminjaman.bos.lunasSemuaDenda', $peminjaman->id_peminjaman) }}" method="POST" onsubmit="return confirm('Lunaskan semua denda untuk peminjaman BOS ini?')" class="print-none">
-                @csrf
-                <button type="submit" class="btn-lunas">
-                    <i class="fas fa-check-circle"></i> Lunaskan Denda
-                </button>
-            </form>
-        </div>
-        @endif
+        
+        @if($denda_resmi > 0 && $peminjaman->status_peminjaman !== 'selesai')
+          <div class="denda-banner" style="margin-top: 1.5rem;">
+              <div class="denda-left">
+                  <div class="denda-icon-wrap"><i class="fas fa-hand-holding-usd"></i></div>
+                  <div class="denda-info-text">
+                      <div class="denda-label">Tunggakan Denda Aktif</div>
+                      <div class="denda-amount">Rp {{ number_format($denda_resmi, 0, ',', '.') }}</div>
+                      <div class="denda-note"><i class="fas fa-info-circle"></i> Terdeteksi total denda buku BOS yang belum dilunasi.</div>
+                  </div>
+              </div>
+              <form action="{{ route('pperpus.peminjaman.bos.lunasSemuaDenda', $peminjaman->id_peminjaman) }}" method="POST" onsubmit="return confirm('Lunaskan semua denda untuk peminjaman BOS ini?')" class="print-none">
+                  @csrf
+                  <button type="submit" class="btn-lunas">
+                      <i class="fas fa-check-circle"></i> Lunaskan Denda
+                  </button>
+              </form>
+          </div>
+          @elseif($realtime_total_denda > 0 && $peminjaman->status_peminjaman !== 'selesai')
+          <div class="denda-banner" style="margin-top: 1.5rem;">
+              <div class="denda-left">
+                  <div class="denda-icon-wrap"><i class="fas fa-hand-holding-usd"></i></div>
+                  <div class="denda-info-text">
+                      <div class="denda-label">Tunggakan Denda Aktif</div>
+                      <div class="denda-amount">Rp {{ number_format($realtime_total_denda, 0, ',', '.') }}</div>
+                      <div class="denda-note"><i class="fas fa-info-circle"></i> Terdeteksi estimasi denda yang belum dilunasi.</div>
+                  </div>
+              </div>
+              <div class="denda-note print-none" style="margin-left: auto; color: #e11d48; font-size: 0.85rem; font-weight: 700; background: rgba(255,255,255,0.7); padding: 0.5rem 1rem; border-radius: 8px;">
+                  <i class="fas fa-exclamation-triangle"></i> Buku harus dikembalikan untuk melunasi denda.
+              </div>
+          </div>
+          @endif
 
-        {{-- Struktur Tabel Sesuai Request --}}
+        
         <div class="tbl-wrap">
             <table class="tbl">
                 <thead>
@@ -422,23 +438,23 @@
                 <tbody>
                     @foreach($peminjaman->details as $detail)
                     <tr>
-                        <!-- 1. Kode Buku -->
+                        
                         <td class="code-txt">{{ $detail->buku->kode_buku }}</td>
                         
-                        <!-- 2. Judul Buku -->
+                        
                         <td class="book-title">{{ $detail->buku->judul_buku }}</td>
                         
-                        <!-- 3. Sumber Buku -->
+                        
                         <td>
                             <span class="chip-badge src">BOS</span>
                         </td>
                         
-                        <!-- 4. Kategori Buku -->
+                        
                         <td>
                             <span class="chip-badge">{{ $detail->buku->kategori->nama_kategori ?? 'Umum' }}</span>
                         </td>
                         
-                        <!-- 5. Jatuh Tempo -->
+                        
                         <td>
                             @if($detail->tanggal_jatuh_tempo)
                                 <span class="date-txt">{{ $detail->tanggal_jatuh_tempo->translatedFormat('d/m/Y') }}</span>
@@ -450,7 +466,7 @@
                             @endif
                         </td>
                         
-                        <!-- 6. Tanggal Kembali -->
+                        
                         <td>
                             @if($detail->tanggal_kembali)
                                 <span class="date-txt" style="color: #0d9488;">{{ $detail->tanggal_kembali->translatedFormat('d/m/Y') }}</span>
@@ -459,22 +475,22 @@
                             @endif
                         </td>
                         
-                        <!-- 7. Denda -->
+                        
                         <td>
                             @if($detail->jumlah_denda > 0)
                                 <div class="denda-val">Rp {{ number_format($detail->jumlah_denda, 0, ',', '.') }}</div>
                                 <div class="denda-status {{ $detail->status_denda === 'lunas' ? 'lunas' : 'belum' }}">
                                     {{ ucwords(str_replace('_', ' ', $detail->status_denda)) }}
                                 </div>
-                            @elseif($detail->status_detail === 'terlambat' && !$detail->tanggal_kembali)
-                                <div class="denda-val">Rp {{ number_format($detail->denda_realtime ?? 0, 0, ',', '.') }}</div>
-                                <div class="denda-status belum">Belum Lunas</div>
+                              @elseif($detail->status_detail === 'terlambat' && !$detail->tanggal_kembali)
+                                  <div class="denda-val">Rp {{ number_format($detail->denda_realtime ?? 0, 0, ',', '.') }}</div>
+                                  <div class="denda-status belum">Estimasi (Belum Kembali)</div>
                             @else
                                 <span style="color: #94a3b8;">—</span>
                             @endif
                         </td>
                         
-                        <!-- 8. Status Buku (Item Detail) -->
+                        
                         <td>
                             @php
                                 $statusBuku = match($detail->status_detail) {

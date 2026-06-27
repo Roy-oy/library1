@@ -9,15 +9,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportDendaController extends Controller
 {
-    /**
-     * Tampilkan halaman laporan denda dengan filter.
-     */
+    
     public function index(Request $request)
     {
         $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku.kategoriBuku'])
             ->where('jumlah_denda', '>', 0);
 
-        // Filter Rentang Tanggal (berdasarkan tanggal kembali/transaksi denda muncul)
+        
         if ($request->filled('start_date')) {
             $query->whereDate('tanggal_kembali', '>=', $request->start_date);
         }
@@ -26,7 +24,7 @@ class ReportDendaController extends Controller
             $query->whereDate('tanggal_kembali', '<=', $request->end_date);
         }
 
-        // Filter Status Denda
+        
         if ($request->filled('status')) {
             $query->where('status_denda', $request->status);
         }
@@ -36,9 +34,7 @@ class ReportDendaController extends Controller
         return view('pperpus.report.denda.index', compact('reports'));
     }
 
-    /**
-     * Export laporan denda ke PDF.
-     */
+    
     public function exportPdf(Request $request)
     {
         $query = DetailPeminjaman::with(['peminjaman.siswa', 'buku.kategoriBuku'])

@@ -29,7 +29,7 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
-    // Helpers
+    
     public function isKepalaSekolah(): bool
     {
         return $this->role === 'kepala_sekolah';

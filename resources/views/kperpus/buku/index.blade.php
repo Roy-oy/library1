@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ── Theme variables for this view ── */
+    
     :root {
         --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
@@ -22,7 +22,7 @@
         --transition-speed: 0.25s;
     }
 
-    /* ── Page Header ── */
+    
     .page-header {
         display: flex;
         align-items: center;
@@ -46,7 +46,7 @@
         margin-top: 0.25rem;
     }
 
-    /* ── Tab Navigation ── */
+    
     .tab-nav {
         display: flex;
         gap: 0.5rem;
@@ -88,7 +88,7 @@
         border-radius: 3px 3px 0 0;
     }
 
-    /* ── Card Container ── */
+    
     .card {
         background: var(--surface);
         border-radius: var(--card-radius);
@@ -144,7 +144,7 @@
         width: 240px;
     }
 
-    /* ── Book Cover ── */
+    
     .book-cover-container {
         position: relative;
         width: 44px;
@@ -176,7 +176,7 @@
         font-size: 1rem;
     }
 
-    /* ── Modals Delete ── */
+    
     .modal-overlay {
         display: none;
         position: fixed;
@@ -270,7 +270,7 @@
 
 @section('content')
 
-{{-- Page Header --}}
+
 <div class="page-header">
     <div class="page-header-title">
         <h1><i class="fas {{ $type === 'bos' ? 'fa-graduation-cap' : 'fa-book' }}" style="color:var(--primary)"></i> {{ $pageTitle }}</h1>
@@ -281,7 +281,7 @@
     </a>
 </div>
 
-{{-- Tab Navigation --}}
+
 <nav class="tab-nav">
     <a href="{{ route('kperpus.buku.index', ['type' => 'perpus']) }}" class="tab-item {{ $type !== 'bos' ? 'active' : '' }}">
         <i class="fas fa-book-open"></i> Buku Perpus
@@ -291,7 +291,7 @@
     </a>
 </nav>
 
-{{-- Table Card --}}
+
 <div class="card">
     <div class="card-toolbar" style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; padding: 1.5rem;">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 1rem;">
@@ -453,7 +453,7 @@
         </table>
     </div>
 
-    {{-- Pagination --}}
+    
     @if($buku->hasPages())
     <div class="pagination-wrap">
         <span class="info">
@@ -464,7 +464,7 @@
     @endif
 </div>
 
-{{-- Delete Confirmation Modal --}}
+
 <div class="modal-overlay" id="delete-modal">
     <div class="modal-box">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>

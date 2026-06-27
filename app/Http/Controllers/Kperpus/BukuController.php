@@ -56,9 +56,7 @@ class BukuController extends Controller
         return view('kperpus.buku.create', compact('kategori', 'preSelectedSource'));
     }
 
-    /**
-     * Get generated sequential code based on book source.
-     */
+    
     public function getGeneratedKode(Request $request)
     {
         $sumber = $request->query('sumber', 'buku perpus');
@@ -84,16 +82,16 @@ class BukuController extends Controller
             'gambar'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // Validasi tambahan: Jika sumber_buku bos, kelas wajib diisi
+        
         if ($request->sumber_buku === 'bos' && empty($request->kelas)) {
             return back()->withErrors(['kelas' => 'Kelas wajib diisi untuk Buku BOS'])->withInput();
         }
-        // Jika sumber_buku perpus, kategori wajib diisi
+        
         if ($request->sumber_buku === 'buku perpus' && empty($request->id_kategori)) {
             return back()->withErrors(['id_kategori' => 'Kategori wajib diisi untuk Buku Perpus'])->withInput();
         }
 
-        // Validasi format kode_buku dinamis
+        
         $expectedPrefix = Buku::getPrefix($request->sumber_buku, $request->id_kategori);
         if (!str_starts_with($request->kode_buku, $expectedPrefix)) {
             return back()->withErrors([
@@ -103,14 +101,14 @@ class BukuController extends Controller
 
         $data = $request->except('gambar');
 
-        // Bersihkan data berdasarkan sumber
+        
         if ($request->sumber_buku === 'bos') {
             $data['id_kategori'] = null;
         } else {
             $data['kelas'] = null;
         }
 
-        // Upload gambar jika ada
+        
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('buku', 'public');
         }
@@ -144,12 +142,12 @@ class BukuController extends Controller
             'gambar'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // Enforce that sumber_buku cannot be changed
+        
         if ($request->sumber_buku !== $buku->sumber_buku) {
             return back()->withErrors(['sumber_buku' => 'Sumber buku tidak dapat diubah setelah buku dibuat.'])->withInput();
         }
 
-        // Validasi tambahan
+        
         if ($request->sumber_buku === 'bos' && empty($request->kelas)) {
             return back()->withErrors(['kelas' => 'Kelas wajib diisi untuk Buku BOS'])->withInput();
         }
@@ -157,7 +155,7 @@ class BukuController extends Controller
             return back()->withErrors(['id_kategori' => 'Kategori wajib diisi untuk Buku Perpus'])->withInput();
         }
 
-        // Validasi format kode_buku: dinamis (tidak boleh diubah melenceng dari aturannya)
+        
         $expectedPrefix = Buku::getPrefix($buku->sumber_buku, $request->id_kategori);
         if (!str_starts_with($request->kode_buku, $expectedPrefix)) {
             return back()->withErrors([
@@ -167,7 +165,7 @@ class BukuController extends Controller
 
         $data = $request->except('gambar');
 
-        // Bersihkan data berdasarkan sumber
+        
         if ($request->sumber_buku === 'bos') {
             $data['id_kategori'] = null;
         } else {
@@ -175,7 +173,7 @@ class BukuController extends Controller
         }
 
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
+            
             if ($buku->gambar) {
                 Storage::disk('public')->delete($buku->gambar);
             }
@@ -191,7 +189,7 @@ class BukuController extends Controller
 
     public function destroy(Buku $buku)
     {
-        // Hapus gambar dari storage
+        
         if ($buku->gambar) {
             Storage::disk('public')->delete($buku->gambar);
         }

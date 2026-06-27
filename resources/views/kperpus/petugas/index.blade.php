@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ── Theme variables for this view ── */
+    
     :root {
         --theme-primary: #1e3a8a;
         --theme-primary-light: #eff6ff;
@@ -22,7 +22,7 @@
         --transition-speed: 0.25s;
     }
 
-    /* ── Page Header ── */
+    
     .page-header {
         display: flex;
         align-items: center;
@@ -46,7 +46,7 @@
         margin-top: 0.25rem;
     }
 
-    /* ── Card Container ── */
+    
     .card {
         background: var(--surface);
         border-radius: var(--card-radius);
@@ -74,7 +74,7 @@
         font-weight: 800;
     }
 
-    /* ── Officer Badge ── */
+    
     .officer-badge {
         display: inline-flex;
         align-items: center;
@@ -89,7 +89,7 @@
         font-size: 0.75rem;
     }
 
-    /* ── Username pill ── */
+    
     .username-pill {
         display: inline-flex;
         align-items: center;
@@ -106,14 +106,14 @@
         color: var(--primary);
     }
 
-    /* ── Date style ── */
+    
     .date-text {
         font-size: 0.88rem;
         color: var(--text-muted);
         font-weight: 500;
     }
 
-    /* ── Empty state ── */
+    
     .empty-state {
         padding: 4rem 2rem;
         text-align: center;
@@ -131,7 +131,7 @@
         font-weight: 600;
     }
 
-    /* ── Pop-Up Form Modal Shared Styling ── */
+    
     .modal-overlay {
         display: none;
         position: fixed;
@@ -317,7 +317,7 @@
         color: var(--text);
     }
 
-    /* Delete Modal specifics style reset */
+    
     .modal-box-del {
         max-width: 420px;
         padding: 2rem;
@@ -410,7 +410,7 @@
 
 @section('content')
 
-{{-- Page Header --}}
+
 <div class="page-header">
     <div class="page-header-title">
         <h1><i class="fas fa-users-cog" style="color:var(--primary)"></i> Manajemen Pengguna</h1>
@@ -421,7 +421,7 @@
     </button>
 </div>
 
-{{-- Table Card --}}
+
 <div class="card">
     <div class="card-toolbar">
         <span class="total-label">Total pengguna: <strong>{{ $officers->count() }} orang</strong></span>
@@ -508,7 +508,7 @@
     </div>
 </div>
 
-{{-- Delete Modal --}}
+
 <div class="modal-overlay" id="delete-modal">
     <div class="modal-box modal-box-del">
         <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -525,7 +525,7 @@
     </div>
 </div>
 
-{{-- Modular Modals --}}
+
 @include('kperpus.petugas.create')
 @include('kperpus.petugas.edit')
 
@@ -535,7 +535,7 @@
 <script>
     const updateUrlBase = "{{ url('kepala-perpustakaan/petugas') }}"; 
 
-    /* ── Fungsi Pop-up Create ── */
+    
     function openCreateModal() {
         const modal = document.getElementById('create-modal');
         modal.style.display = 'flex';
@@ -545,7 +545,7 @@
         }, 10);
     }
 
-    /* ── Fungsi Pop-up Edit ── */
+    
     function openEditModal(id, name, username, role, is_active) {
         const modal = document.getElementById('edit-modal');
         const form = document.getElementById('edit-form-action');
@@ -567,21 +567,20 @@
         }, 10);
     }
 
-    /* ── Fungsi Global Close Modal ── */
+    
     function closeModal(modalId) {
         const modal = document.getElementById(modalId);
         modal.classList.remove('show');
         setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
 
-    // Event Klik area luar untuk menutup
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('modal-overlay')) {
             closeModal(e.target.id);
         }
     });
 
-    /* ── Fungsi Modal Delete ── */
+    
     function confirmDelete(url, name) {
         document.getElementById('delete-form').action = url;
         document.getElementById('delete-modal-msg').innerHTML = 'Apakah Anda yakin ingin menghapus pengguna <strong style="color: var(--text)">"' + name + '"</strong>? Data yang dihapus tidak dapat dikembalikan.';
@@ -596,12 +595,11 @@
         setTimeout(() => { modal.style.display = 'none'; }, 200);
     }
 
-    // Auto-open jika terdapat validasi error dari Laravel
     @if($errors->any())
         @if(old('_method') == 'PUT')
-            // Untuk Edit, kita butuh ID dari URL sebelumnya atau session jika memungkinkan
-            // Namun biasanya validasi error modal akan lebih kompleks tanpa state management
-            // Untuk saat ini kita buka Create saja jika ada error umum atau sesuaikan logic
+
+
+
             openCreateModal(); 
         @else
             openCreateModal();

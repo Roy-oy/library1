@@ -80,7 +80,7 @@
     .stok-value { font-size: .95rem; font-weight: 800; color: var(--text); }
     .stok-low { color: var(--danger); }
 
-    /* Modal Styles */
+    
     .modal-overlay {
         position: fixed; inset: 0; background: rgba(0,0,0,0.5);
         display: none; align-items: center; justify-content: center;
@@ -189,7 +189,7 @@
 @else
     <div class="books-grid">
         @foreach($buku as $b)
-        {{-- BAGIAN YANG DIPERBAIKI: Menggunakan attribute data-* dan melemparkan keyword 'this' --}}
+        
         <div class="book-card" 
              data-book="{{ json_encode($b) }}" 
              data-kategori="{{ $b->kategoriBuku->nama_kategori ?? ($b->kelas ? 'Kelas '.$b->kelas : 'Umum') }}"
@@ -227,7 +227,7 @@
         @endforeach
     </div>
 
-    {{-- Pagination --}}
+    
     @if($buku->hasPages())
     <div class="pagination-wrap" style="margin-top: 2rem; border-radius: 20px; overflow: hidden; border: 1px solid var(--border);">
         <span class="info">
@@ -296,26 +296,23 @@
 @push('scripts')
 <script>
     function showDetail(element) {
-        // Mengambil data dari atribut HTML data-*
+
         const buku = JSON.parse(element.getAttribute('data-book'));
         const kategoriName = element.getAttribute('data-kategori');
         
         const modal = document.getElementById('bookModal');
         const cover = document.getElementById('modalCover');
         const badge = document.getElementById('modalBadge');
-        
-        // Set Image / Cover
+
         if(buku.gambar) {
             cover.innerHTML = `<img src="{{ asset('storage') }}/${buku.gambar}" alt="${buku.judul_buku}">`;
         } else {
             cover.innerHTML = `<i class="fas fa-book"></i>`;
         }
 
-        // Set Badge Sumber Buku
         badge.innerText = buku.sumber_buku === 'bos' ? 'Buku BOS' : 'Buku Perpustakaan';
         badge.className = 'detail-badge ' + (buku.sumber_buku === 'bos' ? 'badge-bos' : 'badge-perpus');
 
-        // Set Informasi Teks
         document.getElementById('modalTitle').innerText = buku.judul_buku;
         document.getElementById('modalAuthor').innerText = 'oleh ' + (buku.pengarang ?? '-');
         document.getElementById('modalKode').innerText = buku.kode_buku ?? '-';
@@ -326,18 +323,16 @@
         document.getElementById('modalSumber').innerText = buku.sumber_buku ?? '-';
         document.getElementById('modalRak').innerText = buku.rak ?? '-';
 
-        // Tampilkan Modal
         modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Kunci scroll background belakang
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
         const modal = document.getElementById('bookModal');
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Aktifkan kembali scroll background
+        document.body.style.overflow = 'auto';
     }
 
-    // Menutup modal dengan tombol Escape di Keyboard
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeModal();
     });

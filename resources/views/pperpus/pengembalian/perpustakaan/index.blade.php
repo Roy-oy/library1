@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    /* ── Theme variables for this view ── */
+    
     :root {
         --theme-primary: #0d9488;
         --theme-primary-light: #f0fdfa;
@@ -22,7 +22,7 @@
         --transition-speed: 0.25s;
     }
 
-    /* ── Page Header ── */
+    
     .page-header {
         display: flex;
         align-items: center;
@@ -46,7 +46,7 @@
         margin-top: 0.25rem;
     }
 
-    /* ── Card Container ── */
+    
     .card {
         background: var(--surface);
         border-radius: var(--card-radius);
@@ -74,10 +74,10 @@
         font-weight: 800;
     }
 
-    /* ── Table Wrap ── */
+    
     .table-wrap { overflow-x: auto; width: 100%; }
 
-    /* ── Premium Table ── */
+    
     table.kperpus-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 1000px; }
     table.kperpus-table thead th {
         background: var(--primary);
@@ -102,7 +102,7 @@
     table.kperpus-table tbody tr { transition: background-color .2s ease; }
     table.kperpus-table tbody tr:hover td { background-color: var(--primary-soft) !important; }
 
-    /* ── Badges & Pills ── */
+    
     .code-badge { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; background: var(--primary-soft); color: var(--primary); padding: 0.35rem 0.6rem; border-radius: 8px; font-weight: 800; border: 1px solid rgba(13, 148, 136, 0.15); display: inline-block; }
     .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 30px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
     .pill-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
@@ -110,7 +110,7 @@
     .pill-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
     .pill-info { background: var(--info-bg); color: var(--info); border: 1px solid rgba(14, 165, 233, 0.2); }
 
-    /* ── Search & Filter ── */
+    
     .filter-search-group { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
     .search-box {
         display: flex; align-items: center; gap: .5rem;
@@ -130,7 +130,7 @@
     }
     .btn-action:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }
 
-    /* ── Filter Select ── */
+    
     .filter-select {
         padding: 0.55rem 1rem;
         border-radius: 10px;
@@ -178,7 +178,7 @@
         <span class="total-label">Total ditemukan: <strong>{{ $peminjamans->total() }} transaksi</strong></span>
         
         <form action="{{ route('pperpus.pengembalian.perpustakaan.index') }}" method="GET" class="filter-search-group">
-            <!-- Filter Status -->
+            
             <div class="search-box">
                 <i class="fas fa-filter"></i>
                 <select name="status" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); cursor:pointer;">
@@ -188,7 +188,7 @@
                 </select>
             </div>
 
-            <!-- Filter Tanggal -->
+            
             <div class="search-box">
                 <i class="far fa-calendar-alt"></i>
                 <input type="date" name="dari" value="{{ request('dari') }}" title="Dari Tanggal" style="border:none; outline:none; background:transparent; font-size:0.85rem; color:var(--text); width: auto;">

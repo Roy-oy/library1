@@ -9,23 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-/**
- * Controller khusus untuk operasi per-item detail peminjaman.
- * Digunakan saat petugas perlu mengubah kondisi/denda satu buku
- * tanpa harus membuka form pengembalian penuh.
- */
+
 class DetailPeminjamanController extends Controller
 {
-    // ═══════════════════════════════════════════════════════════
-    // PERPANJANG MASA PINJAM (BUKU PERPUS)
-    // ═══════════════════════════════════════════════════════════
+    
+    
+    
 
-    /**
-     * Perpanjang jatuh tempo buku perpus sebanyak N hari.
-     * Hanya bisa diperpanjang jika belum terlambat dan buku masih dipinjam.
-     *
-     * Aturan: maksimal 1x perpanjangan (dapat dikustomisasi).
-     */
+    
     public function perpanjang(Request $request, Peminjaman $peminjaman, DetailPeminjaman $detail)
     {
         abort_if($detail->id_peminjaman !== $peminjaman->id_peminjaman, 403);
@@ -53,14 +44,11 @@ class DetailPeminjamanController extends Controller
             ->with('success', "Masa pinjam berhasil diperpanjang hingga " . \Carbon\Carbon::parse($request->tanggal_perpanjangan)->format('d/m/Y') . ".");
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // REKAP DENDA PER DETAIL
-    // ═══════════════════════════════════════════════════════════
+    
+    
+    
 
-    /**
-     * Hitung ulang denda berdasarkan tanggal jatuh tempo dan tanggal kembali/hari ini.
-     * Berguna untuk koreksi jika ada perubahan tanggal manual.
-     */
+    
     public function hitungUlangDenda(Peminjaman $peminjaman, DetailPeminjaman $detail)
     {
         abort_if($detail->id_peminjaman !== $peminjaman->id_peminjaman, 403);
@@ -95,15 +83,11 @@ class DetailPeminjamanController extends Controller
             ->with('success', "Denda dihitung ulang: {$hari} hari × Rp" . number_format($detail->denda_harian, 0, ',', '.') . " = Rp" . number_format($denda, 0, ',', '.'));
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // HAPUS DETAIL (BATAL PINJAM SATU BUKU)
-    // ═══════════════════════════════════════════════════════════
+    
+    
+    
 
-    /**
-     * Batalkan/hapus satu item dari daftar pinjaman.
-     * Hanya bisa dilakukan jika buku masih berstatus 'dipinjam'
-     * (belum dikembalikan/diproses).
-     */
+    
     public function destroy(Peminjaman $peminjaman, DetailPeminjaman $detail)
     {
         abort_if($detail->id_peminjaman !== $peminjaman->id_peminjaman, 403);
@@ -113,7 +97,7 @@ class DetailPeminjamanController extends Controller
         }
 
         DB::transaction(function () use ($detail, $peminjaman) {
-            // Kembalikan stok
+            
             $buku = $detail->buku;
             $buku->increment('stok');
             if ($buku->stok > 0 && $buku->status_buku === 'habis') {

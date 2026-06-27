@@ -36,12 +36,12 @@ class DetailPeminjaman extends Model
         'jumlah_denda'        => 'integer',
     ];
 
-    const DENDA_HARIAN_PERPUS = 1000; // Rp1.000/hari
-    const DENDA_HARIAN_BOS    = 0;    // tidak ada denda keterlambatan
+    const DENDA_HARIAN_PERPUS = 1000; 
+    const DENDA_HARIAN_BOS    = 0;    
 
-    // ─────────────────────────────────────────────
-    // RELASI
-    // ─────────────────────────────────────────────
+    
+    
+    
 
     public function peminjaman(): BelongsTo
     {
@@ -53,11 +53,11 @@ class DetailPeminjaman extends Model
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
     }
 
-    // ─────────────────────────────────────────────
-    // ACCESSOR
-    // ─────────────────────────────────────────────
+    
+    
+    
 
-    /** Apakah buku sudah melewati jatuh tempo (hanya berlaku untuk buku perpus) */
+    
     public function getIsTerlambatAttribute(): bool
     {
         if ($this->sumber_buku !== 'buku perpus') {
@@ -65,14 +65,14 @@ class DetailPeminjaman extends Model
         }
 
         if ($this->tanggal_kembali !== null) {
-            return false; // sudah dikembalikan
+            return false; 
         }
 
         return $this->tanggal_jatuh_tempo !== null
             && now()->startOfDay()->gt($this->tanggal_jatuh_tempo);
     }
 
-    /** Hitung jumlah hari terlambat (real-time, belum disimpan) */
+    
     public function getHariTerlambatRealtimeAttribute(): int
     {
         if ($this->sumber_buku !== 'buku perpus' || $this->tanggal_jatuh_tempo === null) {
@@ -84,13 +84,13 @@ class DetailPeminjaman extends Model
         return max(0, (int) $this->tanggal_jatuh_tempo->diffInDays($acuan, false));
     }
 
-    /** Denda realtime (belum tersimpan ke DB) */
+    
     public function getDendaRealtimeAttribute(): int
     {
         return $this->hari_terlambat_realtime * $this->denda_harian;
     }
 
-    /** Label status yang lebih ramah */
+    
     public function getLabelStatusAttribute(): string
     {
         return match ($this->status_detail) {
@@ -103,14 +103,11 @@ class DetailPeminjaman extends Model
         };
     }
 
-    // ─────────────────────────────────────────────
-    // LOGIKA PENGEMBALIAN
-    // ─────────────────────────────────────────────
+    
+    
+    
 
-    /**
-     * Proses pengembalian buku normal (kondisi baik).
-     * Menghitung denda otomatis jika buku perpus terlambat.
-     */
+    
     public function prosesPengembalian(?Carbon $tanggalKembali = null, ?string $keterangan = null): void
     {
         $tanggalKembali ??= now();
@@ -128,10 +125,10 @@ class DetailPeminjaman extends Model
             $this->status_denda          = $denda > 0 ? 'belum_lunas' : 'tidak_ada_denda';
 
             if ($hari > 0) {
-                $this->status_detail = 'terlambat'; // tetap 'terlambat' sampai lunas
+                $this->status_detail = 'terlambat'; 
             }
         } else {
-            // Buku BOS: tidak ada denda keterlambatan
+            
             $this->jumlah_hari_terlambat = 0;
             $this->jumlah_denda          = 0;
             $this->status_denda          = 'tidak_ada_denda';
@@ -140,9 +137,7 @@ class DetailPeminjaman extends Model
         $this->save();
     }
 
-    /**
-     * Tandai buku hilang/rusak dengan denda manual (harga ganti buku).
-     */
+    
     public function prosesHilangAtauRusak(string $kondisi, int $dendaGanti, ?string $keterangan = null): void
     {
         if (!in_array($kondisi, ['hilang', 'rusak'])) {
@@ -159,28 +154,25 @@ class DetailPeminjaman extends Model
         $this->save();
     }
 
-    /**
-     * Tandai denda sudah lunas.
-     * Jika semua denda di transaksi lunas → sync status peminjaman.
-     */
+    
     public function lunaskanDenda(): void
     {
         $this->status_denda = 'lunas';
 
-        // Jika buku sudah kembali, set status jadi dikembalikan
+        
         if (in_array($this->status_detail, ['terlambat'])) {
             $this->status_detail = 'dikembalikan';
         }
 
         $this->save();
 
-        // Sinkronisasi status peminjaman induk
+        
         $this->peminjaman->syncStatus();
     }
 
-    // ─────────────────────────────────────────────
-    // SCOPE QUERY
-    // ─────────────────────────────────────────────
+    
+    
+    
 
     public function scopeTerlambat($query)
     {
